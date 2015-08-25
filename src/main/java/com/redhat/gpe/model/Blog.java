@@ -6,6 +6,7 @@ public class Blog {
     String postDate;
     String body;
     String title;
+//    String id;
 
     public String getUser() {
         return user;
@@ -38,6 +39,14 @@ public class Blog {
     public void setTitle(String title) {
         this.title = title;
     }
+
+/*    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }*/
 
 
 }

@@ -72,14 +72,26 @@
             <artifactId>log4j</artifactId>
         </dependency>
 
+<!--        &lt;!&ndash; OSGI &ndash;&gt;
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        &lt;!&ndash; Dep required by Pax Web as OSGI Config Admin is not defined by PojoSR &ndash;&gt;
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.metatype</artifactId>
+            <version>1.0.10</version>
+            <scope>provided</scope>
+        </dependency>-->
 
         <!-- Testing & Camel Plugin -->
-        <!--    <dependency>
+        <dependency>
               <groupId>org.apache.camel</groupId>
               <artifactId>camel-test-blueprint</artifactId>
-              <version>${camel.version}</version>
-              <scope>test</scope>
-            </dependency>-->
+              <version>2.16-SNAPSHOT</version>
+            </dependency>
     </dependencies>
 
     <build>
@@ -130,8 +142,9 @@
             <plugin>
                 <groupId>org.apache.camel</groupId>
                 <artifactId>camel-maven-plugin</artifactId>
+                <version>2.16-SNAPSHOT</version>
                 <configuration>
-                    <!--          <useBlueprint>true</useBlueprint>-->
+                    <useBlueprint>true</useBlueprint>
                 </configuration>
             </plugin>
 

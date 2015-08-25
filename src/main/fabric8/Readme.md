@@ -17,6 +17,10 @@ fabric:container-remove-profile lab gpe-fuse
 HTTPie request
 ==============
 
-http POST http://127.0.0.1:9191/entries/new < src/data/entry.json
+http PUT http://127.0.0.1:9191/entries/new/1 < src/data/entry.json
+
+curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
+
+http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
 
 

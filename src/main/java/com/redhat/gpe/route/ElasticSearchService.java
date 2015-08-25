@@ -21,12 +21,18 @@ public class ElasticSearchService extends RouteBuilder {
         restConfiguration().component("jetty").host("0.0.0.0").port("9191").bindingMode(RestBindingMode.json);
 
         rest("/entries/")
-            .post("new").consumes("application/json").type(Blog.class)
-            .to("direct:add");
+            .get("/{id}").to("direct:findbyid")    
+            .put("/new/{id}").consumes("application/json").type(Blog.class)
+            .to("direct:new");
+        
 
-        from("direct:add")
+        from("direct:new")
             .marshal(jacksonFormat)
             .to("elasticsearch://{{clustername}}?operation=INDEX&ip={{address}}&indexName={{indexname}}&indexType={{indextype}}")
+            .log("Response received : ${body}");
+        
+        from("direct:findbyid")
+            .to("elasticsearch://{{clustername}}?operation=GET_BY_ID&ip={{address}}&indexName={{indexname}}&indexType={{indextype}}")
             .log("Response received : ${body}");
         
     }
