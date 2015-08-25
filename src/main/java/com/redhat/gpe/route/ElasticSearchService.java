@@ -26,8 +26,7 @@ public class ElasticSearchService extends RouteBuilder {
 
         from("direct:add")
             .marshal(jacksonFormat)
-            .log("Version 2 : Blog entry : ${body}")
-                .to("elasticsearch://{{clustername}}?operation=INDEX&ip={{address}}&indexName=blog&indexType=post")
+            .to("elasticsearch://{{clustername}}?operation=INDEX&ip={{address}}&indexName={{indexname}}&indexType={{indextype}}")
             .log("Response received : ${body}");
         
     }
