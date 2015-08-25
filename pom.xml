@@ -55,7 +55,12 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-elasticsearch</artifactId>
-            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3</version>
         </dependency>
 
         <!-- logging -->
@@ -71,20 +76,6 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
-
-<!--        &lt;!&ndash; OSGI &ndash;&gt;
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.core</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        &lt;!&ndash; Dep required by Pax Web as OSGI Config Admin is not defined by PojoSR &ndash;&gt;
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.apache.felix.metatype</artifactId>
-            <version>1.0.10</version>
-            <scope>provided</scope>
-        </dependency>-->
 
         <!-- Testing & Camel Plugin -->
         <dependency>

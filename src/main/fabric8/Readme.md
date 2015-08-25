@@ -20,7 +20,8 @@ HTTPie request
 http PUT http://127.0.0.1:9191/entries/new/1 < src/data/entry.json
 
 curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
-
+or
 http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
 
+http http://192.168.1.80:9200/blog/post/1 pretty==true
 

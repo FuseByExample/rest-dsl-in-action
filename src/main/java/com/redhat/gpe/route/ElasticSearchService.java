@@ -1,39 +1,28 @@
 package com.redhat.gpe.route;
 
+import com.google.gson.Gson;
 import com.redhat.gpe.model.Blog;
-import org.apache.camel.CamelContext;
-import org.apache.camel.PropertyInject;
-import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.jackson.JacksonDataFormat;
-import org.apache.camel.component.properties.PropertiesComponent;
-import org.apache.camel.model.rest.RestBindingMode;
+import org.apache.camel.*;
+import org.elasticsearch.action.index.IndexRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class ElasticSearchService extends RouteBuilder {
+public class ElasticSearchService {
 
-    // @PropertyInject("clustername")
-    // String clustername;
+    final static Logger LOG = LoggerFactory.getLogger(ElasticSearchService.class);
     
-    @Override
-    public void configure() throws Exception {
-        
-        JacksonDataFormat jacksonFormat = new JacksonDataFormat(Blog.class);
+    public IndexRequest addEntry(@Body Blog body,
+                                 @Header("indexname") String indexname,
+                                 @Header("indextype") String indextype,
+                                 @Header("id") String id) {
 
-        restConfiguration().component("jetty").host("0.0.0.0").port("9191").bindingMode(RestBindingMode.json);
-
-        rest("/entries/")
-            .get("/{id}").to("direct:findbyid")    
-            .put("/new/{id}").consumes("application/json").type(Blog.class)
-            .to("direct:new");
+        String source = new Gson().toJson(body);
+        LOG.info("Id : " + id + ", indexname : " + indexname + ", indextype : " + indextype);
+        LOG.info("Source : " + source);
         
-
-        from("direct:new")
-            .marshal(jacksonFormat)
-            .to("elasticsearch://{{clustername}}?operation=INDEX&ip={{address}}&indexName={{indexname}}&indexType={{indextype}}")
-            .log("Response received : ${body}");
-        
-        from("direct:findbyid")
-            .to("elasticsearch://{{clustername}}?operation=GET_BY_ID&ip={{address}}&indexName={{indexname}}&indexType={{indextype}}")
-            .log("Response received : ${body}");
-        
+        IndexRequest req = new IndexRequest(indexname, indextype, id);
+        req.source(source);
+        return req;
     }
+    
 }

@@ -13,7 +13,7 @@
         </cm:default-properties>
     </cm:property-placeholder>
 
-    <camelContext xmlns="http://camel.apache.org/schema/blueprint">
+    <camelContext trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 
         <propertyPlaceholder id="properties" location="blueprint:lab-properties"/>
         
