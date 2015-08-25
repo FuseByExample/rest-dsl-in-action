@@ -12,22 +12,24 @@
     <name>GPE :: JBoss Fuse :: Lab</name>
 
     <properties>
-        <camel.version>2.15.1.redhat-621018</camel.version>
-        <fabric8-bom.version>1.2.0.redhat-621018</fabric8-bom.version>
+        <camel.version>2.15.1.redhat-620133</camel.version>
+        <fabric8-bom.version>6.2.0.redhat-133</fabric8-bom.version>
         <fabric8-maven-plugin>1.2.0.redhat-621018</fabric8-maven-plugin>
+
         <!-- fabric8 deploy profile configuration -->
         <fabric8.profile>gpe-fuse</fabric8.profile>
         <fabric8.parentProfiles>feature-camel</fabric8.parentProfiles>
         <fabric8.features>camel-elasticsearch camel-jetty camel-jackson</fabric8.features>
     </properties>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.fabric8.bom</groupId>
-                <artifactId>fabric8-bom</artifactId>
+                <groupId>org.jboss.fuse.bom</groupId>
+                <artifactId>jboss-fuse-parent</artifactId>
                 <version>${fabric8-bom.version}</version>
                 <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -36,28 +38,23 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-core</artifactId>
-            <version>${camel.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-spring</artifactId>
-            <version>${camel.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jetty</artifactId>
-            <version>${camel.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jackson</artifactId>
-            <version>${camel.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-elasticsearch</artifactId>
-            <version>${camel.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -65,17 +62,14 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.6.6</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.10</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
         </dependency>
 
 
@@ -95,7 +89,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -104,7 +97,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                 </configuration>
@@ -138,7 +130,6 @@
             <plugin>
                 <groupId>org.apache.camel</groupId>
                 <artifactId>camel-maven-plugin</artifactId>
-                <version>${camel.version}</version>
                 <configuration>
                     <!--          <useBlueprint>true</useBlueprint>-->
                 </configuration>
@@ -157,14 +148,22 @@
 
     <repositories>
         <repository>
-            <id>Fuse</id>
+            <id>Fuse - EA</id>
             <url>https://repository.jboss.org/nexus/content/groups/ea/</url>
+        </repository>
+        <repository>
+            <id>Fuse - Public</id>
+            <url>https://repository.jboss.org/nexus/content/groups/fs-public/</url>
         </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>Fuse</id>
             <url>https://repository.jboss.org/nexus/content/groups/ea/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>Fuse - Public</id>
+            <url>https://repository.jboss.org/nexus/content/groups/fs-public/</url>
         </pluginRepository>
     </pluginRepositories>
 
