@@ -41,7 +41,12 @@ public class RestToElasticDBRoute
                     .to("direct:new");
         
         onException(org.elasticsearch.client.transport.NoNodeAvailableException.class)
-                .log("ElasticSearch server is not available - not started, network issue , ... !");
+             .handled(true)
+             .setBody().constant("ElasticSearch server is not available, not started, network issue , ... ")
+             .setHeader(Exchange.CONTENT_TYPE).constant("text/plain")
+             .setHeader(Exchange.HTTP_RESPONSE_CODE).constant(400)
+             .log(">> Exception message : ${exception.message}")
+             .log(">> Stack trace : ${exception.stacktrace}");
 
 
         from("direct:new")
@@ -91,7 +96,7 @@ public class RestToElasticDBRoute
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
                 .beanRef("elasticSearchService", "getBlogs2");
 
-        /*
+        /* Code working with Camel 2.16 */
         from("direct:search")
                 .log("Search Blogs Service called !")
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
