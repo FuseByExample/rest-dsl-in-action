@@ -16,7 +16,7 @@ This is a GPE JBoss Fuse Lab
 
 ## ADD A user
 ````
-  http PUT http://127.0.0.1:9191/blog/add/1 < src/data/entry.json
+  http PUT http://127.0.0.1:9191/blog/article/1 < src/data/entry.json
 ````
 ## SEARCH
 ````
@@ -24,11 +24,11 @@ This is a GPE JBoss Fuse Lab
   or
   http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
 
-  http http://127.0.0.1:9191/blog/searchby-user/cmoulliard
+  http http://127.0.0.1:9191/blog/article/search/user/cmoulliard
 ````
 ## GET A USER
 ````
   http http://127.0.0.1:9191/blog/post/1 pretty==true
 
-  http http://127.0.0.1:9191/blog/searchby-id/1
+  http http://127.0.0.1:9191/blog/article/search/id/1
 ````

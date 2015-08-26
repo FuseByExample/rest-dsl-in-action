@@ -23,13 +23,13 @@ public class RestToElasticDBRoute extends RouteBuilder {
 
         rest("/blog/").produces("application/json").consumes("application/json")
                 
-                .get("/searchby-id/{id}")
+                .get("/article/search/id/{id}")
                     .to("direct:findbyid")
                 
-                .get("/searchby-user/{user}").outTypeList(Blog.class)
+                .get("/article/search/user/{user}").outTypeList(Blog.class)
                      .to("direct:search2")
                 
-                .put("/add/{id}")
+                .put("/article/{id}")
                     .type(Blog.class)
                     .to("direct:new");
         
