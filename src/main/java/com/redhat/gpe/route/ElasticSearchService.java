@@ -6,24 +6,17 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.redhat.gpe.model.Blog;
-import org.apache.camel.*;
+import org.apache.camel.Body;
+import org.apache.camel.Header;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.support.PlainActionFuture;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.io.stream.InputStreamStreamInput;
-import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.common.xcontent.ToXContent;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -32,10 +25,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,14 +64,19 @@ public class ElasticSearchService {
         return id;
     }
 
-    public String generateResponse(@Body PlainActionFuture future) throws Exception {
+    public Blog getBlog(@Body PlainActionFuture future) throws Exception {
+        Blog blog = null;
         GetResponse getResponse = (GetResponse) future.get();
         String response = getResponse.getSourceAsString();
         if (response == null) {
             LOG.info("No result found for the id - " + getResponse.getId());
-            response = emptyFieldsJson("user","title","body","postDate");
+            //response = emptyFieldsJson("user","title","body","postDate");
+            blog = new Blog();
+        } else {
+            blog = new ObjectMapper().readValue( response, Blog.class);
+            blog.setId(getResponse.getId());
         }
-        return response;
+        return blog;
     }
     
     public List<Blog> getBlogs(@Body String result) throws Exception {
@@ -114,7 +108,7 @@ public class ElasticSearchService {
 
         SearchResponse response = client.prepareSearch(indexname)
                 .setTypes(indextype)
-                .setQuery(QueryBuilders.termQuery("user",user))
+                .setQuery(QueryBuilders.termQuery("user", user))
                 .setFrom(0).setSize(60).setExplain(true)
                 .execute()
                 .actionGet();

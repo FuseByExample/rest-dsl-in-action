@@ -63,8 +63,7 @@ public class RestToElasticDBRoute extends RouteBuilder {
 
                 .doTry()
                 .to("elasticsearch://{{clustername}}?ip={{address}}")
-                    .beanRef("elasticSearchService", "generateResponse")
-                    .unmarshal(jacksonFormat)
+                    .beanRef("elasticSearchService", "getBlog")
                 .doCatch(org.elasticsearch.client.transport.NoNodeAvailableException.class)
                 .process(new Processor() {
                     @Override
@@ -89,7 +88,9 @@ public class RestToElasticDBRoute extends RouteBuilder {
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
                 .beanRef("elasticSearchService", "getBlogs2");
 
-        /* Code working with Camel 2.16 */
+        /* 
+         *  Code works with Camel 2.16 as SEARCH operation wasn't implemented for 2.15
+         *
         from("direct:search")
                 .log("Search Blogs Service called !")
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
@@ -111,7 +112,7 @@ public class RestToElasticDBRoute extends RouteBuilder {
                     }
                 })
                 .endDoTry();
-                */
+         */
 
 
     }
