@@ -2,22 +2,15 @@ package com.redhat.gpe.route;
 
 import com.redhat.gpe.model.Blog;
 import org.apache.camel.Exchange;
-import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.elasticsearch.ElasticsearchConfiguration;
 import org.apache.camel.component.jackson.JacksonDataFormat;
 import org.apache.camel.model.rest.RestBindingMode;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.support.PlainActionFuture;
-import org.elasticsearch.common.util.concurrent.BaseFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.Future;
-
-public class RestToElasticDBRoute
-        extends RouteBuilder {
+public class RestToElasticDBRoute extends RouteBuilder {
 
     final static Logger LOG = LoggerFactory.getLogger(ElasticSearchService.class);
 
@@ -28,15 +21,15 @@ public class RestToElasticDBRoute
 
         restConfiguration().component("jetty").host("0.0.0.0").port("9191").bindingMode(RestBindingMode.json).dataFormatProperty("prettyPrint", "true");
 
-        rest("/entries/").produces("application/json").consumes("application/json")
+        rest("/blog/").produces("application/json").consumes("application/json")
                 
-                .get("/searchid/{id}")
+                .get("/searchby-id/{id}")
                     .to("direct:findbyid")
                 
-                .get("/searchuser/{user}").outTypeList(Blog.class)
+                .get("/searchby-user/{user}").outTypeList(Blog.class)
                      .to("direct:search2")
                 
-                .put("/new/{id}")
+                .put("/add/{id}")
                     .type(Blog.class)
                     .to("direct:new");
         
