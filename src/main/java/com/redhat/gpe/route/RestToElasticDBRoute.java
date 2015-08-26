@@ -26,30 +26,33 @@ public class RestToElasticDBRoute
 
         JacksonDataFormat jacksonFormat = new JacksonDataFormat(Blog.class);
 
-        restConfiguration().component("jetty").host("0.0.0.0").port("9191").bindingMode(RestBindingMode.json).dataFormatProperty("prettyPrint","true");
+        restConfiguration().component("jetty").host("0.0.0.0").port("9191").bindingMode(RestBindingMode.json).dataFormatProperty("prettyPrint", "true");
 
         rest("/entries/").produces("application/json").consumes("application/json")
                 
-                .get("/{id}")
+                .get("/search/{id}")
                     .to("direct:findbyid")
                 
+/*                .get("/search/{user}")
+                    .to("direct:search")*/
+                
                 .put("/new/{id}")
-                    .type(Blog.class).to("direct:new");
-
+                    .type(Blog.class)
+                    .to("direct:new");
+        
         onException(org.elasticsearch.client.transport.NoNodeAvailableException.class)
                 .log("ElasticSearch server is not available - not started, network issue , ... !");
 
 
         from("direct:new")
+                .log("Add new Blog entry service called !")
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
-                //.setHeader(ElasticsearchConfiguration.OPERATION_INDEX).constant("INDEX")
                 .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_INDEX)
 
                 .bean(ElasticSearchService.class, "add")
 
                 .to("elasticsearch://{{clustername}}?ip={{address}}")
-                        //.to("elasticsearch://{{clustername}}?operation=INDEX&ip={{address}}&indexName={{indexname}}&indexType={{indextype}}")
                 .log("Response received : ${body}");
 
         from("direct:findbyid")
@@ -74,6 +77,30 @@ public class RestToElasticDBRoute
                     }
                 })
                 .endDoTry();
+
+        /*
+        from("direct:search")
+                .log("Search Blogs Service called !")
+                .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
+                .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
+                .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant("SEARCH")
+
+                .bean(ElasticSearchService.class, "searchUser")
+
+                .doTry()
+                  .to("elasticsearch://{{clustername}}?ip={{address}}")
+                  .bean(ElasticSearchService.class, "generateUsersResponse")
+                .doCatch(org.elasticsearch.client.transport.NoNodeAvailableException.class)
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+                        exchange.getIn().setBody("ElasticSearch server is not available, not started, network issue , ... !");
+                        exchange.getIn().setHeader(Exchange.CONTENT_TYPE, "text/plain");
+                        exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+                    }
+                })
+                .endDoTry();
+                */
 
 
     }

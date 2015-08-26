@@ -1,21 +1,16 @@
 package com.redhat.gpe.route;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.redhat.gpe.model.Blog;
 import org.apache.camel.*;
-import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.support.PlainActionFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.ExecutionException;
 
 public class ElasticSearchService {
 
@@ -48,6 +43,35 @@ public class ElasticSearchService {
         }
         return response;
     }
+    
+    /*
+    public SearchRequest searchUser(@Header("user") String user,
+                         @Header("indexname") String indexname,
+                         @Header("indextype") String indextype) {
+        
+        SearchRequest request = new SearchRequest(indexname);
+        request.types(indextype);
+        request.searchType(SearchType.DFS_QUERY_THEN_FETCH);
+        request.source("{\"query\":{\"match\":{\"user\":\"" + user + "\"}}}");
+        
+        return request;
+    }
+
+    public String generateUsersResponse(@Body PlainActionFuture future) throws Exception {
+        SearchResponse searchResponse = (SearchResponse) future.get();
+        long hits = searchResponse.getHits().getTotalHits();
+        if (hits == 0) {
+            LOG.info("No result found for the search request");
+        } else {
+            SearchHits sHits = searchResponse.getHits();
+            SearchHit[] results = sHits.hits();
+            for(SearchHit result : results) {
+                LOG.info("Result : " + result.getSourceAsString());
+            }
+        }
+        return "";
+    }
+    */
 
     /**
      * Generate JSON String using fields passed as parameter and assign the content to an empty string*
