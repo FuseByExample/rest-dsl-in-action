@@ -44,15 +44,15 @@ public class ElasticSearchService {
         String response = getResponse.getSourceAsString();
         if (response == null) {
             LOG.info("No result found for the id - " + getResponse.getId());
-            response = toJson("user","title","body","postDate");
+            response = emptyFieldsJson("user","title","body","postDate");
         }
         return response;
     }
 
     /**
-     * Generate JSON String *
+     * Generate JSON String using fields passed as parameter and assign the content to an empty string*
      */
-    public static String toJson(String... fields) {
+    public static String emptyFieldsJson(String... fields) {
 
         final String DQ = "\"";
         final String DQCOLONDQ = "\": \"";
