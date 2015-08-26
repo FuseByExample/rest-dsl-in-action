@@ -1,38 +1,34 @@
-GPE JBoss Fuse Lab
-==================
+# GPE JBoss Fuse Lab
 
 This is a GPE JBoss Fuse Lab
 
-Installation
-============
+# Installation
 
-fabric:create --clean root
+  fabric:create --clean root
+  
+  fabric:container-create-child --profile insight-elasticsearch.datastore root elasticsearch-node
+  fabric:container-create-child --profile feature-camel root lab
+  
+  fabric:container-add-profile lab gpe-fuse
+  fabric:container-remove-profile lab gpe-fuse
 
-fabric:container-create-child --profile insight-elasticsearch.datastore root elasticsearch-node
-fabric:container-create-child --profile feature-camel root lab
+# HTTPie request
 
-fabric:container-add-profile lab gpe-fuse
-fabric:container-remove-profile lab gpe-fuse
+## ADD A user
 
-HTTPie request
-==============
+  http PUT http://127.0.0.1:9191/entries/new/1 < src/data/entry.json
 
-ADD A user
-==========
+## SEARCH
 
-http PUT http://127.0.0.1:9191/entries/new/1 < src/data/entry.json
+  curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
+  or
+  http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
 
-SEARCH
-======
-curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
-or
-http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
+  http http://127.0.0.1:9191/entries/searchuser/cmoulliard
 
-http http://127.0.0.1:9191/entries/searchuser/cmoulliard
+## GET A USER
 
-GET A USER
-==========
-http http://127.0.0.1:9191/blog/post/1 pretty==true
+  http http://127.0.0.1:9191/blog/post/1 pretty==true
 
-http http://127.0.0.1:9191/entries/searchid/1
+  http http://127.0.0.1:9191/entries/searchid/1
 
