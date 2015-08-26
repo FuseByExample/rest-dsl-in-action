@@ -30,11 +30,11 @@ public class RestToElasticDBRoute
 
         rest("/entries/").produces("application/json").consumes("application/json")
                 
-                .get("/search/{id}")
+                .get("/searchid/{id}")
                     .to("direct:findbyid")
                 
-/*                .get("/search/{user}")
-                    .to("direct:search")*/
+                .get("/searchuser/{user}").outTypeList(Blog.class)
+                .to("direct:search")
                 
                 .put("/new/{id}")
                     .type(Blog.class)
@@ -77,6 +77,13 @@ public class RestToElasticDBRoute
                     }
                 })
                 .endDoTry();
+
+        from("direct:search")
+                .log("Search Blogs Service called !")
+                .setHeader(Exchange.HTTP_QUERY, constant("q=user:cmoulliard&pretty=true"))
+                .setHeader(Exchange.HTTP_PATH, constant("/blog/post/_search"))
+                .to("http4:{{address}}:{{port}}/?bridgeEndpoint=true")
+                .bean(ElasticSearchService.class, "getBlogs");
 
         /*
         from("direct:search")

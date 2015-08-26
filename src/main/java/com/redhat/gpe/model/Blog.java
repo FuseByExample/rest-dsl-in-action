@@ -1,12 +1,16 @@
 package com.redhat.gpe.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Blog {
     
     String user;
     String postDate;
     String body;
     String title;
-//    String id;
+
+    @JsonProperty(required = false)
+    String id;
 
     public String getUser() {
         return user;
@@ -40,13 +44,13 @@ public class Blog {
         this.title = title;
     }
 
-/*    public String getId() {
+    public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }*/
+    }
 
 
 }

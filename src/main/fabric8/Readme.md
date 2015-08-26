@@ -27,11 +27,11 @@ curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
 or
 http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
 
-http http://127.0.0.1:9191/entries/search/cmoulliard
+http http://127.0.0.1:9191/entries/searchuser/cmoulliard
 
 GET A USER
 ==========
-http http://127.0.0.1:9191/entries/1
-
 http http://127.0.0.1:9191/blog/post/1 pretty==true
+
+http http://127.0.0.1:9191/entries/searchid/1
 

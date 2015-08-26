@@ -1,5 +1,6 @@
 package com.redhat.gpe.route;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -8,9 +9,27 @@ import com.redhat.gpe.model.Blog;
 import org.apache.camel.*;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.PlainActionFuture;
+import org.elasticsearch.common.io.stream.InputStreamStreamInput;
+import org.elasticsearch.common.io.stream.StreamInput;
+import org.elasticsearch.common.xcontent.ToXContent;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ElasticSearchService {
 
@@ -42,6 +61,47 @@ public class ElasticSearchService {
             response = emptyFieldsJson("user","title","body","postDate");
         }
         return response;
+    }
+    
+    public List<Blog> getBlogs(@Body String result) throws Exception {
+
+        List<Blog> blogs = new ArrayList<Blog>();
+        LOG.info("Result received : " + result);
+        
+        /*InputStream is = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
+        InputStreamStreamInput stream = new InputStreamStreamInput(is);
+        SearchResponse searchResponse = SearchResponse.readSearchResponse(stream);*/
+
+/*        XContentBuilder builder = XContentFactory.contentBuilder(XContentType.JSON);
+        builder.startObject();
+        SearchResponse searchResponse = new SearchResponse();
+        searchResponse.toXContent(builder, ToXContent.EMPTY_PARAMS);
+        builder.endObject();
+
+        if (searchResponse.getHits().totalHits() != 0) {
+            SearchHits sHits = searchResponse.getHits();
+            SearchHit[] results = sHits.hits();
+            for(SearchHit hit : results) {
+                LOG.info("Result : " + hit.getSourceAsString());
+                Blog blog = new ObjectMapper().readValue( hit.getSourceAsString(), Blog.class);
+                blogs.add(blog);
+            }
+        }*/
+
+        JSONObject json = new JSONObject(result);
+        
+        JSONObject hits = json.getJSONObject("hits");
+        Integer total = (Integer) hits.get("total");
+        
+        JSONArray results = hits.getJSONArray("hits");
+        for (int i = 0; i < results.length(); i++) {
+            JSONObject source = results.getJSONObject(i).getJSONObject("_source");
+            String id = (String) results.getJSONObject(i).get("_id");
+            Blog blog = new ObjectMapper().readValue( source.toString(), Blog.class);
+            blog.setId(id);
+            blogs.add(blog);
+        }
+        return blogs;
     }
     
     /*
