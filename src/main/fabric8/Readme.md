@@ -17,8 +17,9 @@ fabric:container-remove-profile lab gpe-fuse
 HTTPie request
 ==============
 
-ADD
-===
+ADD A user
+==========
+
 http PUT http://127.0.0.1:9191/entries/new/1 < src/data/entry.json
 
 SEARCH
