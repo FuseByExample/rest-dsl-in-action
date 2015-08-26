@@ -34,7 +34,7 @@ public class RestToElasticDBRoute
                     .to("direct:findbyid")
                 
                 .get("/searchuser/{user}").outTypeList(Blog.class)
-                .to("direct:search")
+                     .to("direct:search2")
                 
                 .put("/new/{id}")
                     .type(Blog.class)
@@ -50,7 +50,7 @@ public class RestToElasticDBRoute
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_INDEX)
 
-                .bean(ElasticSearchService.class, "add")
+                .beanRef("elasticSearchService", "add")
 
                 .to("elasticsearch://{{clustername}}?ip={{address}}")
                 .log("Response received : ${body}");
@@ -61,11 +61,11 @@ public class RestToElasticDBRoute
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_GET_BY_ID)
 
-                .bean(ElasticSearchService.class, "findById")
+                .beanRef("elasticSearchService", "findById")
 
                 .doTry()
                 .to("elasticsearch://{{clustername}}?ip={{address}}")
-                    .bean(ElasticSearchService.class, "generateResponse")
+                    .beanRef("elasticSearchService", "generateResponse")
                     .unmarshal(jacksonFormat)
                 .doCatch(org.elasticsearch.client.transport.NoNodeAvailableException.class)
                 .process(new Processor() {
@@ -83,7 +83,13 @@ public class RestToElasticDBRoute
                 .setHeader(Exchange.HTTP_QUERY, constant("q=user:cmoulliard&pretty=true"))
                 .setHeader(Exchange.HTTP_PATH, constant("/blog/post/_search"))
                 .to("http4:{{address}}:{{port}}/?bridgeEndpoint=true")
-                .bean(ElasticSearchService.class, "getBlogs");
+                .beanRef("elasticSearchService", "getBlogs");
+
+        from("direct:search2")
+                .log("Search Blogs Service called !")
+                .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
+                .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
+                .beanRef("elasticSearchService", "getBlogs2");
 
         /*
         from("direct:search")
@@ -92,11 +98,11 @@ public class RestToElasticDBRoute
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant("SEARCH")
 
-                .bean(ElasticSearchService.class, "searchUser")
+                .beanRef("elasticSearchService", "searchUser")
 
                 .doTry()
                   .to("elasticsearch://{{clustername}}?ip={{address}}")
-                  .bean(ElasticSearchService.class, "generateUsersResponse")
+                  .beanRef("elasticSearchService", "generateUsersResponse")
                 .doCatch(org.elasticsearch.client.transport.NoNodeAvailableException.class)
                 .process(new Processor() {
                     @Override

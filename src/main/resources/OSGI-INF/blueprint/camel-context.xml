@@ -13,6 +13,8 @@
             <cm:property name="indextype" value="post"/>
         </cm:default-properties>
     </cm:property-placeholder>
+    
+    <bean id="elasticSearchService" class="com.redhat.gpe.route.ElasticSearchService" init-method="init" destroy-method="shutdown"/>
 
     <camelContext trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 

@@ -10,13 +10,21 @@ import org.apache.camel.*;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.support.PlainActionFuture;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.io.stream.InputStreamStreamInput;
 import org.elasticsearch.common.io.stream.StreamInput;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.json.JSONArray;
@@ -34,6 +42,20 @@ import java.util.List;
 public class ElasticSearchService {
 
     final static Logger LOG = LoggerFactory.getLogger(ElasticSearchService.class);
+    Client client;
+    
+    public void init() {
+        Settings settings = ImmutableSettings.settingsBuilder()
+                .put("cluster.name", "insight")
+                .put("client.transport.sniff", true)
+                .build();
+        client = new TransportClient(settings)
+                .addTransportAddress(new InetSocketTransportAddress("192.168.1.80", 9300));
+    }
+    
+    public void shutdown() {
+        client.close();
+    }
 
     public IndexRequest add(@Body Blog body,
                             @Header("indexname") String indexname,
@@ -101,6 +123,36 @@ public class ElasticSearchService {
             blog.setId(id);
             blogs.add(blog);
         }
+        return blogs;
+    }
+
+    public List<Blog> getBlogs2(@Header("user") String user,
+                                @Header("indexname") String indexname,
+                                @Header("indextype") String indextype) throws Exception {
+
+        List<Blog> blogs = new ArrayList<Blog>();
+
+        SearchResponse response = client.prepareSearch(indexname)
+                .setTypes(indextype)
+                .setQuery(QueryBuilders.termQuery("user",user))
+                .setFrom(0).setSize(60).setExplain(true)
+                .execute()
+                .actionGet();
+
+        long totalHits = response.getHits().getTotalHits();
+        if (totalHits == 0) {
+            LOG.info("No result found for the search request");
+        } else {
+            SearchHits searchHits = response.getHits();
+            SearchHit[] hits = searchHits.hits();
+            for(SearchHit searchHit : hits) {
+                LOG.info("Result : " + searchHit.getSourceAsString());
+                Blog blog = new ObjectMapper().readValue( searchHit.getSourceAsString(), Blog.class);
+                blog.setId(searchHit.getId());
+                blogs.add(blog);
+            }
+        }
+        
         return blogs;
     }
     
