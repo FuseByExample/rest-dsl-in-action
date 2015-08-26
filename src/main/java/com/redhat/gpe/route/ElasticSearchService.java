@@ -3,6 +3,9 @@ package com.redhat.gpe.route;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.redhat.gpe.model.Blog;
 import org.apache.camel.*;
 import org.elasticsearch.action.get.GetRequest;
@@ -37,11 +40,57 @@ public class ElasticSearchService {
     }
 
     public String generateResponse(@Body PlainActionFuture future) throws Exception {
-        GetResponse response = (GetResponse) future.get();
-        String result = response.getSourceAsString().replace("\\", "");
-/*        ObjectMapper mapper = new ObjectMapper();
-        String output = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(result);*/
-        return result;
+        GetResponse getResponse = (GetResponse) future.get();
+        String response = getResponse.getSourceAsString();
+        if (response == null) {
+            LOG.info("No result found for the id - " + getResponse.getId());
+            response = toJson("user","title","body","postDate");
+        }
+        return response;
+    }
+
+    /**
+     * Generate JSON String *
+     */
+    public static String toJson(String... fields) {
+
+        final String DQ = "\"";
+        final String DQCOLONDQ = "\": \"";
+        final String DQCOMA = "\", ";
+        final String PREFIX = "{";
+        final String SUFFIX = "}";
+
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(PREFIX);
+
+        for (String field : fields) {
+            buffer.append(DQ);
+            buffer.append(field);
+            buffer.append(DQCOLONDQ);
+            buffer.append(DQCOMA);
+        }
+        
+        // Remove last coma added
+        buffer.setLength(buffer.length() - 2);
+
+        buffer.append(SUFFIX);
+        return buffer.toString();
+    }
+
+    /**
+     * Convert JSON string to pretty print version
+     *
+     * @param jsonString
+     * @return
+     */
+    public static String toPrettyFormat(String jsonString) {
+        JsonParser parser = new JsonParser();
+        JsonObject json = parser.parse(jsonString).getAsJsonObject();
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String prettyJson = gson.toJson(json);
+
+        return prettyJson;
     }
 
 }

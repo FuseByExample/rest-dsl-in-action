@@ -26,13 +26,15 @@ public class RestToElasticDBRoute
 
         JacksonDataFormat jacksonFormat = new JacksonDataFormat(Blog.class);
 
-        restConfiguration().component("jetty").host("0.0.0.0").port("9191").bindingMode(RestBindingMode.json);
+        restConfiguration().component("jetty").host("0.0.0.0").port("9191").bindingMode(RestBindingMode.json).dataFormatProperty("prettyPrint","true");
 
-        rest("/entries/")
-                .get("/{id}").consumes("application/json")
-                .to("direct:findbyid")
-                .put("/new/{id}").consumes("application/json").type(Blog.class)
-                .to("direct:new");
+        rest("/entries/").produces("application/json").consumes("application/json")
+                
+                .get("/{id}")
+                    .to("direct:findbyid")
+                
+                .put("/new/{id}")
+                    .type(Blog.class).to("direct:new");
 
         onException(org.elasticsearch.client.transport.NoNodeAvailableException.class)
                 .log("ElasticSearch server is not available - not started, network issue , ... !");
@@ -59,17 +61,18 @@ public class RestToElasticDBRoute
                 .bean(ElasticSearchService.class, "findById")
 
                 .doTry()
-                  .to("elasticsearch://{{clustername}}?ip={{address}}")
-                  .bean(ElasticSearchService.class, "generateResponse")
+                .to("elasticsearch://{{clustername}}?ip={{address}}")
+                    .bean(ElasticSearchService.class, "generateResponse")
+                    .unmarshal(jacksonFormat)
                 .doCatch(org.elasticsearch.client.transport.NoNodeAvailableException.class)
-                  .process(new Processor() {
-                      @Override
-                      public void process(Exchange exchange) throws Exception {
-                          exchange.getIn().setBody("ElasticSearch server is not available, not started, network issue , ... !");
-                          exchange.getIn().setHeader(Exchange.CONTENT_TYPE, "text/plain");
-                          exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
-                      }
-                  })
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+                        exchange.getIn().setBody("ElasticSearch server is not available, not started, network issue , ... !");
+                        exchange.getIn().setHeader(Exchange.CONTENT_TYPE, "text/plain");
+                        exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
+                    }
+                })
                 .endDoTry();
 
 
