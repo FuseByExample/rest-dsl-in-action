@@ -131,6 +131,8 @@ public class ElasticSearchService {
     }
     
     /*
+     *  Code works with Camel 2.16 as SEARCH operation wasn't implemented for 2.15
+     *
     public SearchRequest searchUser(@Header("user") String user,
                          @Header("indexname") String indexname,
                          @Header("indextype") String indextype) {
