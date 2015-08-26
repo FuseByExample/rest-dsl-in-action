@@ -90,26 +90,6 @@ public class ElasticSearchService {
         List<Blog> blogs = new ArrayList<Blog>();
         LOG.info("Result received : " + result);
         
-        /*InputStream is = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
-        InputStreamStreamInput stream = new InputStreamStreamInput(is);
-        SearchResponse searchResponse = SearchResponse.readSearchResponse(stream);*/
-
-/*        XContentBuilder builder = XContentFactory.contentBuilder(XContentType.JSON);
-        builder.startObject();
-        SearchResponse searchResponse = new SearchResponse();
-        searchResponse.toXContent(builder, ToXContent.EMPTY_PARAMS);
-        builder.endObject();
-
-        if (searchResponse.getHits().totalHits() != 0) {
-            SearchHits sHits = searchResponse.getHits();
-            SearchHit[] results = sHits.hits();
-            for(SearchHit hit : results) {
-                LOG.info("Result : " + hit.getSourceAsString());
-                Blog blog = new ObjectMapper().readValue( hit.getSourceAsString(), Blog.class);
-                blogs.add(blog);
-            }
-        }*/
-
         JSONObject json = new JSONObject(result);
         
         JSONObject hits = json.getJSONObject("hits");
