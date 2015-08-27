@@ -25,7 +25,6 @@ In order to use the lab, we have to perform these steps :
  - Create a Fuse Fabric Server
  - Create 2 child containers; one will be used as the Elasticsearch Database and the other for the project itself where the Apache Camel Routes will be deployed.
 
-
 Open a Windows or Unix Terminal and move to the installation directory of the JBoss Fuse 6.2 - GA distribution directory.
 Run this command to launch first the JBoss Fuse Server and next within the Fuse Karaf console to issue the commands responsible to setup the environment.
 
@@ -107,6 +106,12 @@ fabric:container-add-profile lab gpe-fuse
 
 If, for any reason, you would like to restart the lab from the beginning. Then, exist from the JBoss Fuse Console using the command `CTRL-D` or `osgi:shutdown` 
 and run this script to clean and kill the jvm instances `./bin/deletefabric8`
+
+# Minimal installation
+
+You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` has been deployed into JBoss Fuse 6.2.
+Additional OSGI parameters could be defined forthe elasticsearch database using the `io.fabric8.elasticsearch-insight.cfg` file deployed into the `etc` folder of JBoss Fuse.
+That should also work if you deploy locally an Elasticsearch instance but this feature hasn't been tested.
 
 # Play with the lab
 
