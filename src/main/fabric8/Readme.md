@@ -87,23 +87,35 @@ fabric:container-add-profile lab gpe-fuse
 If, for any reason, you would like to restart the lab from the beginning. Then, exist from the JBoss Fuse Console using the command `CTRL-D` or `osgi:shutdown` 
 and run this script to clean and kill the jvm instances `./bin/deletefabric8`
 
-# HTTPie request
+# Play with the lab
 
-## ADD A user
+Open a Windows or Unix Terminal and issue one of the following HTTP requests using curl or httpie tool within the lab project folder
+
+## Add A user
+
+Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish
+
 ````
   http PUT http://127.0.0.1:9191/blog/article/1 < src/data/entry.json
 ````
-## SEARCH
-````
-  curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
-  or
-  http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
 
+## Search a user
+
+````
   http http://127.0.0.1:9191/blog/article/search/user/cmoulliard
+  
+    Request to call Elasticsearch directly
+    curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
+    or
+    http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
 ````
-## GET A USER
-````
-  http http://127.0.0.1:9191/blog/post/1 pretty==true
 
+## Search a user using its ID
+
+````
   http http://127.0.0.1:9191/blog/article/search/id/1
+  
+  Request to call Elasticsearch directly
+  
+  http http://127.0.0.1:9191/blog/post/1 pretty==true
 ````
