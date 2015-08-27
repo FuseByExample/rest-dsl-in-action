@@ -103,28 +103,19 @@ Open a Windows or Unix Terminal and issue one of the following HTTP requests usi
 Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish
 
 ````
-  http PUT http://127.0.0.1:9191/blog/article/1 < src/data/entry.json
+http PUT http://127.0.0.1:9191/blog/article/1 < src/data/entry.json
 ````
 
 ## Search a user
 
 ````
-  http http://127.0.0.1:9191/blog/article/search/user/cmoulliard
-  
-    Request to call Elasticsearch directly
-    curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
-    or
-    http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
+http http://127.0.0.1:9191/blog/article/search/user/cmoulliard
 ````
 
 ## Search a user using its ID
 
 ````
-  http http://127.0.0.1:9191/blog/article/search/id/1
-  
-  Request to call Elasticsearch directly
-  
-  http http://127.0.0.1:9191/blog/post/1 pretty==true
+http http://127.0.0.1:9191/blog/article/search/d/1
 ````
 
 ## Delete a user
@@ -133,7 +124,9 @@ Before to issue the HTTP GET request, you can change the content of the Blog Art
 http DELETE http://127.0.0.1:9191/blog/article/1
 ````
 
-## All requests
+## All HTTPie requests
+
+When you test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
 
 ````
 http PUT http://127.0.0.1:9191/blog/article/1 < src/data/entry.json
@@ -149,4 +142,18 @@ http http://127.0.0.1:9191/blog/article/search/user/cmoullia
 http DELETE http://127.0.0.1:9191/blog/article/1
 http http://127.0.0.1:9191/blog/article/search/id/1
 ````
+
+## Troubleshooting
+
+- When the local Camel REST endpoints don't work, you can query directly the elasticsearch database using these HTTPie requests to check if it work.
+
+Remark : The hostname must be changed depending if you run locally or remotely the JBoss Fuse Server
+
+```
+  http http://127.0.0.1:9191/blog/post/1 pretty==true
+  http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
+  
+  curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
+  
+```  
 
