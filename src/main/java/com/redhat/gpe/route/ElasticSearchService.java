@@ -35,6 +35,7 @@ public class ElasticSearchService {
     
     public void init() {
         Settings settings = ImmutableSettings.settingsBuilder()
+                .classLoader(Settings.class.getClassLoader())
                 .put("cluster.name", "insight")
                 .put("client.transport.sniff", true)
                 .build();

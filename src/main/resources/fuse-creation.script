@@ -4,5 +4,3 @@ wait-for-provisioning
 fabric:container-create-child --profile insight-elasticsearch.datastore root elasticsearch-node
 fabric:container-create-child --profile feature-camel root lab
 wait-for-provisioning
-
-fabric:container-add-profile lab gpe-fuse

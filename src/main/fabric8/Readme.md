@@ -36,9 +36,49 @@ or join an existing Fabric via 'fabric:join [someUrls]'
 
 Hit '<ctrl-d>' or 'osgi:shutdown' to shutdown JBoss Fuse.
 
-JBossFuse:karaf@root>shell:source mvn:com.redhat.gpe/fuse-lab/1.0/script/installer
+JBossFuse:karaf@root>shell:source mvn:com.redhat.gpe/fuse-lab/1.0/script/creation
+Waiting for container: root
+Waiting for container root to provision.
 
+Creating new instance on SSH port 8102 and RMI ports 1100/44445 at: /Users/chmoulli/Fuse/Fuse-servers/jboss-fuse-6.2.0.redhat-133/instances/elasticsearch-node
+The following containers have been created successfully:
+	Container: elasticsearch-node.
+Creating new instance on SSH port 8103 and RMI ports 1101/44446 at: /Users/chmoulli/Fuse/Fuse-servers/jboss-fuse-6.2.0.redhat-133/instances/lab
+The following containers have been created successfully:
+	Container: lab.
 ````
+
+After a few moments, the environment will be ready. You can verify/control that the 2 containers are running
+
+```
+JBossFuse:karaf@root>fabric:container-list
+[id]                 [version]  [type]  [connected]  [profiles]                       [provision status]
+root*                 1.0        karaf   yes          fabric                           success
+                                                      fabric-ensemble-0000-1
+                                                      jboss-fuse-full
+  elasticsearch-node  1.0        karaf   yes          insight-elasticsearch.datastore  success
+  lab                 1.0        karaf   yes          feature-camel                    success
+```
+
+Build your maven project locally and deploy it to the JBoss Fuse Fabric Server
+
+```
+mvn clean install
+mvn fabric8:deploy
+```
+
+Now that the profile has been created and published on JBoss Fuse, we will install it into the Fuse Lab Managed container and watch the profile
+
+```
+JBosFuse:karaf@root>fabric:container-add-profile lab gpe-fuse
+fabric:profile-refresh gpe-fuse
+```
+
+Remarks : 
+- If you change the code of this lab, then redeploy the project using `mvn fabric8:deploy` 
+- If, for any reason, you would like to restart the lab from the beginning. Then, exist from the JBoss Fuse Console using the command `CTRL-D` or `osgi:shutdown` 
+and run this script to clean and kill the jvm instances `./bin/deletefabric8`
+
 # HTTPie request
 
 ## ADD A user
