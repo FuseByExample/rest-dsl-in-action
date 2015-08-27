@@ -7,15 +7,24 @@ The CRUD service will allow to add,delete or search for articles published. The 
 # Prerequisites
 
 - [JBoss Fuse 6.2.GA](http://www.jboss.org/download-manager/file/jboss-fuse-6.2.0.GA-full_zip.zip)
+- [JBoss Developer Studio](http://www.jboss.org/download-manager/file/jboss-devstudio-8.1.0.GA-standalone_jar.jar)
 - [httpie](https://github.com/jkbrzt/httpie) 
 - [curl](http://curl.haxx.se/download.html) (optional)
 - JDK 1.7
 - Apache Maven 3.x
 
+# Getting started
+
+Follow these instructions to install and configure JBoss Developer Studio 8.1.0.GA and JBoss Fuse 6.2.GA - https://www.jboss.org/products/fuse/get-started/
+
 # Installation
 
-In order to use the lab, we have to create a Fuse Fabric Server and next 2 child containers. One will be used as the Elasticsearch Database
-repository and the other for the project itself where the Apache Camel Routes will be deployed.
+In order to use the lab, we have to perform these steps :
+ 
+ - [Download](https://github.com/gpe-mw-training/fuse-lab-emea-2015/archive/master.zip) and compile the project locally
+ - Create a Fuse Fabric Server
+ - Create 2 child containers; one will be used as the Elasticsearch Database and the other for the project itself where the Apache Camel Routes will be deployed.
+
 
 Open a Windows or Unix Terminal and move to the installation directory of the JBoss Fuse 6.2 - GA distribution directory
 Run this command to launch first the JBoss Fuse Server and next within the Fuse Karaf console to issue the commands responsible to setup the environement
@@ -70,14 +79,17 @@ root*                 1.0        karaf   yes          fabric                    
   lab                 1.0        karaf   yes          feature-camel                    success
 ```
 
+Open a second Windows or Unix terminal. Unzip the material of the lab and move to that directory `fuse-lab-emea-2015-master`
+
 Build your maven project locally and deploy it to the JBoss Fuse Fabric Server
 
 ```
+cd fuse-lab-emea-2015-master
 mvn clean install
 mvn fabric8:deploy
 ```
 
-Now that the profile has been created and published on JBoss Fuse, we will install it into the Fuse Lab Managed container and watch the profile
+Now that the profile has been created and published on JBoss Fuse, we will install it into the Fuse Lab Managed container
 
 ```
 JBosFuse:karaf@root>fabric:container-add-profile lab gpe-fuse
