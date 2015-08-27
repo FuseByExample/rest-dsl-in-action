@@ -122,4 +122,24 @@ Before to issue the HTTP GET request, you can change the content of the Blog Art
 
 ## Delete a user
 
+````
+http DELETE http://127.0.0.1:9191/blog/article/1
+````
+
+## All requests
+
+````
+http PUT http://127.0.0.1:9191/blog/article/1 < src/data/entry.json
+http PUT http://127.0.0.1:9191/blog/article/2 < src/data/entry.json
+http PUT http://127.0.0.1:9191/blog/article/3 < src/data/entry.json
+
+http http://127.0.0.1:9191/blog/article/search/id/1
+http http://127.0.0.1:9191/blog/article/search/id/4
+
+http http://127.0.0.1:9191/blog/article/search/user/cmoulliard
+http http://127.0.0.1:9191/blog/article/search/user/cmoullia
+
+http DELETE http://127.0.0.1:9191/blog/article/1
+http http://127.0.0.1:9191/blog/article/search/id/1
+````
 

@@ -14,7 +14,7 @@
         </cm:default-properties>
     </cm:property-placeholder>
     
-    <bean id="elasticSearchService" class="com.redhat.gpe.route.ElasticSearchService" init-method="init" destroy-method="shutdown"/>
+    <bean id="elasticSearchService" class="com.redhat.gpe.service.ElasticSearchService" init-method="init" destroy-method="shutdown"/>
 
     <camelContext trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 

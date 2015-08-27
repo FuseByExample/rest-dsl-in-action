@@ -1,4 +1,4 @@
-package com.redhat.gpe.route;
+package com.redhat.gpe.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
