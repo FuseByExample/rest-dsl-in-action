@@ -14,7 +14,7 @@ public class RestToServicesRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        restConfiguration().component("jetty").host("0.0.0.0").port("9191").enableCORS(true).bindingMode(RestBindingMode.json).dataFormatProperty("prettyPrint", "true");
+        restConfiguration().component("jetty").host("0.0.0.0").port("9191").bindingMode(RestBindingMode.json).dataFormatProperty("prettyPrint", "true");
 
         rest("/blog/").produces("application/json").consumes("application/json")
                 

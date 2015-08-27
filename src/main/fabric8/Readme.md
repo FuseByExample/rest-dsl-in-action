@@ -183,6 +183,8 @@ http http://127.0.0.1:8183/rest/blog/article/search/id/1
   http http://127.0.0.1:9191/blog/post/1 pretty==true
   http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
   
+  http http://192.168.1.80:9200/blog/post/_search pretty==true < src/data/query.json
+  
   curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
   ```  
 

@@ -1,6 +1,8 @@
 package com.redhat.gpe.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationConfig;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -26,6 +28,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +83,10 @@ public class ElasticSearchService {
         GetResponse getResponse = (GetResponse) future.get();
         String response = getResponse.getSourceAsString();
         if (response != null) {
-            blog = new ObjectMapper().readValue( response, Blog.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.setDateFormat(new SimpleDateFormat("MMM dd, yyyy h:mm:ss aa"));
+            //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
+            blog = objectMapper.readValue(response, Blog.class);
             blog.setId(getResponse.getId());
         }
         return blog;
