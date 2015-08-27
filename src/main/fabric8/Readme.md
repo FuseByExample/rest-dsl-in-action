@@ -75,8 +75,16 @@ fabric:profile-refresh gpe-fuse
 ```
 
 Remarks : 
-- If you change the code of this lab, then redeploy the project using `mvn fabric8:deploy` 
-- If, for any reason, you would like to restart the lab from the beginning. Then, exist from the JBoss Fuse Console using the command `CTRL-D` or `osgi:shutdown` 
+
+If you change th code of this lab, then redeploy if after doing a maven installation and running this command `mvn fabric8:deploy`.
+Next, the profile can updated on the container using theses commands
+
+```
+fabric:container-remove-profile lab gpe-fuse
+fabric:container-add-profile lab gpe-fuse
+```
+
+If, for any reason, you would like to restart the lab from the beginning. Then, exist from the JBoss Fuse Console using the command `CTRL-D` or `osgi:shutdown` 
 and run this script to clean and kill the jvm instances `./bin/deletefabric8`
 
 # HTTPie request
