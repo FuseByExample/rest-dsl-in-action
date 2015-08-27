@@ -2,6 +2,14 @@
 
 This is a GPE JBoss Fuse Lab
 
+# Prerequisites
+
+- [JBoss Fuse 6.2.GA](http://www.jboss.org/download-manager/file/jboss-fuse-6.2.0.GA-full_zip.zip)
+- [httpie](https://github.com/jkbrzt/httpie) 
+- [curl](http://curl.haxx.se/download.html) (optional)
+- JDK 1.7
+- Apache Maven 3.x
+
 # Installation
 
 In order to use the lab, we have to create a Fuse Fabric Server and next 2 child containers. One will be used as the Elasticsearch Database
@@ -71,7 +79,6 @@ Now that the profile has been created and published on JBoss Fuse, we will insta
 
 ```
 JBosFuse:karaf@root>fabric:container-add-profile lab gpe-fuse
-fabric:profile-refresh gpe-fuse
 ```
 
 Remarks : 
