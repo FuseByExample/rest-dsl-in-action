@@ -9,7 +9,7 @@
       },
       "postDate": {
         "type": "date",
-        "format": "yyyy-MM-dd'T'HH:mm:ss"
+        "format": "yyyy-MM-dd'T'HH:mm"
       },
       "body": {
         "type": "string"

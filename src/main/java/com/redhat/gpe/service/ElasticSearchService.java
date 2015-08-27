@@ -74,18 +74,13 @@ public class ElasticSearchService {
         return deleteRequest;
     }
 
-/*    public String findById(@Header("id") String id) {
-        return id;
-    }*/
-
     public Blog getBlog(@Body PlainActionFuture future) throws Exception {
         Blog blog = null;
         GetResponse getResponse = (GetResponse) future.get();
         String response = getResponse.getSourceAsString();
         if (response != null) {
             ObjectMapper objectMapper = new ObjectMapper();
-            //objectMapper.setDateFormat(new SimpleDateFormat("MMM dd, yyyy h:mm:ss aa"));
-            objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
+            objectMapper.setDateFormat(new SimpleDateFormat("yyyyMMdd’T'HHmmss.SSSZ"));
             blog = objectMapper.readValue(response, Blog.class);
             blog.setId(getResponse.getId());
         }
