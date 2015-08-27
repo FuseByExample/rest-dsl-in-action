@@ -6,7 +6,7 @@ import org.apache.camel.component.elasticsearch.ElasticsearchConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DeleteArticleToElasticRoute extends OnExceptionRoute {
+public class DeleteArticleToElasticRoute extends OnExceptionElasticSearch {
 
     final static Logger LOG = LoggerFactory.getLogger(ElasticSearchService.class);
 

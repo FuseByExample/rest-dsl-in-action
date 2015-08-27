@@ -11,6 +11,7 @@
             <cm:property name="port" value="9200"/>
             <cm:property name="indexname" value="blog"/>
             <cm:property name="indextype" value="post"/>
+            <cm:property name="fileUri" value="file://src/data/articles?noop=true"/>
         </cm:default-properties>
     </cm:property-placeholder>
     

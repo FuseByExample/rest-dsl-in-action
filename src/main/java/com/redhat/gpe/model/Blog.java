@@ -1,15 +1,18 @@
 package com.redhat.gpe.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
+import org.apache.camel.dataformat.bindy.annotation.DataField;
 
+@CsvRecord(skipFirstLine = true, separator = ",", quote = "\"")
 public class Blog {
     
-    String user;
-    String postDate;
-    String body;
-    String title;
+    @DataField(pos = 2) String user;
+    @DataField(pos = 3) String postDate;
+    @DataField(pos = 4) String body;
+    @DataField(pos = 5) String title;
 
-    @JsonProperty(required = false)
+    @DataField(pos = 1) @JsonProperty(required = false)
     String id;
 
     public String getUser() {

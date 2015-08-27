@@ -1,12 +1,11 @@
 package com.redhat.gpe.route;
 
 import com.redhat.gpe.service.ElasticSearchService;
-import org.apache.camel.Exchange;
 import org.apache.camel.component.elasticsearch.ElasticsearchConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AddArticleToElasticRoute extends OnExceptionRoute {
+public class AddArticleToElasticRoute extends OnExceptionElasticSearch {
 
     final static Logger LOG = LoggerFactory.getLogger(ElasticSearchService.class);
 

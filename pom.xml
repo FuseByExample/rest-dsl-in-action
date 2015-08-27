@@ -47,6 +47,10 @@
         </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
+            <artifactId>camel-bindy</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
             <artifactId>camel-jetty</artifactId>
         </dependency>
         <dependency>
@@ -65,7 +69,7 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-http4</artifactId>
         </dependency>
-        
+
         <!-- JSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -176,11 +180,11 @@
                                     <type>script</type>
                                     <classifier>creation</classifier>
                                 </artifact>
-                                <artifact>
+<!--                                <artifact>
                                     <file>target/classes/fuse-addprofile.script</file>
                                     <type>script</type>
                                     <classifier>addprofile</classifier>
-                                </artifact>
+                                </artifact>-->
                             </artifacts>
                         </configuration>
                     </execution>
