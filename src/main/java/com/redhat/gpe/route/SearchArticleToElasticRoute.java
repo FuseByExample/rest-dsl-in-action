@@ -36,13 +36,12 @@ public class SearchArticleToElasticRoute extends OnExceptionRoute {
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
                 .beanRef("elasticSearchService", "getBlogs")
                 .choice()
-                .when()
-                .simple("${body.isEmpty} == 'true'")
-                .setBody().simple("No articles have been retrieved from the ES DB for this user ${header.user}.")
-                .setHeader(Exchange.CONTENT_TYPE).constant("text/plain")
+                    .when().simple("${body.isEmpty} == 'true'")
+                        .setBody().simple("No articles have been retrieved from the ES DB for this user ${header.user}.")
+                        .setHeader(Exchange.CONTENT_TYPE).constant("text/plain")
                 .endChoice();
 
-        from("direct:searchByUser2")
+        from("direct:searchByUser2").id("searchbyuser2-direct-route")
                 .log("Search Blogs Service called !")
                 .setHeader(Exchange.HTTP_QUERY, constant("q=user:cmoulliard&pretty=true"))
                 .setHeader(Exchange.HTTP_PATH, constant("/blog/post/_search"))

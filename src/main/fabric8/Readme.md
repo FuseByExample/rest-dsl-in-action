@@ -155,6 +155,10 @@ http http://127.0.0.1:9191/blog/article/search/user/cmoullia
 
 http DELETE http://127.0.0.1:9191/blog/article/1
 http http://127.0.0.1:9191/blog/article/search/id/1
+
+Using Servlet instead of Jetty
+
+http http://127.0.0.1:8183/rest/blog/article/search/id/1
 ````
 
 ## Troubleshooting

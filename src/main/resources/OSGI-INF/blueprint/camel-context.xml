@@ -16,6 +16,19 @@
     
     <bean id="elasticSearchService" class="com.redhat.gpe.service.ElasticSearchService" init-method="init" destroy-method="shutdown"/>
 
+    <!-- to setup camel servlet with OSGi HttpService -->
+    <reference id="httpService" interface="org.osgi.service.http.HttpService"/>
+
+    <bean class="org.apache.camel.component.servlet.osgi.OsgiServletRegisterer"
+          init-method="register"
+          destroy-method="unregister">
+        <property name="alias" value="/rest"/>
+        <property name="httpService" ref="httpService"/>
+        <property name="servlet" ref="camelServlet"/>
+    </bean>
+
+    <bean id="camelServlet" class="org.apache.camel.component.servlet.CamelHttpTransportServlet"/>
+
     <camelContext trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 
         <propertyPlaceholder id="properties" location="blueprint:lab-properties"/>
