@@ -84,8 +84,8 @@ public class ElasticSearchService {
         String response = getResponse.getSourceAsString();
         if (response != null) {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.setDateFormat(new SimpleDateFormat("MMM dd, yyyy h:mm:ss aa"));
-            //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
+            //objectMapper.setDateFormat(new SimpleDateFormat("MMM dd, yyyy h:mm:ss aa"));
+            objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
             blog = objectMapper.readValue(response, Blog.class);
             blog.setId(getResponse.getId());
         }

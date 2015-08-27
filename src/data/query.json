@@ -1,41 +1,10 @@
 {
-  "facets": {
-    "0": {
-      "date_histogram": {
-        "field": "postDate",
-        "interval": "1y"
-      },
-      "global": true,
-      "facet_filter": {
-        "fquery": {
-          "query": {
-            "filtered": {
-              "query": {
-                "query_string": {
-                  "query": "*"
-                }
-              },
-              "filter": {
-                "bool": {
-                  "must": [
-                    {
-                      "fquery": {
-                        "query": {
-                          "query_string": {
-                            "query": "postDate:(\"Sep 28, 2015 8:45:10 PM\")"
-                          }
-                        },
-                        "_cache": true
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
+  "aggs" : {
+    "articles_over_time" : {
+      "date_histogram" : {
+        "field" : "postDate",
+        "interval" : "month"
       }
     }
-  },
-  "size": 0
+  }
 }

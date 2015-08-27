@@ -1,0 +1,22 @@
+{
+  "article": {
+    "properties": {
+      "user": {
+        "type": "string"
+      },
+      "title": {
+        "type": "string"
+      },
+      "postDate": {
+        "type": "date",
+        "format": "yyyy-MM-dd'T'HH:mm:ss"
+      },
+      "body": {
+        "type": "string"
+      },
+      "id": {
+        "type": "integer"
+      }
+    }
+  }
+}
