@@ -39,7 +39,15 @@ public class RestToElasticDBRoute extends RouteBuilder {
              .setHeader(Exchange.HTTP_RESPONSE_CODE).constant(400)
                 .log(">> Exception message : ${exception.message}")
              .log(">> Stack trace : ${exception.stacktrace}");
-
+        
+        onException(org.elasticsearch.indices.IndexMissingException.class)
+             .handled(true)
+             .setBody().constant("The [blog] index is missing into the Elasticsearch Database")
+             .setHeader(Exchange.CONTENT_TYPE).constant("text/plain")
+             .setHeader(Exchange.HTTP_RESPONSE_CODE).constant(400)
+             .log(">> Exception message : ${exception.message}")
+             .log(">> Stack trace : ${exception.stacktrace}");
+                
 
         from("direct:new")
                 .log("Add new Blog entry service called !")
