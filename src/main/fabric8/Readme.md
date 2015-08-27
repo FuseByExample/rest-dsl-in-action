@@ -1,6 +1,8 @@
 # GPE JBoss Fuse Lab
 
-This is a GPE JBoss Fuse Lab
+This JBoss Fuse lab will demonstrate how the new Apache Camel REST DSL syntax can be used to design a CRUD service.
+An Elasticsearch NoSQL database will be deployed into a Fuse Managed Container and the database will be populate with Blog JSon documents.
+The CRUD service will allow to add,delete or search for articles published. The search fucntion allow to retrieve a user using its id, name.
 
 # Prerequisites
 
