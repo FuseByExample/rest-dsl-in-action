@@ -78,31 +78,10 @@ public class ElasticSearchService {
         }
         return blog;
     }
-    
-    public List<Blog> getBlogs(@Body String result) throws Exception {
 
-        List<Blog> blogs = new ArrayList<Blog>();
-        LOG.info("Result received : " + result);
-        
-        JSONObject json = new JSONObject(result);
-        
-        JSONObject hits = json.getJSONObject("hits");
-        Integer total = (Integer) hits.get("total");
-        
-        JSONArray results = hits.getJSONArray("hits");
-        for (int i = 0; i < results.length(); i++) {
-            JSONObject source = results.getJSONObject(i).getJSONObject("_source");
-            String id = (String) results.getJSONObject(i).get("_id");
-            Blog blog = new ObjectMapper().readValue( source.toString(), Blog.class);
-            blog.setId(id);
-            blogs.add(blog);
-        }
-        return blogs;
-    }
-
-    public List<Blog> getBlogs2(@Header("user") String user,
-                                @Header("indexname") String indexname,
-                                @Header("indextype") String indextype) throws Exception {
+    public List<Blog> getBlogs(@Header("user") String user,
+                               @Header("indexname") String indexname,
+                               @Header("indextype") String indextype) throws Exception {
 
         List<Blog> blogs = new ArrayList<Blog>();
 
@@ -127,6 +106,27 @@ public class ElasticSearchService {
             }
         }
         
+        return blogs;
+    }
+
+    public List<Blog> getBlogs2(@Body String result) throws Exception {
+
+        List<Blog> blogs = new ArrayList<Blog>();
+        LOG.info("Result received : " + result);
+
+        JSONObject json = new JSONObject(result);
+
+        JSONObject hits = json.getJSONObject("hits");
+        Integer total = (Integer) hits.get("total");
+
+        JSONArray results = hits.getJSONArray("hits");
+        for (int i = 0; i < results.length(); i++) {
+            JSONObject source = results.getJSONObject(i).getJSONObject("_source");
+            String id = (String) results.getJSONObject(i).get("_id");
+            Blog blog = new ObjectMapper().readValue( source.toString(), Blog.class);
+            blog.setId(id);
+            blogs.add(blog);
+        }
         return blogs;
     }
     

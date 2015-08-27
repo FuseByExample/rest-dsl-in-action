@@ -16,7 +16,7 @@
     
     <bean id="elasticSearchService" class="com.redhat.gpe.route.ElasticSearchService" init-method="init" destroy-method="shutdown"/>
 
-    <camelContext trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+    <camelContext trace="true" xmlns="http://camel.apache.org/schema/blueprint">
 
         <propertyPlaceholder id="properties" location="blueprint:lab-properties"/>
         

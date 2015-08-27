@@ -24,13 +24,12 @@ public class RestToElasticDBRoute extends RouteBuilder {
         rest("/blog/").produces("application/json").consumes("application/json")
                 
                 .get("/article/search/id/{id}")
-                    .to("direct:findbyid")
-                
+                    .to("direct:searchById")
+
                 .get("/article/search/user/{user}").outTypeList(Blog.class)
-                     .to("direct:search2")
-                
-                .put("/article/{id}")
-                    .type(Blog.class)
+                   .to("direct:searchByUser")
+
+                .put("/article/{id}").type(Blog.class)
                     .to("direct:new");
         
         onException(org.elasticsearch.client.transport.NoNodeAvailableException.class)
@@ -38,7 +37,7 @@ public class RestToElasticDBRoute extends RouteBuilder {
              .setBody().constant("ElasticSearch server is not available, not started, network issue , ... ")
              .setHeader(Exchange.CONTENT_TYPE).constant("text/plain")
              .setHeader(Exchange.HTTP_RESPONSE_CODE).constant(400)
-             .log(">> Exception message : ${exception.message}")
+                .log(">> Exception message : ${exception.message}")
              .log(">> Stack trace : ${exception.stacktrace}");
 
 
@@ -53,8 +52,8 @@ public class RestToElasticDBRoute extends RouteBuilder {
                 .to("elasticsearch://{{clustername}}?ip={{address}}")
                 .log("Response received : ${body}");
 
-        from("direct:findbyid")
-                .log("Find By ID Service called !")
+        from("direct:searchById")
+                .log("Search article by ID Service called !")
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_GET_BY_ID)
@@ -63,7 +62,7 @@ public class RestToElasticDBRoute extends RouteBuilder {
 
                 .doTry()
                 .to("elasticsearch://{{clustername}}?ip={{address}}")
-                    .beanRef("elasticSearchService", "getBlog")
+                .beanRef("elasticSearchService", "getBlog")
                 .doCatch(org.elasticsearch.client.transport.NoNodeAvailableException.class)
                 .process(new Processor() {
                     @Override
@@ -75,19 +74,19 @@ public class RestToElasticDBRoute extends RouteBuilder {
                 })
                 .endDoTry();
 
-        from("direct:search")
+        from("direct:searchByUser")
+                .log("Search articles by user Service called !")
+                .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
+                .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
+                .beanRef("elasticSearchService", "getBlogs");
+
+        from("direct:searchByUser2")
                 .log("Search Blogs Service called !")
                 .setHeader(Exchange.HTTP_QUERY, constant("q=user:cmoulliard&pretty=true"))
                 .setHeader(Exchange.HTTP_PATH, constant("/blog/post/_search"))
                 .to("http4:{{address}}:{{port}}/?bridgeEndpoint=true")
-                .beanRef("elasticSearchService", "getBlogs");
-
-        from("direct:search2")
-                .log("Search Blogs Service called !")
-                .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
-                .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
                 .beanRef("elasticSearchService", "getBlogs2");
-
+        
         /* 
          *  Code works with Camel 2.16 as SEARCH operation wasn't implemented for 2.15
          *
