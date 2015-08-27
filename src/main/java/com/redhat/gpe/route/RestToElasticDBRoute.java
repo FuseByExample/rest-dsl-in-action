@@ -23,14 +23,17 @@ public class RestToElasticDBRoute extends RouteBuilder {
 
         rest("/blog/").produces("application/json").consumes("application/json")
                 
-                .get("/article/search/id/{id}")
+                .get("/article/search/id/{id}").id("rest-searchbyid")
                     .to("direct:searchById")
 
-                .get("/article/search/user/{user}").outTypeList(Blog.class)
+                .get("/article/search/user/{user}").id("rest-searchbyuser").outTypeList(Blog.class)
                    .to("direct:searchByUser")
 
-                .put("/article/{id}").type(Blog.class)
-                    .to("direct:new");
+                .put("/article/{id}").id("rest-put-article").type(Blog.class)
+                    .to("direct:add")
+                
+                .delete("/article/{id}").id("rest-deletearticle").type(Blog.class)
+                   .to("direct:remove");
         
         onException(org.elasticsearch.client.transport.NoNodeAvailableException.class)
              .handled(true)
@@ -47,10 +50,36 @@ public class RestToElasticDBRoute extends RouteBuilder {
              .setHeader(Exchange.HTTP_RESPONSE_CODE).constant(400)
              .log(">> Exception message : ${exception.message}")
              .log(">> Stack trace : ${exception.stacktrace}");
-                
 
-        from("direct:new")
+        from("direct:remove").id("remove-direct-route")
+                .log("Remove a Blog entry service called !")
+                .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
+                .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
+
+                // We will search for the ID of the Blog Article
+                .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_GET_BY_ID)
+                .setBody().simple("${header.id}")
+                .to("elasticsearch://{{clustername}}?ip={{address}}")
+                .beanRef("elasticSearchService", "getBlog")
+                
+                .choice()
+                    .when()
+                       // If No article has been retrieved, we generate a message for the HTTP Client
+                       .simple("${body} == null")
+                       .setBody().constant("No article has been retrieved from the ES DB.")
+                       .setHeader(Exchange.CONTENT_TYPE).constant("text/plain")
+                       .setHeader(Exchange.HTTP_RESPONSE_CODE).constant(200)
+                       .endChoice()
+                    .otherwise()
+                       // We will delete now the article if a result has been retrieved
+                       .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_DELETE)
+                       .beanRef("elasticSearchService", "remove")
+                       .to("elasticsearch://{{clustername}}?ip={{address}}");
+        
+
+        from("direct:add").id("add-direct-route")
                 .log("Add new Blog entry service called !")
+
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_INDEX)
@@ -60,29 +89,24 @@ public class RestToElasticDBRoute extends RouteBuilder {
                 .to("elasticsearch://{{clustername}}?ip={{address}}")
                 .log("Response received : ${body}");
 
-        from("direct:searchById")
+        from("direct:searchById").id("searchbyid-direct-route")
                 .log("Search article by ID Service called !")
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_GET_BY_ID)
 
-                .beanRef("elasticSearchService", "findById")
+                .setBody().simple("${header.id}")
 
-                .doTry()
                 .to("elasticsearch://{{clustername}}?ip={{address}}")
                 .beanRef("elasticSearchService", "getBlog")
-                .doCatch(org.elasticsearch.client.transport.NoNodeAvailableException.class)
-                .process(new Processor() {
-                    @Override
-                    public void process(Exchange exchange) throws Exception {
-                        exchange.getIn().setBody("ElasticSearch server is not available, not started, network issue , ... !");
-                        exchange.getIn().setHeader(Exchange.CONTENT_TYPE, "text/plain");
-                        exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 400);
-                    }
-                })
-                .endDoTry();
+                .choice()
+                    .when().simple("${body} == null")
+                        .setBody().constant("No article has been retrieved from the ES DB.")
+                        .setHeader(Exchange.CONTENT_TYPE).constant("text/plain")
+                .endChoice();                
 
-        from("direct:searchByUser")
+
+        from("direct:searchByUser").id("searchbyuser-direct-route")
                 .log("Search articles by user Service called !")
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")

@@ -91,7 +91,7 @@ and run this script to clean and kill the jvm instances `./bin/deletefabric8`
 
 Open a Windows or Unix Terminal and issue one of the following HTTP requests using curl or httpie tool within the lab project folder
 
-## Add A user
+## Add a user
 
 Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish
 
@@ -119,3 +119,7 @@ Before to issue the HTTP GET request, you can change the content of the Blog Art
   
   http http://127.0.0.1:9191/blog/post/1 pretty==true
 ````
+
+## Delete a user
+
+

@@ -8,6 +8,7 @@ import com.google.gson.JsonParser;
 import com.redhat.gpe.model.Blog;
 import org.apache.camel.Body;
 import org.apache.camel.Header;
+import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -61,19 +62,24 @@ public class ElasticSearchService {
         return req;
     }
 
-    public String findById(@Header("id") String id) {
-        return id;
+    public DeleteRequest remove(@Body Blog body,
+                               @Header("indexname") String indexname,
+                               @Header("indextype") String indextype,
+                               @Header("id") String id) {
+
+        DeleteRequest deleteRequest = new DeleteRequest(indexname,indextype,id);
+        return deleteRequest;
     }
+
+/*    public String findById(@Header("id") String id) {
+        return id;
+    }*/
 
     public Blog getBlog(@Body PlainActionFuture future) throws Exception {
         Blog blog = null;
         GetResponse getResponse = (GetResponse) future.get();
         String response = getResponse.getSourceAsString();
-        if (response == null) {
-            LOG.info("No result found for the id - " + getResponse.getId());
-            //response = emptyFieldsJson("user","title","body","postDate");
-            blog = new Blog();
-        } else {
+        if (response != null) {
             blog = new ObjectMapper().readValue( response, Blog.class);
             blog.setId(getResponse.getId());
         }
