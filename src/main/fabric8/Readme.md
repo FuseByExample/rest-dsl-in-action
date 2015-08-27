@@ -147,13 +147,12 @@ http http://127.0.0.1:9191/blog/article/search/id/1
 
 - When the local Camel REST endpoints don't work, you can query directly the elasticsearch database using these HTTPie requests to check if it work.
 
-Remark : The hostname must be changed depending if you run locally or remotely the JBoss Fuse Server
+  Remark : The hostname must be changed depending if you run locally or remotely the JBoss Fuse Server
 
-```
+  ```
   http http://127.0.0.1:9191/blog/post/1 pretty==true
   http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
   
   curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
-  
-```  
+  ```  
 
