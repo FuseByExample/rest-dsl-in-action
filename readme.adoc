@@ -229,10 +229,14 @@ The fuse-lab dashboard contain our panels without any data as we haven't yet pop
 
 image::images/dashboard3.png[]
 
-So run the `mvn camel:run` maven goal under the camel project of the directory fuse-lab` to start a local CamelContext. This context will instantiates the different beans and will start the file and REST endpoints.
-Then the content of the file `records.csv` located under `camel/src/data/articles` directory will be processed by the file component and injected into the the Elasticsearch database according to the following Apache
-Camel Route definition. The content of the file is transformed usign the `Apache Camel Bindy` component and mapped to a list of Blog objects. Next, the list is splitted and each Blog object will be send to the `irect:add`
-endpoint. This endpoint is a service/facade responsible to call the elasticsearch endpoint to add an entry within the `blog` index.
+So run the `mvn camel:run` maven goal under the camel project of the directory fuse-lab` to start a local CamelContext.
+
+This context will instantiates the different beans and will start the file and REST endpoints. Then the content of the file `records.csv` located under `camel/src/data/articles` directory will be processed by the file component and injected into the the Elasticsearch database according to the following Apache
+Camel Route definition.
+
+The content of the file is transformed using the `Apache Camel Bindy` component and mapped to a list of Blog objects.
+
+Next, the list is splitted and each Blog object will be send to the `direct:add` endpoint. This endpoint is a service/facade responsible to call the elasticsearch endpoint to add an entry within the `blog` index.
 
 [source,java]
 ----
