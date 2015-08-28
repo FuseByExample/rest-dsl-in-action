@@ -23,8 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,21 +46,18 @@ public class ElasticSearchService {
         client.close();
     }
 
-    public IndexRequest add(@Body Blog body,
+    public IndexRequest add(@Body String blog,
                             @Header("indexname") String indexname,
                             @Header("indextype") String indextype,
                             @Header("id") String id) throws IOException {
         
-        Writer source = new StringWriter();
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"));
-        objectMapper.writeValue(source,body);
-
-        LOG.info("Id : " + id + ", indexname : " + indexname + ", indextype : " + indextype);
-        LOG.info("Source : " + source.toString());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Id : " + id + ", indexname : " + indexname + ", indextype : " + indextype);
+            LOG.debug("Source : " + blog);
+        }
 
         IndexRequest req = new IndexRequest(indexname, indextype, id);
-        req.source(source.toString());
+        req.source(blog);
         return req;
     }
 
@@ -172,7 +167,7 @@ public class ElasticSearchService {
 
     /**
      * Generate JSON String using fields passed as parameter and assign the content to an empty string*
-     */
+
     public static String emptyFieldsJson(String... fields) {
 
         final String DQ = "\"";
@@ -197,6 +192,7 @@ public class ElasticSearchService {
         buffer.append(SUFFIX);
         return buffer.toString();
     }
+     */
 
     /**
      * Convert JSON string to pretty print version

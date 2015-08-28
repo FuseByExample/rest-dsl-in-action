@@ -154,7 +154,7 @@ http DELETE http://127.0.0.1:9191/blog/article/1
 
 When you test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
 
-````
+```
 http PUT http://127.0.0.1:9191/blog/article/1 < src/data/entry.json
 http PUT http://127.0.0.1:9191/blog/article/2 < src/data/entry.json
 http PUT http://127.0.0.1:9191/blog/article/3 < src/data/entry.json
@@ -171,7 +171,13 @@ http http://127.0.0.1:9191/blog/article/search/id/1
 Using Servlet instead of Jetty
 
 http http://127.0.0.1:8183/rest/blog/article/search/id/1
-`````
+```
+
+## Install cmd to deploy the Kibana3 war
+
+```
+install -s webbundle:file:///Users/chmoulli/Temp/poc-demos-test/kibana-3.1.2/src/main/webapp/kibana.war?Web-ContextPath=/kibana3
+```
 
 ## Create kibana_index, add dashboard & search about it
 
@@ -218,35 +224,38 @@ http:/chrissimpson.co.uk/elasticsearch-snapshot-restore-api.html
 
   ```
   http http://127.0.0.1:9191/blog/post/1 pretty==true
-  http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
+  http http://fusehost:9200/blog/post/_search q=="user:cmoulliard" pretty==true
   
-  curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
+  curl 'http://fusehost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
   ```  
  
+- Delete all articles
+ 
+  http DELETE http://fusehost:9200/blog/post/_query q=="user:*"
 
-- Delete all entries
+- Delete Index
 
-   http DELETE http://192.168.1.80:9200/blog
+  http DELETE http://fusehost:9200/blog
    
 - Create Index
 
-   http PUT http://192.168.1.80:9200/blog
+  http PUT http://fusehost:9200/blog
 
 - Add mapping
   
-   http PUT http://192.168.1.80:9200/blog/_mapping/article < src/data/mapping.json
+  http PUT http://fusehost:9200/blog/_mapping/article < src/data/mapping.json
    
 - Check mapping
    
-   http http://192.168.1.80:9200/blog/_mapping/article
+  http http://fusehost:9200/blog/_mapping/article
    
 - Add user
    
-   http PUT http://192.168.1.80:9200/blog/article/1 < src/data/entry.json
+  http PUT http://fusehost:9200/blog/article/1 < src/data/entry.json
    
 - Query
    
-   http http://192.168.1.80:9200/blog/post/_search pretty==true < src/data/query.json 
+  http http://fusehost:9200/blog/post/_search pretty==true < src/data/query.json 
    
 - All together
    
