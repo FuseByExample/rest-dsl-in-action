@@ -192,26 +192,33 @@ mvn jetty:run
 
 When the server is launched, open your browser at the address mentioned. the first time, that you will connect to the Dashboard, the index HTML
 page will display general content about How to create a dashboard and importing the data from the Elasticsearch Database.
-For the purpose of this lab, we have prepare a dashboard which is already configured with the panels and the type fields that we will use.
 
-In order to add the JSON dashboard document to the Elasticsearch server, you will issue a HTTP request at the root of the `fuse-lab` project
+image::images/dashboard1.png[]
+
+For the purpose of this lab, we have prepare a dashboard which is already configured with the panels and the type fields that we would like to
+display graphically using a histogram and list panels.
+
+In order to add the JSON dashboard document definition to the Elasticsearch server within th `kibana-int` index, you will issue a HTTP request at the root of the `fuse-lab` project.
+This HTTP request calls a REST service of the Elasticsearch server to insert the `fuse-lab` dashboard type using the `dashboard.json` file as input.
 
 ```
 http PUT http://fusehost:9200/kibana-int/dashboard/fuselab < data/elasticsearch/dashboard.json
 ```
 
-Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to select the `fuse-lab` dashboard
+Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to select the `fuse-lab` dashboard.
 
-image::images/dashboard1.png[]
+image::images/dashboard2.png[]
 
-The dashboard will contain our panels without any data as we haven't yet populated the database with records
+The fuse-lab dashboard contain our panels without any data as we haven't yet populated the database with records
 
-image::images/dashboard1.png[]
+image::images/dashboard3.png[]
 
-So run the mvn camel:run maven goal. Then the content of the file articles will be processed by the file component and injected into the data.
+So run the `mvn camel:run` maven goal under the camel project of the directory fuse-lab` to start a local CamelContext. This context will instantiates the differentbeans and will start the file and REST endpoints.
+Then the content of the file articles will be processed by the file component and injected into the the Elasticsearch database.
+
 Refresh your dashboard and you will see the data.
 
-image::images/dashboard1.png[]
+image::images/dashboard4.png[]
 
 
 ## Install cmd to deploy the Kibana3 war
