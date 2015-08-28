@@ -221,7 +221,7 @@ This HTTP request calls a REST service of the Elasticsearch server to insert the
 http PUT http://fusehost:9200/kibana-int/dashboard/fuselab < data/elasticsearch/dashboard.json
 ```
 
-Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to select the `fuse-lab` dashboard.
+Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to load the `fuse-lab` dashboard.
 
 image::images/dashboard2.png[]
 
