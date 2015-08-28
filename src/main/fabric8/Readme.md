@@ -183,18 +183,22 @@ http http://127.0.0.1:8183/rest/blog/article/search/id/1
   http PUT http://fusehost:9200/kibana-int
   ```
 - Add fuse-lab dashboard
+
   ```
   http PUT http://fusehost:9200/kibana-int/dashboard/fuse-lab < src/data/dashboard.json
   ```
 - Delete dashboard
+
   ```
   http DELETE http://fusehost:9200/kibana-int/dashboard/fuse-lab
   ```
 - Export existing kibana dashboard from ES to a file
+
   ```
   http http://fusehost:9200/kibana-int/dashboard/fuse-lab/_source > fuse-lab.json
   ```
 - Get Dashboards
+
   ```
   http http://fusehost:9200/_search q=="dashboard:*"
   http http://fusehost:9200/kibana-int/_search q=="title:fuse-lab" pretty==true
