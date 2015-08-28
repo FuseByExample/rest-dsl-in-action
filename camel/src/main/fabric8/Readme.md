@@ -158,18 +158,18 @@ http DELETE http://127.0.0.1:9191/blog/article/1
 When you test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
 
 ```
-http PUT http://127.0.0.1:9191/blog/article/1 < data/elasticsearch/entry.json
-http PUT http://127.0.0.1:9191/blog/article/2 < data/elasticsearch/entry.json
-http PUT http://127.0.0.1:9191/blog/article/3 < data/elasticsearch/entry.json
+http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
+http PUT http://fusehost:9191/blog/article/2 < data/elasticsearch/entry.json
+http PUT http://fusehost:9191/blog/article/3 < data/elasticsearch/entry.json
 
-http http://127.0.0.1:9191/blog/article/search/id/1
-http http://127.0.0.1:9191/blog/article/search/id/4
+http http://fusehost:9191/blog/article/search/id/1
+http http://fusehost:9191/blog/article/search/id/4
 
-http http://127.0.0.1:9191/blog/article/search/user/cmoulliard
-http http://127.0.0.1:9191/blog/article/search/user/cmoullia
+http http://fusehost:9191/blog/article/search/user/cmoulliard
+http http://fusehost:9191/blog/article/search/user/cmoullia
 
-http DELETE http://127.0.0.1:9191/blog/article/1
-http http://127.0.0.1:9191/blog/article/search/id/1
+http DELETE http://fusehost:9191/blog/article/1
+http http://fusehost:9191/blog/article/search/id/1
 
 Using Servlet instead of Jetty
 

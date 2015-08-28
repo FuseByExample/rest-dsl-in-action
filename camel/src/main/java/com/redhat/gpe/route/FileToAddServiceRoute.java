@@ -16,7 +16,7 @@ public class FileToAddServiceRoute extends RouteBuilder {
 
         BindyCsvDataFormat csv = new BindyCsvDataFormat(Blog.class);
         
-        from("{{fileUri}}")
+        from("{{fileUri}}").id(("file-marshal-split-service"))
             .log(LoggingLevel.DEBUG,"Records received : ${body}")
             .unmarshal(csv)
             .split(body())

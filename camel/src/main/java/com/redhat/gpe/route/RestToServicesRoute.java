@@ -17,7 +17,7 @@ public class RestToServicesRoute extends RouteBuilder {
 
         restConfiguration().component("jetty").host("0.0.0.0").port("9191").bindingMode(RestBindingMode.json).dataFormatProperty("prettyPrint", "true");
 
-        rest("/blog/").produces("application/json").consumes("application/json")
+        rest("/blog/").id("rest-blog-services").produces("application/json").consumes("application/json")
                 
                 .get("/article/search/id/{id}").id("rest-searchbyid")
                     .to("direct:searchById")
