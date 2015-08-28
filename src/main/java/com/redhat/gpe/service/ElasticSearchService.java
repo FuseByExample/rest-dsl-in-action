@@ -41,7 +41,7 @@ public class ElasticSearchService {
                 .put("client.transport.sniff", true)
                 .build();
         client = new TransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress("dabouhost", 9300));
+                .addTransportAddress(new InetSocketTransportAddress("fusehost", 9300));
     }
     
     public void shutdown() {
