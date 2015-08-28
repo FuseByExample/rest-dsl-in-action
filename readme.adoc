@@ -184,13 +184,29 @@ This lab provides a jetty maven goal that we will launch in order to start a loc
 at this address `ttp://localhost:9090/kibana3/index.html`
 
 To start locally the HTTP Server, open a Windows or unix terminal and move to the home directory of the project containing the code. Switch to the folder
-`kibana` and run this command.
+kibana` and run this command.
 
 ```
 mvn jetty:run
+...
+[INFO] Configuring Jetty for project: GPE :: JBoss Fuse :: Kibana 3
+[INFO] Webapp source directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp
+[INFO] Reload Mechanic: automatic
+[INFO] Classes directory /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/target/classes does not exist
+[INFO] Context path = /kibana3
+[INFO] Tmp directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/target/tmp
+[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
+[INFO] Web overrides =  none
+[INFO] web.xml file = file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/WEB-INF/web.xml
+[INFO] Webapp directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp
+2015-08-28 15:18:54.367:INFO:oejs.Server:main: jetty-9.3.0.M1
+2015-08-28 15:18:57.074:INFO:oejsh.ContextHandler:main: Started o.e.j.m.p.JettyWebAppContext@5893efc3{/kibana3,file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/,AVAILABLE}{file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/}
+2015-08-28 15:18:57.091:INFO:oejs.ServerConnector:main: Started ServerConnector@22cf08dc{HTTP/1.1,[http/1.1]}{localhost:9090}
+2015-08-28 15:18:57.092:INFO:oejs.Server:main: Started @5692ms
+[INFO] Started Jetty Server
 ```
 
-When the server is launched, open your browser at the address mentioned. the first time, that you will connect to the Dashboard, the index HTML
+When the server is launched, open your browser at the address `http://localhost:9090/kibana3/index.html`. The first time, that you will connect to the Dashboard, the index HTML
 page will display general content about How to create a dashboard and importing the data from the Elasticsearch Database.
 
 image::images/dashboard1.png[]
