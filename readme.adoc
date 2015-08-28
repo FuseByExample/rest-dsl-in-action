@@ -275,9 +275,12 @@ image::images/dashboard4.png[]
 ## Install cmd to deploy the Kibana3 war
 
 ```
+Without Fabric
+
+features:install war
 install -s webbundle:mvn:com.redhat.gpe/kibana/1.0/war?Web-ContextPath=/kibana3
 
-Error with Fuse 6.2 --> https://issues.jboss.org/browse/ENTESB-2831
+Does not work with Fabric & Fuse 6.2 - https://issues.jboss.org/browse/ENTESB-2831[see ENTESB-2831]
 ```
 
 ## Create kibana_index, add dashboard & search about it
