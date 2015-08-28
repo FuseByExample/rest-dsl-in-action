@@ -13,10 +13,10 @@ The body content will be used as input to also issue a request to the same Servi
 
 # Prerequisites
 
-- [JBoss Fuse 6.2.GA](http://www.jboss.org/download-manager/file/jboss-fuse-6.2.0.GA-full_zip.zip)
-- [JBoss Developer Studio](http://www.jboss.org/download-manager/file/jboss-devstudio-8.1.0.GA-standalone_jar.jar)
-- [httpie](https://github.com/jkbrzt/httpie)
-- [curl](http://curl.haxx.se/download.html) (optional)
+- http://www.jboss.org/download-manager/file/jboss-fuse-6.2.0.GA-full_zip.zip[JBoss Fuse 6.2.GA]
+- http://www.jboss.org/download-manager/file/jboss-devstudio-8.1.0.GA-standalone_jar.jar[JBoss Developer Studio]
+- https://github.com/jkbrzt/httpie[httpie]
+- http://curl.haxx.se/download.html[curl] (optional)
 - JDK 1.7
 - Apache Maven 3.x
 
@@ -28,7 +28,7 @@ Follow these instructions to install and configure JBoss Developer Studio 8.1.0.
 
 In order to use the lab, we have to perform these steps :
 
- - [Download](https://github.com/gpe-mw-training/fuse-lab-emea-2015/archive/master.zip) and compile the project locally
+ - https://github.com/gpe-mw-training/fuse-lab-emea-2015/archive/master.zip[Download] and compile the project locally
  - Create a Fuse Fabric Server
  - Create 2 child containers; one will be used as the Elasticsearch Database and the other for the project itself where the Apache Camel Routes will be deployed.
 
@@ -178,7 +178,7 @@ http http://127.0.0.1:8183/rest/blog/article/search/id/1
 
 # Dashboard
 
-The data inserted into the Elasticsearch Database can be analyzed using the [Kibana](https://www.elastic.co/downloads/kibana) dashboard.
+The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
 The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
 This lab provides a jetty maven goal that we will launch in order to start a local HTTP Server that we can access from the browser
 at this address `ttp://localhost:9090/kibana3/index.html`
