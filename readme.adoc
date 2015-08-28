@@ -184,7 +184,7 @@ This lab provides a jetty maven goal that we will launch in order to start a loc
 at this address `ttp://localhost:9090/kibana3/index.html`
 
 To start locally the HTTP Server, open a Windows or unix terminal and move to the home directory of the project containing the code. Switch to the folder
-kibana and run this command
+`kibana` and run this command.
 
 ```
 mvn jetty:run
