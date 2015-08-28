@@ -149,6 +149,14 @@ Before to issue the HTTP GET request, you can change the content of the Blog Art
 ## Delete a user
 
     http DELETE http://fusehost:9191/blog/article/1
+    
+## Copy the records.csv file
+
+Copy/paste the records.csv file from the $LAB_DIRECTORY/camel/src/data directory to the `articles` directory created the local instance `ontainer `lab`
+    
+    export FUSE_HOME=/Users/chmoulli/Fuse/Fuse-servers/jboss-fuse-6.2.0.redhat-133
+    export LAB_DIRECTORY=/Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab
+    cp $LAB_DIRECTORY/camel/src/data/articles/records.csv $FUSE_HOME/instances/lab/articles/
 
 ## All HTTPie requests
 
