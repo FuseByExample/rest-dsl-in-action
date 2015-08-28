@@ -214,23 +214,23 @@ http http://127.0.0.1:8183/rest/blog/article/search/id/1
 - All together
    
 ```
-http DELETE http://192.168.1.80:9200/blog
-http PUT http://192.168.1.80:9200/blog
-http PUT http://192.168.1.80:9200/blog/_mapping/article < src/data/mapping.json
-http http://192.168.1.80:9200/blog/_mapping/article
+http DELETE http://dabouhost:9200/blog
+http PUT http://dabouhost:9200/blog
+http PUT http://dabouhost:9200/blog/_mapping/article < src/data/mapping.json
+http http://dabouhost:9200/blog/_mapping/article
 
-http PUT http://192.168.1.80:9200/blog/article/1 < src/data/entry.json
-http PUT http://192.168.1.80:9200/blog/article/2 < src/data/entry.json
-http PUT http://192.168.1.80:9200/blog/article/3 < src/data/entry.json
-http PUT http://192.168.1.80:9200/blog/article/4 < src/data/entry.json
-http PUT http://192.168.1.80:9200/blog/article/5 < src/data/entry.json
-http PUT http://192.168.1.80:9200/blog/article/6 < src/data/entry.json
-http PUT http://192.168.1.80:9200/blog/article/7 < src/data/entry.json
-http PUT http://192.168.1.80:9200/blog/article/8 < src/data/entry.json
-http PUT http://192.168.1.80:9200/blog/article/9 < src/data/entry.json
-http PUT http://192.168.1.80:9200/blog/article/10 < src/data/entry.json
+http PUT http://dabouhost:9200/blog/article/1 < src/data/entry.json
+http PUT http://dabouhost:9200/blog/article/2 < src/data/entry.json
+http PUT http://dabouhost:9200/blog/article/3 < src/data/entry.json
+http PUT http://dabouhost:9200/blog/article/4 < src/data/entry.json
+http PUT http://dabouhost:9200/blog/article/5 < src/data/entry.json
+http PUT http://dabouhost:9200/blog/article/6 < src/data/entry.json
+http PUT http://dabouhost:9200/blog/article/7 < src/data/entry.json
+http PUT http://dabouhost:9200/blog/article/8 < src/data/entry.json
+http PUT http://dabouhost:9200/blog/article/9 < src/data/entry.json
+http PUT http://dabouhost:9200/blog/article/10 < src/data/entry.json
 
-http http://192.168.1.80:9200/blog/article/1
-http http://192.168.1.80:9200/blog/article/2
+http http://dabouhost:9200/blog/article/1
+http http://dabouhost:9200/blog/article/2
 
 ``

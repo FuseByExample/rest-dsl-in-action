@@ -7,7 +7,7 @@
     <cm:property-placeholder id="lab-properties" persistent-id="com.redhat.gpe.lab">
         <cm:default-properties>
             <cm:property name="clustername" value="insight"/>
-            <cm:property name="address" value="192.168.1.80"/>
+            <cm:property name="address" value="dabouhost"/>
             <cm:property name="port" value="9200"/>
             <cm:property name="indexname" value="blog"/>
             <cm:property name="indextype" value="post"/>

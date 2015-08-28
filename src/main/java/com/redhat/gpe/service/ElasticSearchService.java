@@ -1,12 +1,6 @@
 package com.redhat.gpe.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.redhat.gpe.model.Blog;
 import org.apache.camel.Body;
 import org.apache.camel.Header;
@@ -28,6 +22,9 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +41,7 @@ public class ElasticSearchService {
                 .put("client.transport.sniff", true)
                 .build();
         client = new TransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress("192.168.1.80", 9300));
+                .addTransportAddress(new InetSocketTransportAddress("dabouhost", 9300));
     }
     
     public void shutdown() {
@@ -54,14 +51,18 @@ public class ElasticSearchService {
     public IndexRequest add(@Body Blog body,
                             @Header("indexname") String indexname,
                             @Header("indextype") String indextype,
-                            @Header("id") String id) {
+                            @Header("id") String id) throws IOException {
+        
+        Writer source = new StringWriter();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"));
+        objectMapper.writeValue(source,body);
 
-        String source = new Gson().toJson(body);
         LOG.info("Id : " + id + ", indexname : " + indexname + ", indextype : " + indextype);
-        LOG.info("Source : " + source);
+        LOG.info("Source : " + source.toString());
 
         IndexRequest req = new IndexRequest(indexname, indextype, id);
-        req.source(source);
+        req.source(source.toString());
         return req;
     }
 
@@ -80,7 +81,7 @@ public class ElasticSearchService {
         String response = getResponse.getSourceAsString();
         if (response != null) {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.setDateFormat(new SimpleDateFormat("yyyyMMdd’T'HHmmss.SSSZ"));
+            objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"));
             blog = objectMapper.readValue(response, Blog.class);
             blog.setId(getResponse.getId());
         }
@@ -202,7 +203,7 @@ public class ElasticSearchService {
      *
      * @param jsonString
      * @return
-     */
+     
     public static String toPrettyFormat(String jsonString) {
         JsonParser parser = new JsonParser();
         JsonObject json = parser.parse(jsonString).getAsJsonObject();
@@ -212,5 +213,6 @@ public class ElasticSearchService {
 
         return prettyJson;
     }
+    */
 
 }

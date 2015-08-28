@@ -21,7 +21,7 @@
         <fabric8.profile>gpe-fuse</fabric8.profile>
         <fabric8.parentProfiles>feature-camel</fabric8.parentProfiles>
         <fabric8.bundles>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json/20140107_1</fabric8.bundles>
-        <fabric8.features>camel-elasticsearch camel-jetty camel-jackson camel-gson camel-http4 camel-swagger camel-servlet swagger</fabric8.features>
+        <fabric8.features>camel-elasticsearch camel-jetty camel-jackson camel-http4</fabric8.features>
     </properties>
 
     <dependencyManagement>
@@ -57,10 +57,10 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jackson</artifactId>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-gson</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-elasticsearch</artifactId>

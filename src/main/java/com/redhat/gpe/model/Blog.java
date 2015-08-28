@@ -13,7 +13,7 @@ import java.util.Date;
 public class Blog {
     
     @DataField(pos = 2) String user;
-    @DataField(pos = 3, pattern = "yyyyMMdd’T'HHmmss.SSSZ") @JsonFormat(pattern="yyyyMMdd’T'HHmmss.SSSZ") Date postDate; // yyyy-MM-dd'T'HH:mm:ss
+    @DataField(pos = 3, pattern = "yyyy-MM-dd'T'HH:mm") @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm") Date postDate; // yyyy-MM-dd'T'HH:mm:ss
     @DataField(pos = 4) String body;
     @DataField(pos = 5) String title;
 
