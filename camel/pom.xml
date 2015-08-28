@@ -12,7 +12,7 @@
     <artifactId>routing</artifactId>
     <version>1.0</version>
 
-    <name>GPE :: JBoss Fuse :: Apache Camel Routing</name>
+    <name>GPE :: JBoss Fuse :: Routing</name>
 
     <packaging>bundle</packaging>
 

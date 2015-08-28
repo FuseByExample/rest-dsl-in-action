@@ -12,7 +12,7 @@
     <artifactId>kibana</artifactId>
     <version>1.0</version>
 
-    <name>GPE :: JBoss Fuse :: Kibana 3 War</name>
+    <name>GPE :: JBoss Fuse :: Kibana 3</name>
 
     <packaging>war</packaging>
 

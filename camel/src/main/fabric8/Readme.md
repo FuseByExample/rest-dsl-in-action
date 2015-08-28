@@ -176,7 +176,9 @@ http http://127.0.0.1:8183/rest/blog/article/search/id/1
 ## Install cmd to deploy the Kibana3 war
 
 ```
-install -s webbundle:file:///Users/chmoulli/Temp/poc-demos-test/kibana-3.1.2/src/main/webapp/kibana.war?Web-ContextPath=/kibana3
+install -s webbundle:mvn:com.redhat.gpe/kibana/1.0/war?Web-ContextPath=/kibana3
+
+Error with Fuse 6.2 --> https://issues.jboss.org/browse/ENTESB-2831
 ```
 
 ## Create kibana_index, add dashboard & search about it
