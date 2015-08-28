@@ -32,8 +32,21 @@ In order to use the lab, we have to perform these steps :
  - Create a Fuse Fabric Server
  - Create 2 child containers; one will be used as the Elasticsearch Database and the other for the project itself where the Apache Camel Routes will be deployed.
 
-Open a Windows or Unix Terminal and move to the installation directory of the JBoss Fuse 6.2 - GA distribution directory.
-Run this command to launch first the JBoss Fuse Server and next within the Fuse Karaf console to issue the commands responsible to setup the environment.
+Open a Windows or Unix terminal. Unzip the material of the and move to that directory `fuse-lab-emea-2015-master`
+
+Build your maven project locally and deploy it to the JBoss Fuse Fabric Server
+
+```
+cd fuse-lab-emea-2015-master
+mvn clean install
+```
+
+Open a second Windows or Unix Terminal and move to the installation directory of the JBoss Fuse 6.2 - GA distribution directory.
+
+Edit the `etc/user.properties` file to uncomment the line containing the `dmin` user. Save the file
+
+Run this command `./bin/fuse` to launch first the JBoss Fuse Server and next within the Fuse Karaf console, issue the shell command `shell:source mvn:com.redhat.gpe/fuse-lab/1.0/script/creation` responsible to setup the Fabric
+server and the 2 containers.
 
 ````
 $JBOSS_FUSE_INSTALL/bin/fuse
@@ -83,16 +96,6 @@ root*                 1.0        karaf   yes          fabric                    
                                                       jboss-fuse-full
   elasticsearch-node  1.0        karaf   yes          insight-elasticsearch.datastore  success
   lab                 1.0        karaf   yes          feature-camel                    success
-```
-
-Open a second Windows or Unix terminal. Unzip the material of the lab and move to that directory `fuse-lab-emea-2015-master`
-
-Build your maven project locally and deploy it to the JBoss Fuse Fabric Server
-
-```
-cd fuse-lab-emea-2015-master
-mvn clean install
-mvn fabric8:deploy
 ```
 
 Now that the profile has been created and published on JBoss Fuse, we will install it into the Fuse Lab Managed container
