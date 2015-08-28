@@ -131,27 +131,19 @@ Open a Windows or Unix Terminal and issue one of the following HTTP requests usi
 
 Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish
 
-````
-http PUT http://127.0.0.1:9191/blog/article/1 < data/elasticsearch/entry.json
-````
+    http PUT http://127.0.0.1:9191/blog/article/1 < data/elasticsearch/entry.json
 
 ## Search a user
 
-````
-http http://127.0.0.1:9191/blog/article/search/user/cmoulliard
-````
+    http http://127.0.0.1:9191/blog/article/search/user/cmoulliard
 
 ## Search a user using its ID
 
-````
-http http://127.0.0.1:9191/blog/article/search/d/1
-````
+    http http://127.0.0.1:9191/blog/article/search/d/1
 
 ## Delete a user
 
-````
 http DELETE http://127.0.0.1:9191/blog/article/1
-````
 
 ## All HTTPie requests
 
