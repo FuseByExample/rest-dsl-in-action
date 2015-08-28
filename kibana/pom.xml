@@ -14,6 +14,10 @@
 
     <name>GPE :: JBoss Fuse :: Kibana 3</name>
 
+    <properties>
+        <jetty.port>9090</jetty.port>
+    </properties>
+
     <packaging>war</packaging>
 
     <build>
@@ -38,6 +42,22 @@
                             <directory>src/main/webapp</directory>
                         </resource>
                     </webResources>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.3.0.M1</version>
+                <configuration>
+                    <webAppSourceDirectory>${project.basedir}/src/main/webapp</webAppSourceDirectory>
+                    <webApp>
+                        <contextPath>/kibana3</contextPath>
+                    </webApp>
+                    <httpConnector>
+                        <host>localhost</host>
+                        <port>${jetty.port}</port>
+                    </httpConnector>
                 </configuration>
             </plugin>
 

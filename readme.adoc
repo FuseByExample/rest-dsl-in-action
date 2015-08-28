@@ -32,8 +32,21 @@ In order to use the lab, we have to perform these steps :
  - Create a Fuse Fabric Server
  - Create 2 child containers; one will be used as the Elasticsearch Database and the other for the project itself where the Apache Camel Routes will be deployed.
 
-Open a Windows or Unix Terminal and move to the installation directory of the JBoss Fuse 6.2 - GA distribution directory.
-Run this command to launch first the JBoss Fuse Server and next within the Fuse Karaf console to issue the commands responsible to setup the environment.
+Open a Windows or Unix terminal. Unzip the material of the and move to that directory `fuse-lab-emea-2015-master`
+
+Build your maven project locally and deploy it to the JBoss Fuse Fabric Server
+
+```
+cd fuse-lab-emea-2015-master
+mvn clean install
+```
+
+Open a second Windows or Unix Terminal and move to the installation directory of the JBoss Fuse 6.2 - GA distribution directory.
+
+Edit the `etc/user.properties` file to uncomment the line containing the `dmin` user. Save the file
+
+Run this command `./bin/fuse` to launch first the JBoss Fuse Server and next within the Fuse Karaf console, issue the shell command `shell:source mvn:com.redhat.gpe/fuse-lab/1.0/script/creation` responsible to setup the Fabric
+server and the 2 containers.
 
 ````
 $JBOSS_FUSE_INSTALL/bin/fuse
@@ -85,16 +98,6 @@ root*                 1.0        karaf   yes          fabric                    
   lab                 1.0        karaf   yes          feature-camel                    success
 ```
 
-Open a second Windows or Unix terminal. Unzip the material of the lab and move to that directory `fuse-lab-emea-2015-master`
-
-Build your maven project locally and deploy it to the JBoss Fuse Fabric Server
-
-```
-cd fuse-lab-emea-2015-master
-mvn clean install
-mvn fabric8:deploy
-```
-
 Now that the profile has been created and published on JBoss Fuse, we will install it into the Fuse Lab Managed container
 
 ```
@@ -129,7 +132,7 @@ Open a Windows or Unix Terminal and issue one of the following HTTP requests usi
 Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish
 
 ````
-http PUT http://127.0.0.1:9191/blog/article/1 < src/data/entry.json
+http PUT http://127.0.0.1:9191/blog/article/1 < data/elasticsearch/entry.json
 ````
 
 ## Search a user
@@ -154,10 +157,10 @@ http DELETE http://127.0.0.1:9191/blog/article/1
 
 When you test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
 
-````
-http PUT http://127.0.0.1:9191/blog/article/1 < src/data/entry.json
-http PUT http://127.0.0.1:9191/blog/article/2 < src/data/entry.json
-http PUT http://127.0.0.1:9191/blog/article/3 < src/data/entry.json
+```
+http PUT http://127.0.0.1:9191/blog/article/1 < data/elasticsearch/entry.json
+http PUT http://127.0.0.1:9191/blog/article/2 < data/elasticsearch/entry.json
+http PUT http://127.0.0.1:9191/blog/article/3 < data/elasticsearch/entry.json
 
 http http://127.0.0.1:9191/blog/article/search/id/1
 http http://127.0.0.1:9191/blog/article/search/id/4
@@ -171,7 +174,90 @@ http http://127.0.0.1:9191/blog/article/search/id/1
 Using Servlet instead of Jetty
 
 http http://127.0.0.1:8183/rest/blog/article/search/id/1
-````
+```
+
+# Dashboard
+
+The data inserted into the Elasticsearch Database can be analyzed using the [Kibana](https://www.elastic.co/downloads/kibana) dashboard.
+The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
+This lab provides a jetty maven goal that we will launch in order to start a local HTTP Server that we can access from the browser
+at this address `ttp://localhost:9090/kibana3/index.html`
+
+To start locally the HTTP Server, open a Windows or unix terminal and move to the home directory of the project containing the code. Switch to the folder
+kibana and run this command
+
+```
+mvn jetty:run
+```
+
+When the server is launched, open your browser at the address mentioned. the first time, that you will connect to the Dashboard, the index HTML
+page will display general content about How to create a dashboard and importing the data from the Elasticsearch Database.
+For the purpose of this lab, we have prepare a dashboard which is already configured with the panels and the type fields that we will use.
+
+In order to add the JSON dashboard document to the Elasticsearch server, you will issue a HTTP request at the root of the `fuse-lab` project
+
+```
+http PUT http://fusehost:9200/kibana-int/dashboard/fuselab < data/elasticsearch/dashboard.json
+```
+
+Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to select the `fuse-lab` dashboard
+
+image::images/dashboard1.png[]
+
+The dashboard will contain our panels without any data as we haven't yet populated the database with records
+
+image::images/dashboard1.png[]
+
+So run the mvn camel:run maven goal. Then the content of the file articles will be processed by the file component and injected into the data.
+Refresh your dashboard and you will see the data.
+
+image::images/dashboard1.png[]
+
+
+## Install cmd to deploy the Kibana3 war
+
+```
+install -s webbundle:mvn:com.redhat.gpe/kibana/1.0/war?Web-ContextPath=/kibana3
+
+Error with Fuse 6.2 --> https://issues.jboss.org/browse/ENTESB-2831
+```
+
+## Create kibana_index, add dashboard & search about it
+
+
+- Delete and recreate kibana-int index
+
+  ```
+  http DELETE http://fusehost:9200/kibana-int
+  http PUT http://fusehost:9200/kibana-int
+  ```
+- Add fuse-lab dashboard
+
+  ```
+  http PUT http://fusehost:9200/kibana-int/dashboard/fuse-lab < data/elasticsearch/dashboard.json
+  ```
+- Delete dashboard
+
+  ```
+  http DELETE http://fusehost:9200/kibana-int/dashboard/fuse-lab
+  ```
+- Export existing kibana dashboard from ES to a file
+
+  ```
+  http http://fusehost:9200/kibana-int/dashboard/fuse-lab/_source > fuse-lab.json
+  ```
+- Get Dashboards
+
+  ```
+  http http://fusehost:9200/_search q=="dashboard:*"
+  http http://fusehost:9200/kibana-int/_search q=="title:fuse-lab" pretty==true
+  ```
+
+## Backup and restore
+
+https://www.elastic.co/guide/en/elasticsearch/reference/1.3/modules-snapshots.html
+http:/chrissimpson.co.uk/elasticsearch-snapshot-restore-api.html
+
 
 ## Troubleshooting
 
@@ -181,8 +267,59 @@ http http://127.0.0.1:8183/rest/blog/article/search/id/1
 
   ```
   http http://127.0.0.1:9191/blog/post/1 pretty==true
-  http http://192.168.1.80:9200/blog/post/_search q=="user:cmoulliard" pretty==true
+  http http://fusehost:9200/blog/post/_search q=="user:cmoulliard" pretty==true
 
-  curl 'http://192.168.1.80:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
+  curl 'http://fusehost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
   ```
 
+- Delete all articles
+
+  http DELETE http://fusehost:9200/blog/post/_query q=="user:*"
+
+- Delete Index
+
+  http DELETE http://fusehost:9200/blog
+
+- Create Index
+
+  http PUT http://fusehost:9200/blog
+
+- Add mapping
+
+  http PUT http://fusehost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
+
+- Check mapping
+
+  http http://fusehost:9200/blog/_mapping/article
+
+- Add user
+
+  http PUT http://fusehost:9200/blog/article/1 < camel/data/elasticsearch/entry.json
+
+- Query
+
+  http http://fusehost:9200/blog/post/_search pretty==true < camel/data/elasticsearch/query.json
+
+- All together
+
+```
+http DELETE http://fusehost:9200/blog
+http PUT http://fusehost:9200/blog
+http PUT http://fusehost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
+http http://fusehost:9200/blog/_mapping/article
+
+http PUT http://fusehost:9200/blog/article/1 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/2 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/3 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/4 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/5 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/6 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/7 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/8 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/9 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/10 < camel/data/elasticsearch/entry.json
+
+http http://fusehost:9200/blog/article/1
+http http://fusehost:9200/blog/article/2
+
+```

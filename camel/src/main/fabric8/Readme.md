@@ -132,7 +132,7 @@ Open a Windows or Unix Terminal and issue one of the following HTTP requests usi
 Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish
 
 ````
-http PUT http://127.0.0.1:9191/blog/article/1 < src/data/entry.json
+http PUT http://127.0.0.1:9191/blog/article/1 < data/elasticsearch/entry.json
 ````
 
 ## Search a user
@@ -158,9 +158,9 @@ http DELETE http://127.0.0.1:9191/blog/article/1
 When you test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
 
 ```
-http PUT http://127.0.0.1:9191/blog/article/1 < src/data/entry.json
-http PUT http://127.0.0.1:9191/blog/article/2 < src/data/entry.json
-http PUT http://127.0.0.1:9191/blog/article/3 < src/data/entry.json
+http PUT http://127.0.0.1:9191/blog/article/1 < data/elasticsearch/entry.json
+http PUT http://127.0.0.1:9191/blog/article/2 < data/elasticsearch/entry.json
+http PUT http://127.0.0.1:9191/blog/article/3 < data/elasticsearch/entry.json
 
 http http://127.0.0.1:9191/blog/article/search/id/1
 http http://127.0.0.1:9191/blog/article/search/id/4
@@ -175,6 +175,45 @@ Using Servlet instead of Jetty
 
 http http://127.0.0.1:8183/rest/blog/article/search/id/1
 ```
+
+# Dashboard
+
+The data inserted into the Elasticsearch Database can be analyzed using the [Kibana](https://www.elastic.co/downloads/kibana) dashboard. 
+The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
+This lab provides a jetty maven goal that we will launch in order to start a local HTTP Server that we can access from the browser 
+at this address `ttp://localhost:9090/kibana3/index.html`
+
+To start locally the HTTP Server, open a Windows or unix terminal and move to the home directory of the project containing the code. Switch to the folder
+kibana and run this command
+
+```
+mvn jetty:run
+```
+
+When the server is launched, open your browser at the address mentioned. the first time, that you will connect to the Dashboard, the index HTML
+page will display general content about How to create a dashboard and importing the data from the Elasticsearch Database.
+For the purpose of this lab, we have prepare a dashboard which is already configured with the panels and the type fields that we will use.
+
+In order to add the JSON dashboard document to the Elasticsearch server, you will issue a HTTP request at the root of the `fuse-lab` project
+
+```
+http PUT http://fusehost:9200/kibana-int/dashboard/fuselab < data/elasticsearch/dashboard.json
+```  
+
+Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to select the `fuse-lab` dashboard
+
+![Alt text](/path/to/img.jpg)
+
+The dashboard will contain our panels without any data as we haven't yet populated the database with records
+
+![Alt text](/path/to/img.jpg)
+
+So run the mvn camel:run maven goal. Then the content of the file articles will be processed by the file component and injected into the data.
+Refresh your dashboard and you will see the data.
+
+![Alt text](/path/to/img.jpg)
+ 
+ 
 
 ## Install cmd to deploy the Kibana3 war
 
@@ -196,7 +235,7 @@ Error with Fuse 6.2 --> https://issues.jboss.org/browse/ENTESB-2831
 - Add fuse-lab dashboard
 
   ```
-  http PUT http://fusehost:9200/kibana-int/dashboard/fuse-lab < src/data/dashboard.json
+  http PUT http://fusehost:9200/kibana-int/dashboard/fuse-lab < data/elasticsearch/dashboard.json
   ```
 - Delete dashboard
 
@@ -248,7 +287,7 @@ http:/chrissimpson.co.uk/elasticsearch-snapshot-restore-api.html
 
 - Add mapping
   
-  http PUT http://fusehost:9200/blog/_mapping/article < src/data/mapping.json
+  http PUT http://fusehost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
    
 - Check mapping
    
@@ -256,30 +295,30 @@ http:/chrissimpson.co.uk/elasticsearch-snapshot-restore-api.html
    
 - Add user
    
-  http PUT http://fusehost:9200/blog/article/1 < src/data/entry.json
+  http PUT http://fusehost:9200/blog/article/1 < camel/data/elasticsearch/entry.json
    
 - Query
    
-  http http://fusehost:9200/blog/post/_search pretty==true < src/data/query.json 
+  http http://fusehost:9200/blog/post/_search pretty==true < camel/data/elasticsearch/query.json 
    
 - All together
    
 ```
 http DELETE http://fusehost:9200/blog
 http PUT http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog/_mapping/article < src/data/mapping.json
+http PUT http://fusehost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
 http http://fusehost:9200/blog/_mapping/article
 
-http PUT http://fusehost:9200/blog/article/1 < src/data/entry.json
-http PUT http://fusehost:9200/blog/article/2 < src/data/entry.json
-http PUT http://fusehost:9200/blog/article/3 < src/data/entry.json
-http PUT http://fusehost:9200/blog/article/4 < src/data/entry.json
-http PUT http://fusehost:9200/blog/article/5 < src/data/entry.json
-http PUT http://fusehost:9200/blog/article/6 < src/data/entry.json
-http PUT http://fusehost:9200/blog/article/7 < src/data/entry.json
-http PUT http://fusehost:9200/blog/article/8 < src/data/entry.json
-http PUT http://fusehost:9200/blog/article/9 < src/data/entry.json
-http PUT http://fusehost:9200/blog/article/10 < src/data/entry.json
+http PUT http://fusehost:9200/blog/article/1 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/2 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/3 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/4 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/5 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/6 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/7 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/8 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/9 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/10 < camel/data/elasticsearch/entry.json
 
 http http://fusehost:9200/blog/article/1
 http http://fusehost:9200/blog/article/2
