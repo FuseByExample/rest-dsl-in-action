@@ -98,6 +98,7 @@
     <modules>
         <module>camel</module>
         <module>kibana</module>
+        <module>script</module>
     </modules>
 
     <repositories>

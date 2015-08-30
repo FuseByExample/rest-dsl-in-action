@@ -5,7 +5,7 @@ articles for a blog into a nosql Elasticsearch database. The use case has been e
 is responsible to poll a folder, to consumes csv files and insert all the articles into the database. The Apache Camel Elasticsearch component is called from different routes
 and will communicate with the ElasticSearch Database to perform the CRUD operations.
 
-image::images/fuse-lab1.png[]
+[](fuse-lab1.png)
 
 The Elasticsearch database and the Apache Camel projects will be deployed into different Fuse Managed Containers operated by a JBoss Fuse Fabric Server.
 
@@ -50,7 +50,7 @@ Open a second Windows or Unix Terminal and move to the installation directory of
 
 Edit the `etc/user.properties` file to uncomment the line containing the `dmin` user. Save the file
 
-Run this command `./bin/fuse` to launch first the JBoss Fuse Server and next within the Fuse Karaf console, issue the shell command `shell:source mvn:com.redhat.gpe/fuse-lab/1.0/script/creation` responsible to setup the Fabric
+Run this command `./bin/fuse` to launch first the JBoss Fuse Server and next within the Fuse Karaf console, issue the shell command `shell:source mvn:com.redhat.gpe/fuse/1.0/script/install` responsible to setup the Fabric
 server and the 2 containers.
 
 ````
@@ -79,7 +79,7 @@ or join an existing Fabric via 'fabric:join [someUrls]'
 
 Hit '<ctrl-d>' or 'osgi:shutdown' to shutdown JBoss Fuse.
 
-JBossFuse:karaf@root>shell:source mvn:com.redhat.gpe/fuse-lab/1.0/script/creation
+JBossFuse:karaf@root>shell:source mvn:com.redhat.gpe/fuse/1.0/script/install
 Waiting for container: root
 Waiting for container root to provision.
 
