@@ -5,7 +5,7 @@ articles for a blog into a nosql Elasticsearch database. The use case has been e
 is responsible to poll a folder, to consumes csv files and insert all the articles into the database. The Apache Camel Elasticsearch component is called from different routes
 and will communicate with the ElasticSearch Database to perform the CRUD operations.
 
-[](fuse-lab1.png)
+image::images/fuse-lab1.png[]
 
 The Elasticsearch database and the Apache Camel projects will be deployed into different Fuse Managed Containers operated by a JBoss Fuse Fabric Server.
 
@@ -14,7 +14,7 @@ record structure `id,user,blog description,title`. All the records will be uploa
 Next, each Blog object will be used as input to issue a request to insert a new record within the Elasticsearch database.
 
 For the REST Service, a JSON article `{ "user": "cmoulliard" "postDate": "2015-12-12", "body": "Integration is hard.", "title": "On distributed search" }` message is expected by the Jetty REST endpoint `/blog/article/id`
-The body content will be used as input to also issue a request to the same Service used by the file endpoint to consume CSV records..
+The body content will be used as input to also issue a request to the same Service used by the file endpoint to consume CSV records.
 
 # Prerequisites
 
