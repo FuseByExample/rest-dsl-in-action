@@ -134,8 +134,14 @@
                     <instructions>
                         <Bundle-SymbolicName>fuse-lab</Bundle-SymbolicName>
                         <Private-Package>com.redhat.gpe.*</Private-Package>
-                        <Import-Package>org.json;resolution:=optional,
-                                        *
+                        <Import-Package>
+                            org.json;resolution:=optional,
+                            org.apache.camel.component.jetty,
+                            org.apache.camel.component.elasticsearch,
+                            org.apache.camel.component.jackson,
+                            org.apache.camel.model,
+                            org.apache.camel.dataformat.bindy,
+                            *
                         </Import-Package>
                     </instructions>
                 </configuration>
