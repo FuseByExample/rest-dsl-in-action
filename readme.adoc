@@ -103,7 +103,8 @@ root*                 1.0        karaf   yes          fabric                    
   lab                 1.0        karaf   yes          feature-camel                    success
 ```
 
-Now that the profile has been created and published on JBoss Fuse, we will install it into the Fuse Lab Managed container
+Now that the profile has been created and published on JBoss Fuse, we will install it into the Fuse Lab Managed container using this fabric
+command `fabric:container-add-profile lab gpe-fuse`
 
 ```
 JBosFuse:karaf@root>fabric:container-add-profile lab gpe-fuse

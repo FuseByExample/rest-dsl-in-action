@@ -94,9 +94,8 @@
         </dependency>
     </dependencies>
     
-    
     <modules>
-        <module>camel</module>
+        <module>routing</module>
         <module>kibana</module>
         <module>script</module>
     </modules>
@@ -143,6 +142,5 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
-
+    
 </project>

@@ -91,6 +91,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -133,7 +134,9 @@
                     <instructions>
                         <Bundle-SymbolicName>fuse-lab</Bundle-SymbolicName>
                         <Private-Package>com.redhat.gpe.*</Private-Package>
-                        <Import-Package>*</Import-Package>
+                        <Import-Package>org.json;resolution:=optional,
+                                        *
+                        </Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
