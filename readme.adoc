@@ -1,6 +1,6 @@
-# GPE JBoss Fuse Lab
+# Fuse in Action Demo
 
-This JBoss Fuse lab will demonstrate how the new Apache Camel REST DSL syntax can be used to expose REST Services that we will use to add, search or delete
+This JBoss Fuse demo will demonstrate how the new Apache Camel REST DSL syntax can be used to expose REST Services that we will use to add, search or delete
 articles for a blog into a nosql Elasticsearch database. The use case has been enriched to expose a file endpoint, as you can see within the following picture, which
 is responsible to poll a folder, to consumes csv files and insert all the articles into the database. The Apache Camel Elasticsearch component is called from different routes
 and will communicate with the ElasticSearch Database to perform the CRUD operations.
@@ -31,28 +31,29 @@ Follow these instructions to install and configure JBoss Developer Studio 8.1.0.
 
 # Installation
 
-In order to use the lab, we have to perform these steps :
+In order to use the demo, we have to perform these steps :
 
  - https://github.com/gpe-mw-training/fuse-lab-emea-2015/archive/master.zip[Download] and compile the project locally
  - Create a Fuse Fabric Server
  - Create 2 child containers; one will be used as the Elasticsearch Database and the other for the project itself where the Apache Camel Routes will be deployed.
 
-Open a Windows or Unix terminal. Unzip the material of the and move to that directory `fuse-lab-emea-2015-master`
-
-Build your maven project locally and deploy it to the JBoss Fuse Fabric Server
-
+. Edit the /etc/hosts file and add an entry to map the hostname `fusehost` with the IP address of the machine to be used. The value could be your local loopback address
+  `127.0.0.1`, the Ethernet address assigned by the network card used (wifi, local network). The hostname is used by the ElasticSearch server to register the socket server when it is 
+  started and also by the Apache Camel Elasticsearch component to access the server. Also, the Fuse Fabric Server will use it to assign an IP address to the socket server of the Apache
+  Zookeeper server.
+. Open a Windows or Unix terminal. Unzip the material of the and move to that directory `fuse-lab-emea-2015-master`
+. Build your maven project locally
++
 ```
 cd fuse-lab-emea-2015-master
 mvn clean install
 ```
-
-Open a second Windows or Unix Terminal and move to the installation directory of the JBoss Fuse 6.2 - GA distribution directory.
-
-Edit the `etc/user.properties` file to uncomment the line containing the `dmin` user. Save the file
-
-Run this command `./bin/fuse` to launch first the JBoss Fuse Server and next within the Fuse Karaf console, issue the shell command `shell:source mvn:com.redhat.gpe/fuse/1.0/script/install` responsible to setup the Fabric
++
+. Open a second Windows or Unix Terminal and move to the installation directory of the JBoss Fuse 6.2 - GA distribution directory.
+. Edit the `etc/user.properties` file to uncomment the line containing the `dmin` user. Save the file
+. Run this command `./bin/fuse` to launch first the JBoss Fuse Server and next within the Fuse Karaf console, issue the shell command `shell:source mvn:com.redhat.gpe/fuse/1.0/script/install` responsible to setup the Fabric
 server and the 2 containers.
-
++
 ````
 $JBOSS_FUSE_INSTALL/bin/fuse
 
@@ -90,9 +91,9 @@ Creating new instance on SSH port 8103 and RMI ports 1101/44446 at: /Users/chmou
 The following containers have been created successfully:
 	Container: lab.
 ````
-
++
 After a few moments, the environment will be ready. You can verify/control that the 2 containers are running
-
++
 ```
 JBossFuse:karaf@root>fabric:container-list
 [id]                 [version]  [type]  [connected]  [profiles]                       [provision status]
@@ -102,10 +103,10 @@ root*                 1.0        karaf   yes          fabric                    
   elasticsearch-node  1.0        karaf   yes          insight-elasticsearch.datastore  success
   lab                 1.0        karaf   yes          feature-camel                    success
 ```
-
-Now that the profile has been created and published on JBoss Fuse, we will install it into the Fuse Lab Managed container using this fabric
++
+. Now that the profile has been created and published on JBoss Fuse, we will install it into the Fuse Lab Managed container using this fabric
 command `fabric:container-add-profile lab gpe-fuse`
-
++
 ```
 JBosFuse:karaf@root>fabric:container-add-profile lab gpe-fuse
 ```
@@ -119,15 +120,6 @@ Next, the profile can updated on the container using theses commands
 fabric:container-remove-profile lab gpe-fuse
 fabric:container-add-profile lab gpe-fuse
 ```
-
-If, for any reason, you would like to restart the lab from the beginning. Then, exist from the JBoss Fuse Console using the command `CTRL-D` or `osgi:shutdown`
-and run this script to clean and kill the jvm instances `./bin/deletefabric8`
-
-# Minimal installation
-
-You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` has been deployed into JBoss Fuse 6.2.
-Additional OSGI parameters could be defined for the elasticsearch database using the `io.fabric8.elasticsearch-insight.cfg` file deployed into the `etc` folder of JBoss Fuse.
-That should also work if you deploy locally an Elasticsearch instance but this feature hasn't been tested.
 
 # Play with the lab
 
@@ -255,11 +247,25 @@ Within your browser, refresh your dashboard and you will see the data.
 .Lab dashboard with articles
 image::images/dashboard4.png[]
 
+# Minimal installation
+
+You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` has been deployed into JBoss Fuse 6.2.
+Additional OSGI parameters could be defined for the elasticsearch database using the `io.fabric8.elasticsearch-insight.cfg` file deployed into the `etc` folder of JBoss Fuse.
+That should also work if you deploy locally an Elasticsearch instance but this feature hasn't been tested.
+
+
 ## All HTTPie requests
 
 When you test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
+It will delete the blog index, create a new index, insert 3 articles, search for user or base on id and will delete
+ the user id = 1
 
 ```
+http DELETE http://fusehost:9200/blog
+http PUT http://fusehost:9200/blog
+http PUT http://fusehost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
+http http://fusehost:9200/blog/_mapping/article
+
 http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
 http PUT http://fusehost:9191/blog/article/2 < data/elasticsearch/entry.json
 http PUT http://fusehost:9191/blog/article/3 < data/elasticsearch/entry.json
@@ -277,7 +283,6 @@ Using Servlet instead of Jetty
 
 http http://fusehost:8183/rest/blog/article/search/id/1
 ```
-
 
 ## Install cmd to deploy the Kibana3 war
 
@@ -320,11 +325,11 @@ Does not work with Fabric & Fuse 6.2 - https://issues.jboss.org/browse/ENTESB-28
   http http://fusehost:9200/kibana-int/_search q=="title:fuse-lab" pretty==true
   ```
 
-## Backup and restore
+## Replay
 
-https://www.elastic.co/guide/en/elasticsearch/reference/1.3/modules-snapshots.html
-http:/chrissimpson.co.uk/elasticsearch-snapshot-restore-api.html
-
+If, for any reason, you would like to restart the demo from the beginning. Then, exist from the JBoss Fuse Console using the command `CTRL-D` or `osgi:shutdown`
+command and run this script `./bin/deletefabric8`. It will kill the jvm instances and delete the instances and some sub-folders defined.
+under the data folder.
 
 ## Troubleshooting
 
@@ -367,7 +372,7 @@ http:/chrissimpson.co.uk/elasticsearch-snapshot-restore-api.html
 
   http http://fusehost:9200/blog/post/_search pretty==true < camel/data/elasticsearch/query.json
 
-- All together
+- All requests
 
 ```
 http DELETE http://fusehost:9200/blog
