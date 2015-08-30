@@ -145,7 +145,7 @@ Before to issue the HTTP GET request, you can change the content of the Blog Art
 
 ## Search a user using its ID
 
-    http http://fusehost:9191/blog/article/search/d/1
+    http http://fusehost:9191/blog/article/search/user/1
 
 ## Delete a user
 

@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +37,10 @@ public class ElasticSearchService {
         Settings settings = ImmutableSettings.settingsBuilder()
                 .classLoader(Settings.class.getClassLoader())
                 .put("cluster.name", "insight")
-                .put("client.transport.sniff", true)
+                .put("client.transport.sniff", false)
                 .build();
         client = new TransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress("fusehost", 9300));
+                .addTransportAddress(new InetSocketTransportAddress("fusehost",9300));
     }
     
     public void shutdown() {
