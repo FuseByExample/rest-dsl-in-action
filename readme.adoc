@@ -159,30 +159,7 @@ Copy/paste the records.csv file from the $LAB_DIRECTORY/camel/src/data directory
     export LAB_DIRECTORY=/Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab
     cp $LAB_DIRECTORY/camel/src/data/articles/records.csv $FUSE_HOME/instances/lab/articles/
 
-## All HTTPie requests
-
-When you test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
-
-```
-http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
-http PUT http://fusehost:9191/blog/article/2 < data/elasticsearch/entry.json
-http PUT http://fusehost:9191/blog/article/3 < data/elasticsearch/entry.json
-
-http http://fusehost:9191/blog/article/search/id/1
-http http://fusehost:9191/blog/article/search/id/4
-
-http http://fusehost:9191/blog/article/search/user/cmoulliard
-http http://fusehost:9191/blog/article/search/user/cmoullia
-
-http DELETE http://fusehost:9191/blog/article/1
-http http://fusehost:9191/blog/article/search/id/1
-
-Using Servlet instead of Jetty
-
-http http://fusehost:8183/rest/blog/article/search/id/1
-```
-
-# Dashboard
+# Use Kibana dashboard
 
 The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
 The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
@@ -277,6 +254,29 @@ Within your browser, refresh your dashboard and you will see the data.
 
 .Lab dashboard with articles
 image::images/dashboard4.png[]
+
+## All HTTPie requests
+
+When you test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
+
+```
+http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
+http PUT http://fusehost:9191/blog/article/2 < data/elasticsearch/entry.json
+http PUT http://fusehost:9191/blog/article/3 < data/elasticsearch/entry.json
+
+http http://fusehost:9191/blog/article/search/id/1
+http http://fusehost:9191/blog/article/search/id/4
+
+http http://fusehost:9191/blog/article/search/user/cmoulliard
+http http://fusehost:9191/blog/article/search/user/cmoullia
+
+http DELETE http://fusehost:9191/blog/article/1
+http http://fusehost:9191/blog/article/search/id/1
+
+Using Servlet instead of Jetty
+
+http http://fusehost:8183/rest/blog/article/search/id/1
+```
 
 
 ## Install cmd to deploy the Kibana3 war
