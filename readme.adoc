@@ -213,8 +213,8 @@ Uploaded: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-
 +
     JBosFuse:karaf@root>fabric:container-add-profile demo gpe-fuse
 +
-. Verify that the container has been successfully provisioned and that the `demo` container contains the profiles `feature-camel` and`gpe-fuse`
----
+. Verify that the container has been successfully provisioned and that the `demo` container contains the profiles `feature-camel` and `gpe-fuse`
+----
 JBossFuse:karaf@root> fabric:container-list
 [id]                  [version]  [type]  [connected]  [profiles]                       [provision status]
 root*                 1.0        karaf   yes          fabric                           success
