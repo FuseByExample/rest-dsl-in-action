@@ -167,7 +167,7 @@ The following containers have been created successfully:
 	Container: lab.
 ----
 +
-. You can verify/control that the 2 containers are running by issuing the command `fabric:container-list` and insoecting the column `connected` which represent the state of the Fuse
+. You can verify/control that the 2 containers are running by issuing the command `fabric:container-list` and inspecting the column `connected` which represent the state of the Fuse
   OSGI container created. If the status is equal to `yes`, that means tha tthe containe has been created successfully. the column `provision status` reports the status about the provisioning of the
   container. If the status is equal to `success`, that means that the server has been packaged with the required OSGI bundles, Config Properties files, ...
 +  
@@ -183,12 +183,32 @@ root*                 1.0        karaf   yes          fabric                    
 
 ## Deploy the Fabric project into the Fabric Server
 
-. Now that the profile has been created and published on JBoss Fuse, we will install it into the Fuse Lab Managed container using this fabric
-. Using the terminal created to compile this demo, move to the routing directory `fuse-lab/routing`
-. Run this command to deploy the configuration of the demo project into the fuse Fabric Server a the `pe-fuse` profile
+. Use the terminal created to compile this demo and move to the routing directory `fuse-lab/routing`
+. Run this command to deploy the configuration of the demo project into the fuse Fabric Server as `pe-fuse` profile
 +
-    `mvn fabric8:deploy`
+----
+mvn fabric8:deploy
+
+[INFO] Uploading file /Users/chmoulli/.m2/repository/com/redhat/gpe/routing/1.0/routing-1.0.jar
+Uploading: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-1.0.jar
+Uploaded: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-1.0.jar (18 KB at 575.9 KB/sec)
+Uploading: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-1.0.pom
+Uploaded: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-1.0.pom (7 KB at 275.5 KB/sec)
+[INFO] Updating profile: gpe-fuse with parent profile(s): [feature-camel] using OSGi resolver
+[INFO] About to invoke mbean io.fabric8:type=ProjectDeployer on jolokia URL: http://localhost:8181/jolokia with user: admin
+[INFO]
+[INFO] Profile page: http://127.0.0.1:8181/hawtio/index.html#/wiki/branch/1.0/view/fabric/profiles/gpe/fuse.profile
+[INFO]
+[INFO] Uploading file com.redhat.gpe.lab.properties to invoke mbean io.fabric8:type=Fabric on jolokia URL: http://localhost:8181/jolokia with user: admin
+[INFO] Uploading file fuse-lab1.png to invoke mbean io.fabric8:type=Fabric on jolokia URL: http://localhost:8181/jolokia with user: admin
+[INFO] Uploading file Readme.md to invoke mbean io.fabric8:type=Fabric on jolokia URL: http://localhost:8181/jolokia with user: admin
+[INFO] Performing profile refresh on mbean: io.fabric8:type=Fabric version: 1.0 profile: gpe-fuse
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+----
 +
+. Now that the profile has been created and published on JBoss Fuse, we will install it into the `demo` Fuse Lab Managed container
 . Assign the profile `gpe-fuse` profile to our `demo` container using this fabric command executed within the JBoss Fuse console
 +
     JBosFuse:karaf@root>fabric:container-add-profile demo gpe-fuse
