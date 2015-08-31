@@ -17,10 +17,35 @@ All the records will be uploaded by the file endpoint, transformed using the `Ap
 Next, each Blog object will be used as input to issue a request to insert a new record within the Elasticsearch database.
 
 For the REST Service responsible to insert an article within the Elasticsearch database, a JSON article `{ "user": "cmoulliard" "postDate": "2015-12-12", "body": "Integration is hard.", "title": "On distributed search" }` message is issued against the REST endpoint `/blog/article/id` using a HTTP GET operation. 
-The content of this HTTP request will be processed by an Apache Camel route as showed hereafter and transformed in order to access the elasticsearch component to call the Elasticsearch database.
+The content of this HTTP request will be processed by an Apache Camel route as showed hereafter and transformed in order to access the elasticsearch component to call the Elasticsearch database. 
 
 [source,java]
 ----
+rest("/blog/").id("rest-blog-service").produces("application/json").consumes("application/json")
+        
+        .put("/article/{id}").id("rest-put-article").type(Blog.class)
+            .to("direct:add");
+            
+JacksonDataFormat jacksondf = new JacksonDataFormat(Blog.class);
+
+from("direct:add").id("add-direct-route")
+        .log(LoggingLevel.INFO,"Add new Blog entry service called !")
+        
+        .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
+        .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
+        .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_INDEX)
+
+        // Transform Java Object to JSON
+        .marshal(jacksondf)
+        
+        // Call the add service of the elasticsearchService POJO to generate the IndexRequest object
+        .beanRef("elasticSearchService", "add")
+
+        // Call the elasticsearch Service to add/insert an entry within the index
+        .to("elasticsearch://{{clustername}}?ip={{address}}")
+        
+        // Response received and returned to the REST endpoint
+        .log("Response received : ${body}");            
 ----
 
 The following table summaries the Routes used, REST Services exposed and the Bean Methods called like the Object type used to call the ElasticSearch database
