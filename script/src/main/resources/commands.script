@@ -20,3 +20,47 @@ http http://fusehost:9191/blog/article/search/id/1
 Using Servlet instead of Jetty
 
 http http://fusehost:8183/rest/blog/article/search/id/1
+
+
+
+# Install cmd to deploy the Kibana3 war
+
+----
+Without Fabric
+
+features:install war
+install -s webbundle:mvn:com.redhat.gpe/kibana/1.0/war?Web-ContextPath=/kibana3
+
+Does not work with Fabric & Fuse 6.2 - https://issues.jboss.org/browse/ENTESB-2831[see ENTESB-2831]
+----
+
+# Create kibana_index, add dashboard & search about it
+
+- Delete and recreate kibana-int index
+
+----
+http DELETE http://fusehost:9200/kibana-int
+http PUT http://fusehost:9200/kibana-int
+----
+
+- Add fuse-lab dashboard
+
+  ----
+  http PUT http://fusehost:9200/kibana-int/dashboard/fuse-lab < data/elasticsearch/dashboard.json
+  ----
+- Delete dashboard
+
+  ----
+  http DELETE http://fusehost:9200/kibana-int/dashboard/fuse-lab
+  ----
+- Export existing kibana dashboard from ES to a file
+
+  ----
+  http http://fusehost:9200/kibana-int/dashboard/fuse-lab/_source > fuse-lab.json
+  ----
+- Get Dashboards
+
+  ----
+  http http://fusehost:9200/_search q=="dashboard:*"
+  http http://fusehost:9200/kibana-int/_search q=="title:fuse-lab" pretty==true
+  ----
