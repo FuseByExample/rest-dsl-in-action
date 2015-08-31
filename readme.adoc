@@ -281,8 +281,7 @@ cp $LAB_DIRECTORY/camel/src/data/articles/records.csv $FUSE_HOME/instances/demo/
 ====
 The `articles` directory folder is scanned by the Apache Camel rote `FileToAddServiceRoute`
 ====
-   
-----
+
 ## Use Kibana dashboard
 
 The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
