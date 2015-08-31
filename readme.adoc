@@ -94,7 +94,7 @@ In order to use the demo, we have to realize these tasks which are described her
 . Build your maven project locally
 +
 ----
-cd fuse-lab-emea-2015-master
+cd fuse-demo-2015-master
 mvn clean install
 ----
 
@@ -111,11 +111,14 @@ Zookeeper server.
 . Download JBoss Fuse Server and unzip the archive file.
 . Edit the `etc/user.properties` file that you will find under the home directory of `jboss-fuse-6.2.0.redhat-xxx` to uncomment the line containing the `admin` user. Save the file
 . Open a second Windows or Unix terminal.
-. Run this command `./bin/fuse` to launch the JBoss Fuse Server
+. Run this command `./bin/fuse` to launch the JBoss Fuse Server at the root of the JBoss Fuse installation directory
+
+## Create a Fuse Fabric Server and 2 child containers
+
 . Next, within the Fuse Karaf console, issue the shell command `shell:source mvn:com.redhat.gpe/fuse/1.0/script/install` 
 +
-NOTE: The shell script contains some Fabric shubshell commands responsible to setup the Fabric server and two containers (elasticsearch-node and demo). The first child container will be used as Elasticsearch
-database server and the demo Fuse managed container to runt the Apache Camel Routes and expose the REST and File endpoints.
+NOTE: The shell script contains some Fabric subshell commands responsible to setup the Fabric server and two containers (elasticsearch-node and demo). The first child container will be used as Elasticsearch
+database server and the demo Fuse managed container to run the Apache Camel Routes and expose the REST and File endpoints.
 +
 ----
 $JBOSS_FUSE_INSTALL/bin/fuse
