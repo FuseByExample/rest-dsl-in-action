@@ -87,7 +87,6 @@ In order to use the demo, we have to realize these tasks which are described her
 * Run a Web Container to provide access to the Kibana dashboard
 * Install, configure Apiman & Keycloak servers to secure the REST Services and provide service governance rule
 
-
 ## Compile Project 
 
 . Open a Windows or Unix terminal. Unzip the material of the demo and move to that directory `fuse-demo-2015-master`
@@ -378,42 +377,10 @@ Within your browser, refresh your dashboard and you will see the data.
 .Lab dashboard with articles
 image::images/dashboard4.png[]
 
-# Minimal installation
+## Security governance with Apiman & Keycloak
 
-You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` has been deployed into JBoss Fuse 6.2.
-Additional OSGI parameters could be defined for the elasticsearch database using the `io.fabric8.elasticsearch-insight.cfg` file deployed into the `etc` folder of JBoss Fuse.
-That should also work if you deploy locally an Elasticsearch instance but this feature hasn't been tested.
+TODO
 
-
-# All HTTPie requests
-
-When you test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
-It will delete the blog index, create a new index, insert 3 articles, search for user or base on id and will delete
- the user id = 1
-
-----
-http DELETE http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
-http http://fusehost:9200/blog/_mapping/article
-
-http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
-http PUT http://fusehost:9191/blog/article/2 < data/elasticsearch/entry.json
-http PUT http://fusehost:9191/blog/article/3 < data/elasticsearch/entry.json
-
-http http://fusehost:9191/blog/article/search/id/1
-http http://fusehost:9191/blog/article/search/id/4
-
-http http://fusehost:9191/blog/article/search/user/cmoulliard
-http http://fusehost:9191/blog/article/search/user/cmoullia
-
-http DELETE http://fusehost:9191/blog/article/1
-http http://fusehost:9191/blog/article/search/id/1
-
-Using Servlet instead of Jetty
-
-http http://fusehost:8183/rest/blog/article/search/id/1
-----
 
 # Install cmd to deploy the Kibana3 war
 
@@ -459,52 +426,53 @@ http PUT http://fusehost:9200/kibana-int
 
 # Replay
 
-If, for any reason, you would like to restart the demo from the beginning. Then, exist from the JBoss Fuse Console using the command `CTRL-D` or `osgi:shutdown`
-command and run this script `./bin/deletefabric8`. It will kill the jvm instances and delete the instances and some sub-folders defined.
-under the data folder.
+If, for any reason, you would like to restart the demo from the beginning. Then, perform these steps to clean the JBoss Fuse Server
+
+. Exit from the JBoss Fuse Console using the command `CTRL-D` or `osgi:shutdown` command
+. Run this script `./bin/deletefabric8`. 
++
+NOTE: It will kill the jvm instances and delete the instances and some sub-folders defined under the data folder.
+. Stop the jtty web container started using the command `mvn jetty:run`
+
 
 # Troubleshooting
 
-- When the local Camel REST endpoints don't work, you can query directly the elasticsearch database using these HTTPie requests to check if it work.
+* When the local Camel REST endpoints don't work, you can query directly the elasticsearch database using these HTTPie requests to check if it works.
++
+WARNING : The hostname must be changed depending if you run locally or remotely the JBoss Fuse Server
++
+----
+http http://fusehost:9191/blog/post/1 pretty==true
+http http://fusehost:9200/blog/post/_search q=="user:cmoulliard" pretty==true
 
-  Remark : The hostname must be changed depending if you run locally or remotely the JBoss Fuse Server
+curl 'http://fusehost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
+----
 
-  ----
-  http http://fusehost:9191/blog/post/1 pretty==true
-  http http://fusehost:9200/blog/post/_search q=="user:cmoulliard" pretty==true
+* Delete all articles
 
-  curl 'http://fusehost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
-  ----
+    http DELETE http://fusehost:9200/blog/post/_query q=="user:*"
 
-- Delete all articles
+* Delete Index
 
-  http DELETE http://fusehost:9200/blog/post/_query q=="user:*"
+    http DELETE http://fusehost:9200/blog
 
-- Delete Index
+* Create Index
 
-  http DELETE http://fusehost:9200/blog
+    http PUT http://fusehost:9200/blog
 
-- Create Index
+* Add mapping
 
-  http PUT http://fusehost:9200/blog
+    http PUT http://fusehost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
 
-- Add mapping
+* Check mapping
 
-  http PUT http://fusehost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
+    http http://fusehost:9200/blog/_mapping/article
 
-- Check mapping
+* Add user
 
-  http http://fusehost:9200/blog/_mapping/article
+    http PUT http://fusehost:9200/blog/article/1 < camel/data/elasticsearch/entry.json
 
-- Add user
-
-  http PUT http://fusehost:9200/blog/article/1 < camel/data/elasticsearch/entry.json
-
-- Query
-
-  http http://fusehost:9200/blog/post/_search pretty==true < camel/data/elasticsearch/query.json
-
-- All requests
+* All requests
 
 ----
 http DELETE http://fusehost:9200/blog
@@ -514,16 +482,55 @@ http http://fusehost:9200/blog/_mapping/article
 
 http PUT http://fusehost:9200/blog/article/1 < camel/data/elasticsearch/entry.json
 http PUT http://fusehost:9200/blog/article/2 < camel/data/elasticsearch/entry.json
-http PUT http://fusehost:9200/blog/article/3 < camel/data/elasticsearch/entry.json
-http PUT http://fusehost:9200/blog/article/4 < camel/data/elasticsearch/entry.json
-http PUT http://fusehost:9200/blog/article/5 < camel/data/elasticsearch/entry.json
-http PUT http://fusehost:9200/blog/article/6 < camel/data/elasticsearch/entry.json
-http PUT http://fusehost:9200/blog/article/7 < camel/data/elasticsearch/entry.json
-http PUT http://fusehost:9200/blog/article/8 < camel/data/elasticsearch/entry.json
-http PUT http://fusehost:9200/blog/article/9 < camel/data/elasticsearch/entry.json
-http PUT http://fusehost:9200/blog/article/10 < camel/data/elasticsearch/entry.json
 
 http http://fusehost:9200/blog/article/1
 http http://fusehost:9200/blog/article/2
+----
 
+# Minimal installation
+
+You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` or the profile `insight-elasticsearch.datastore` if a fabric server has been deployed into the JBoss Fuse 6.2.
+
+. Open a Windows or Unix terminal and move to the directory `fuse-rest-dsl-demo-master/routing`
+. Launch Apache Camel
+
+    mvn camel:run
+
+. Control that Apache Camel has been started 
+
+----
+
+----    
+
+NOTE : Additional OSGI parameters could be defined for the elasticsearch database using the `io.fabric8.elasticsearch-insight.cfg` file deployed into the `etc` folder of JBoss Fuse.
+That should also work if you deploy locally an Elasticsearch instance but this feature hasn't been tested.
+
+# CRUD requests - all in
+
+When you would like test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
+It will delete the blog index, create a new index, insert 3 articles, search for user or base on id and will delete
+the user id = 1
+
+----
+http DELETE http://fusehost:9200/blog
+http PUT http://fusehost:9200/blog
+http PUT http://fusehost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
+http http://fusehost:9200/blog/_mapping/article
+
+http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
+http PUT http://fusehost:9191/blog/article/2 < data/elasticsearch/entry.json
+http PUT http://fusehost:9191/blog/article/3 < data/elasticsearch/entry.json
+
+http http://fusehost:9191/blog/article/search/id/1
+http http://fusehost:9191/blog/article/search/id/4
+
+http http://fusehost:9191/blog/article/search/user/cmoulliard
+http http://fusehost:9191/blog/article/search/user/cmoullia
+
+http DELETE http://fusehost:9191/blog/article/1
+http http://fusehost:9191/blog/article/search/id/1
+
+Using Servlet instead of Jetty
+
+http http://fusehost:8183/rest/blog/article/search/id/1
 ----

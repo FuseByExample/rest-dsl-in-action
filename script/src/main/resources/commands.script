@@ -1,0 +1,22 @@
+
+http DELETE http://fusehost:9200/blog
+http PUT http://fusehost:9200/blog
+http PUT http://fusehost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
+http http://fusehost:9200/blog/_mapping/article
+
+http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
+http PUT http://fusehost:9191/blog/article/2 < data/elasticsearch/entry.json
+http PUT http://fusehost:9191/blog/article/3 < data/elasticsearch/entry.json
+
+http http://fusehost:9191/blog/article/search/id/1
+http http://fusehost:9191/blog/article/search/id/4
+
+http http://fusehost:9191/blog/article/search/user/cmoulliard
+http http://fusehost:9191/blog/article/search/user/cmoullia
+
+http DELETE http://fusehost:9191/blog/article/1
+http http://fusehost:9191/blog/article/search/id/1
+
+Using Servlet instead of Jetty
+
+http http://fusehost:8183/rest/blog/article/search/id/1
