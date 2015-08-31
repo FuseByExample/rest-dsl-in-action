@@ -81,8 +81,9 @@ In order to use the demo, we have to realize these tasks which are described her
 * Edit the hosts file to add an entry
 * Download and install the JBoss Fuse Server
 * Edit the etc/users.properties file of the server to define an admin user
-* Create a Fuse Fabric Server
-* Create 2 child containers; one will be used as the Elasticsearch Database and the other for the project itself where the Apache Camel Routes will be deployed.
+* Create a Fuse Fabric Server and 2 child containers
+* Deploy the Fabric project into the Fabric Server
+* Play with the demo
 * Run a Web Container to provide access to the Kibana dashboard
 * Install, configure Apiman & Keycloak servers to secure the REST Services and provide service governance rule
 
@@ -149,7 +150,7 @@ JBossFuse:karaf@root>shell:source mvn:com.redhat.gpe/fuse/1.0/script/install
 After a few moments, the server will report on the console that the Fabric Server and the 2 child containers have been created.
 +
 ----
-Waiting for container: root
+Waitingfor container: root
 Waiting for container root to provision.
 
 Creating new instance on SSH port 8102 and RMI ports 1100/44445 at: /Users/chmoulli/Fuse/Fuse-servers/jboss-fuse-6.2.0.redhat-133/instances/elasticsearch-node
@@ -161,7 +162,7 @@ The following containers have been created successfully:
 ----
 +
 . You can verify/control that the 2 containers are running by issuing the command `fabric:container-list` and insoecting the column `connected` which represent the state of the Fuse
-  OSGI container created. IF the status is equal to `yes`, that means tha tthe containe has been created successfully. the column `provision status` reports the status about the provisioning of the
+  OSGI container created. If the status is equal to `yes`, that means tha tthe containe has been created successfully. the column `provision status` reports the status about the provisioning of the
   container. If the status is equal to `success`, that means that the server has been packaged with the required OSGI bundles, Config Properties files, ...
 +  
 ----
@@ -170,50 +171,67 @@ JBossFuse:karaf@root>fabric:container-list
 root*                 1.0        karaf   yes          fabric                           success
                                                       fabric-ensemble-0000-1
                                                       jboss-fuse-full
-  elasticsearh-node  1.0        karaf   yes          insight-elasticsearch.datastore  success
-  lab                 1.0        karaf   yes          feature-camel                    success
+  elasticsearch-node  1.0        karaf   yes          insight-elasticsearch.datastore  success
+  demo                1.0        karaf   yes          feature-camel                    success
 ----
-+
+
+## Deploy the Fabric project into the Fabric Server
+
 . Now that the profile has been created and published on JBoss Fuse, we will install it into the Fuse Lab Managed container using this fabric
-command `fabric:container-add-profile lab gpe-fuse`
+. Using the terminal created to compile this demo, move to the routing directory `fuse-lab/routing`
+. Run this command to deploy the configuration of the demo project into the fuse Fabric Server a the `pe-fuse` profile
 +
-----
-JBosFuse:karaf@root>fabric:container-add-profile lab gpe-fuse
+    `mvn fabric8:deploy`
++
+. Assign the profile `gpe-fuse` profile to our `demo` container using this fabric command executed within the JBoss Fuse console
++
+    JBosFuse:karaf@root>fabric:container-add-profile demo gpe-fuse
++
+. Verify that the container has been successfully provisioned and 
+---
+JBossFuse:karaf@root>fabric:container-list
+[id]                 [version]  [type]  [connected]  [profiles]                       [provision status]
+root*                 1.0        karaf   yes          fabric                           success
+                                                      fabric-ensemble-0000-1
+                                                      jboss-fuse-full
+  elasticsearch-node  1.0        karaf   yes          insight-elasticsearch.datastore  success
+  demo                1.0        karaf   yes          feature-camel                    success
 ----
 
-Remarks :
-
+NOTE
+====
 If you change th code of this lab, then redeploy if after doing a maven installation and running this command `mvn fabric8:deploy`.
-Next, the profile can updated on the container using theses commands
+Next, the profile can updated on the container using these commands
 
 ----
 fabric:container-remove-profile lab gpe-fuse
 fabric:container-add-profile lab gpe-fuse
 ----
+====
 
-# Play with the lab
+## Play with the demo
 
 Open a Windows or Unix Terminal and issue one of the following HTTP requests using curl or httpie tool within the lab project folder
 
-## Add a user
+* Add a user
 
 Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish
 
     http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
 
-## Search a user
+* Search a user
 
     http http://fusehost:9191/blog/article/search/user/cmoulliard
 
-## Search a user using its ID
+* Search a user using its ID
 
     http http://fusehost:9191/blog/article/search/user/1
 
-## Delete a user
+* Delete a user
 
     http DELETE http://fusehost:9191/blog/article/1
     
-## Copy the records.csv file
+* Copy the records.csv file
 
 Copy/paste the records.csv file from the $LAB_DIRECTORY/camel/src/data directory to the `articles` directory created the local instance `ontainer `lab`
     
@@ -221,7 +239,7 @@ Copy/paste the records.csv file from the $LAB_DIRECTORY/camel/src/data directory
     export LAB_DIRECTORY=/Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab
     cp $LAB_DIRECTORY/camel/src/data/articles/records.csv $FUSE_HOME/instances/lab/articles/
 
-# Use Kibana dashboard
+## Use Kibana dashboard
 
 The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
 The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
@@ -324,7 +342,7 @@ Additional OSGI parameters could be defined for the elasticsearch database using
 That should also work if you deploy locally an Elasticsearch instance but this feature hasn't been tested.
 
 
-## All HTTPie requests
+# All HTTPie requests
 
 When you test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
 It will delete the blog index, create a new index, insert 3 articles, search for user or base on id and will delete
@@ -354,7 +372,7 @@ Using Servlet instead of Jetty
 http http://fusehost:8183/rest/blog/article/search/id/1
 ----
 
-## Install cmd to deploy the Kibana3 war
+# Install cmd to deploy the Kibana3 war
 
 ----
 Without Fabric
@@ -365,7 +383,7 @@ install -s webbundle:mvn:com.redhat.gpe/kibana/1.0/war?Web-ContextPath=/kibana3
 Does not work with Fabric & Fuse 6.2 - https://issues.jboss.org/browse/ENTESB-2831[see ENTESB-2831]
 ----
 
-## Create kibana_index, add dashboard & search about it
+# Create kibana_index, add dashboard & search about it
 
 - Delete and recreate kibana-int index
 
@@ -395,13 +413,13 @@ Does not work with Fabric & Fuse 6.2 - https://issues.jboss.org/browse/ENTESB-28
   http http://fusehost:9200/kibana-int/_search q=="title:fuse-lab" pretty==true
   ----
 
-## Replay
+# Replay
 
 If, for any reason, you would like to restart the demo from the beginning. Then, exist from the JBoss Fuse Console using the command `CTRL-D` or `osgi:shutdown`
 command and run this script `./bin/deletefabric8`. It will kill the jvm instances and delete the instances and some sub-folders defined.
 under the data folder.
 
-## Troubleshooting
+# Troubleshooting
 
 - When the local Camel REST endpoints don't work, you can query directly the elasticsearch database using these HTTPie requests to check if it work.
 
