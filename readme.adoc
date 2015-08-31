@@ -241,7 +241,7 @@ fabric:container-add-profile lab gpe-fuse
 
 Open a third Windows or Unix Terminal and issue one of the following HTTP requests using curl or httpie tool within the demo project folder
 
-* Add a user
+### Add a user
 
 NOTE : Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish
 
