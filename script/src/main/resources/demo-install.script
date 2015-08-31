@@ -1,4 +1,4 @@
 fabric:create --clean -m 127.0.0.1 -r manualip --wait-for-provisioning
 
 fabric:container-create-child --profile insight-elasticsearch.datastore root elasticsearch-node
-fabric:container-create-child --profile feature-camel root lab
+fabric:container-create-child --profile feature-camel root demo
