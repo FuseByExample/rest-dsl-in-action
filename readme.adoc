@@ -214,6 +214,7 @@ Uploaded: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-
     JBosFuse:karaf@root>fabric:container-add-profile demo gpe-fuse
 +
 . Verify that the container has been successfully provisioned and that the `demo` container contains the profiles `feature-camel` and `gpe-fuse`
++
 ----
 JBossFuse:karaf@root> fabric:container-list
 [id]                  [version]  [type]  [connected]  [profiles]                       [provision status]
@@ -238,11 +239,11 @@ fabric:container-add-profile lab gpe-fuse
 
 ## Play with the demo
 
-Open a Windows or Unix Terminal and issue one of the following HTTP requests using curl or httpie tool within the lab project folder
+Open a third Windows or Unix Terminal and issue one of the following HTTP requests using curl or httpie tool within the demo project folder
 
 * Add a user
 
-Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish
+NOTE : Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish
 
     http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
 
