@@ -1,3 +1,5 @@
+:sectanchors: 
+
 # Fuse in Action Demo
 
 This JBoss Fuse demo will demonstrate how the new Apache Camel REST DSL syntax can be used to expose REST Services that we will use to add, search or delete
@@ -73,7 +75,7 @@ Follow these instructions to install and configure JBoss Developer Studio 8.1.0.
 
 # Installation
 
-In order to use the demo, we have to realize these tasks :
+In order to use the demo, we have to realize these tasks which are described hereafter :
 
 * https://github.com/gpe-mw-training/fuse-lab-emea-2015/archive/master.zip[Download] and compile the project locally
 * Edit the hosts file to add an entry
@@ -83,6 +85,7 @@ In order to use the demo, we have to realize these tasks :
 * Create 2 child containers; one will be used as the Elasticsearch Database and the other for the project itself where the Apache Camel Routes will be deployed.
 * Run a Web Container to provide access to the Kibana dashboard
 * Install, configure Apiman & Keycloak servers to secure the REST Services and provide service governance rule
+
 
 ## Compile Project 
 
