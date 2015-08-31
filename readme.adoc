@@ -14,11 +14,8 @@ The Elasticsearch database and the Apache Camel projects will be deployed into d
 A kibana dashboard will be used to analyze the Blog articles published into the database
 
 The CRUD services can be accessed using the new Camel REST component by performing HTTP requests (GET/PUT/DELETE) while the file component will also allow to do a bulk insert of blog articles.
-To do this bulk import, you will create a CSV file containing this record structure `id,user,blog description,title` that you can define several times into the file.
-All the records will be uploaded by the file endpoint, transformed using the `Apache Camel Bindy` Dataformat to a collection of Blog objects.
-Next, each Blog object will be used as input to issue a request to insert a new record within the Elasticsearch database.
 
-For the REST Service responsible to insert an article within the Elasticsearch database, a JSON article `{ "user": "cmoulliard" "postDate": "2015-12-12", "body": "Integration is hard.", "title": "On distributed search" }` message is issued against the REST endpoint `/blog/article/id` using a HTTP GET operation. 
+By example, to use the REST Service responsible to insert an article within the Elasticsearch database, a JSON article `{ "user": "cmoulliard" "postDate": "2015-12-12", "body": "Integration is hard.", "title": "On distributed search" }` message is issued against the REST endpoint `/blog/article/id` using a HTTP GET operation. 
 The content of this HTTP request will be processed by an Apache Camel route as showed hereafter and transformed in order to access the elasticsearch component to call the Elasticsearch database. 
 
 [source,java]
@@ -60,6 +57,39 @@ The following table summaries the Routes used, REST Services exposed and the Bea
 | blog/article/{id} | DELETE | DeleteArticleToElasticRoute | ElasticSearchService.() | DeleteRequest
 |====
 
+To do this bulk import, you will create a CSV file containing this record structure `id,user,blog description,title` that you can define several times into the file.
+All the records will be uploaded by the file endpoint, transformed using the `Apache Camel Bindy` Dataformat to a collection of Blog objects.
+Next, each Blog object will be used as input object to issue a request to insert a new record within the Elasticsearch database using the Bean ElasticSearch.
+
+[source,java]
+----
+from("{{fileUri}}")
+    .log(LoggingLevel.DEBUG,"Records received : ${body}")
+    .unmarshal(csv)
+    .split(body())
+        .setHeader("id").simple("${body.id}")
+        .to("direct:add");
+        
+JacksonDataFormat jacksondf = new JacksonDataFormat(Blog.class);
+
+from("direct:add").id("add-direct-route")
+    .log(LoggingLevel.INFO,"Add new Blog entry service called !")
+
+    .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
+    .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
+    .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_INDEX)
+
+    // Transform Java Object to JSON
+    .marshal(jacksondf)
+
+    // Call the add service of the elasticsearchService POJO to generate the IndexRequest object
+    .beanRef("elasticSearchService", "add")
+
+    // Call the elasticsearch Service to add/insert an entry within the index
+    .to("elasticsearch://{{clustername}}?ip={{address}}")
+    .log("Response received : ${body}");
+----
+
 # Prerequisites
 
 - http://www.jboss.org/download-manager/file/jboss-fuse-6.2.0.GA-full_zip.zip[JBoss Fuse 6.2.GA]
@@ -83,8 +113,8 @@ In order to use the demo, we have to realize these tasks which are described her
 * Edit the etc/users.properties file of the server to define an admin user
 * Create a Fuse Fabric Server and 2 child containers
 * Deploy the Fabric project into the Fabric Server
-* Play with the demo
 * Run a Web Container to provide access to the Kibana dashboard
+* Play with the demo
 * Install, configure Apiman & Keycloak servers to secure the REST Services and provide service governance rule
 
 ## Compile Project 
@@ -236,29 +266,88 @@ fabric:container-add-profile lab gpe-fuse
 ----
 ====
 
-## Play with the demo
+## Use Kibana dashboard
 
-Open a third Windows or Unix Terminal and issue one of the following HTTP requests using curl or httpie tool within the demo project folder
+The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
+The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
+This lab provides a jetty maven goal that we will launch in order to start a local HTTP Server that we can access from the browser
+at this address `ttp://localhost:9090/kibana3/index.html`
 
-### Add a user
-
-NOTE : Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish
-
-    http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
-
-### Search a user
-
-    http http://fusehost:9191/blog/article/search/user/cmoulliard
-
-### Search a user using its ID
-
-    http http://fusehost:9191/blog/article/search/user/1
-
-### Delete a user
-
-    http DELETE http://fusehost:9191/blog/article/1
+. To start locally the HTTP Server, open a Windows or unix terminal and move to the home directory of the project containing the code.
+. Switch to the folder `kibana` and run this maven command `mvn jetty:run`.
++
+----
+mvn jetty:run
+...
+[INFO] Configuring Jetty for project: GPE :: JBoss Fuse :: Kibana 3
+[INFO] Webapp source directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp
+[INFO] Reload Mechanic: automatic
+[INFO] Classes directory /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/target/classes does not exist
+[INFO] Context path = /kibana3
+[INFO] Tmp directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/target/tmp
+[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
+[INFO] Web overrides =  none
+[INFO] web.xml file = file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/WEB-INF/web.xml
+[INFO] Webapp directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp
+2015-08-28 15:18:54.367:INFO:oejs.Server:main: jetty-9.3.0.M1
+2015-08-28 15:18:57.074:INFO:oejsh.ContextHandler:main: Started o.e.j.m.p.JettyWebAppContext@5893efc3{/kibana3,file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/,AVAILABLE}{file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/}
+2015-08-28 15:18:57.091:INFO:oejs.ServerConnector:main: Started ServerConnector@22cf08dc{HTTP/1.1,[http/1.1]}{localhost:9090}
+2015-08-28 15:18:57.092:INFO:oejs.Server:main: Started @5692ms
+[INFO] Started Jetty Server
+----
++
+. When the server is launched, open your browser at the address `ttp://localhost:9090/kibana3/index.html`.
++
+NOTE: The first time, that you will connect to the Dashboard, the index HTML page will display general content about what is the kibana project and how to setup a dashboard and importing the data from the Elasticsearch Database.
++
+image::images/dashboard1.png[]
++
+For the purpose of this lab, we have prepare a dashboard which is already configured with the panels and the type fields that we would like to display graphically using a histogram and list panels.
++
+. In order to add the JSON dashboard document definition to the Elasticsearch server within the `kibana-int` index, you will issue a HTTP request at the root of the `fuse-lab` project.
+  This HTTP request calls a REST service of the Elasticsearch server to insert the `fuse-lab` dashboard type using the `dashboard.json` file as input.
++
+----
+http PUT http://fusehost:9200/kibana-int/dashboard/fuselab < data/elasticsearch/dashboard.json
+----
++
+. Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to load the `fuse-lab` dashboard.
++
+image::images/dashboard2.png[]
++
+The fuse-lab dashboard contain our panels without any data as we haven't yet populated the database with records
++
+image::images/dashboard3.png[]
++
+. To populate data, we will issue some HTTP Requests or upload a CSV file as described hereafter:
+.. Open a third Windows or Unix Terminal and issue one of the following HTTP requests using curl or httpie tool within the demo project folder
+.. Add a user using this Httpie request from the terminal
++
+----
+http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
+----
++
+NOTE: Before to issue the HTTP GET request, you can change the content ofthe Blog Article that you will publish
++
+.. Search the user cmoulliard`
++
+----
+http http://fusehost:9191/blog/article/search/user/cmoulliard
+----
++
+.. Search the user which has been encoded with the id `1`
++
+----
+http http://fusehost:9191/blog/article/search/user/1
+----
++
+.. Delete a user.
++
+----
+http DELETE http://fusehost:9191/blog/article/1
+----
     
-### Bul import
+### Bulk import
 
 In order to perform a buk import of articles within the ElasticSearch database, we will copy/paste the records.csv file from the `$DEMO_DIRECTORY/camel/src/data` directory to the `articles` directory created under the local instance `demo`.
 
@@ -280,99 +369,8 @@ cp $LAB_DIRECTORY/camel/src/data/articles/records.csv $FUSE_HOME/instances/demo/
 ====
 The `articles` directory folder is scanned by the Apache Camel rote `FileToAddServiceRoute`
 ====
-
-## Use Kibana dashboard
-
-The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
-The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
-This lab provides a jetty maven goal that we will launch in order to start a local HTTP Server that we can access from the browser
-at this address `ttp://localhost:9090/kibana3/index.html`
-
-To start locally the HTTP Server, open a Windows or unix terminal and move to the home directory of the project containing the code. Switch to the folder
-`kibana` and run this command.
-
-----
-mvn jetty:run
-...
-[INFO] Configuring Jetty for project: GPE :: JBoss Fuse :: Kibana 3
-[INFO] Webapp source directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp
-[INFO] Reload Mechanic: automatic
-[INFO] Classes directory /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/target/classes does not exist
-[INFO] Context path = /kibana3
-[INFO] Tmp directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/target/tmp
-[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
-[INFO] Web overrides =  none
-[INFO] web.xml file = file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/WEB-INF/web.xml
-[INFO] Webapp directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp
-2015-08-28 15:18:54.367:INFO:oejs.Server:main: jetty-9.3.0.M1
-2015-08-28 15:18:57.074:INFO:oejsh.ContextHandler:main: Started o.e.j.m.p.JettyWebAppContext@5893efc3{/kibana3,file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/,AVAILABLE}{file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/}
-2015-08-28 15:18:57.091:INFO:oejs.ServerConnector:main: Started ServerConnector@22cf08dc{HTTP/1.1,[http/1.1]}{localhost:9090}
-2015-08-28 15:18:57.092:INFO:oejs.Server:main: Started @5692ms
-[INFO] Started Jetty Server
-----
-
-When the server is launched, open your browser at the address `ttp://localhost:9090/kibana3/index.html`. The first time, that you will connect to the Dashboard, the index HTML
-page will display general content about How to create a dashboard and importing the data from the Elasticsearch Database.
-
-image::images/dashboard1.png[]
-
-For the purpose of this lab, we have prepare a dashboard which is already configured with the panels and the type fields that we would like to
-display graphically using a histogram and list panels.
-
-In order to add the JSON dashboard document definition to the Elasticsearch server within th `kibana-int` index, you will issue a HTTP request at the root of the `fuse-lab` project.
-This HTTP request calls a REST service of the Elasticsearch server to insert the `fuse-lab` dashboard type using the `dashboard.json` file as input.
-
-----
-http PUT http://fusehost:9200/kibana-int/dashboard/fuselab < data/elasticsearch/dashboard.json
-----
-
-Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to load the `fuse-lab` dashboard.
-
-image::images/dashboard2.png[]
-
-The fuse-lab dashboard contain our panels without any data as we haven't yet populated the database with records
-
-image::images/dashboard3.png[]
-
-So run the `mvn camel:run` maven goal under the camel project of the directory fuse-lab` to start a local CamelContext.
-
-This context will instantiates the different beans and will start the file and REST endpoints. Then the content of the file `records.csv` located under `camel/src/data/articles` directory will be processed by the file component and injected into the the Elasticsearch database according to the following Apache
-Camel Route definition.
-
-The content of the file is transformed using the `Apache Camel Bindy` component and mapped to a list of Blog objects.
-
-Next, the list is splitted and each Blog object will be send to the `direct:add` endpoint. This endpoint is a service/facade responsible to call the elasticsearch endpoint to add an entry within the `blog` index.
-
-[source,java]
-----
-from("{{fileUri}}")
-    .log(LoggingLevel.DEBUG,"Records received : ${body}")
-    .unmarshal(csv)
-    .split(body())
-        .setHeader("id").simple("${body.id}")
-        .to("direct:add");
-        
-JacksonDataFormat jacksondf = new JacksonDataFormat(Blog.class);
-
-from("direct:add").id("add-direct-route")
-    .log(LoggingLevel.INFO,"Add new Blog entry service called !")
-
-    .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
-    .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
-    .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_INDEX)
-
-    // Transform Java Object to JSON
-    .marshal(jacksondf)
-
-    // Call the add service of the elasticsearchService POJO to generate the IndexRequest object
-    .beanRef("elasticSearchService", "add")
-
-    // Call the elasticsearch Service to add/insert an entry within the index
-    .to("elasticsearch://{{clustername}}?ip={{address}}")
-    .log("Response received : ${body}");
-----
-
-Within your browser, refresh your dashboard and you will see the data.
++
+. Within your browser, refresh your dashboard and you will see the data.
 
 .Lab dashboard with articles
 image::images/dashboard4.png[]
@@ -380,7 +378,6 @@ image::images/dashboard4.png[]
 ## Security governance with Apiman & Keycloak
 
 TODO
-
 
 # Install cmd to deploy the Kibana3 war
 
@@ -489,7 +486,7 @@ http http://fusehost:9200/blog/article/2
 
 # Minimal installation
 
-You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` or the profile `insight-elasticsearch.datastore` if a fabric server has been deployed into the JBoss Fuse 6.2.
+You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` or the profile `insight-elasticsearch.datastore` if a fabric server has been deployed into the JBoss Fuse .2.
 
 . Open a Windows or Unix terminal and move to the directory `fuse-rest-dsl-demo-master/routing`
 . Launch Apache Camel
@@ -499,7 +496,48 @@ You can also run the project locally using `mvn camel:run` at the condition that
 . Control that Apache Camel has been started 
 
 ----
-
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Apache Camel 2.15.1.redhat-620133 (CamelContext: camel-1) is starting
+[         Blueprint Extender: 3] ManagedManagementStrategy      INFO  JMX is enabled
+[         Blueprint Extender: 3] ElasticsearchEndpoint          INFO  Joining ElasticSearch cluster insight
+[         Blueprint Extender: 3] ElasticsearchEndpoint          INFO  REMOTE ELASTICSEARCH: fusehost
+[         Blueprint Extender: 3] plugins                        INFO  [Sack] loaded [], sites []
+[         Blueprint Extender: 3] JacksonDataFormat              INFO  Registering module: com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule@5ce285fa
+[         Blueprint Extender: 3] JacksonDataFormat              INFO  Registering module: com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule@5272a5f
+[         Blueprint Extender: 3] JacksonDataFormat              INFO  Registering module: com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule@3fd6ac8d
+[         Blueprint Extender: 3] JacksonDataFormat              INFO  Registering module: com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule@37ec4ba9
+[         Blueprint Extender: 3] JacksonDataFormat              INFO  Registering module: com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule@354718b0
+[         Blueprint Extender: 3] JacksonDataFormat              INFO  Registering module: com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule@5971c095
+[         Blueprint Extender: 3] JacksonDataFormat              INFO  Registering module: com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule@4ace6503
+[         Blueprint Extender: 3] JacksonDataFormat              INFO  Registering module: com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule@4683ea40
+[         Blueprint Extender: 3] HttpComponent                  INFO  Created ClientConnectionManager org.apache.http.impl.conn.PoolingHttpClientConnectionManager@79d51938
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  AllowUseOriginalMessage is enabled. If access to the original message is not needed, then its recommended to turn this option off as it may improve performance.
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  StreamCaching is not in use. If using streams then its recommended to enable stream caching. See more details at http://camel.apache.org/stream-caching.html
+[         Blueprint Extender: 3] JacksonDataFormat              INFO  Registering module: com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule@4576c19b
+[         Blueprint Extender: 3] FileEndpoint                   INFO  Endpoint is configured with noop=true so forcing endpoint to be idempotent as well
+[         Blueprint Extender: 3] FileEndpoint                   INFO  Using default memory based idempotent repository with cache max size: 1000
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Route: add-direct-route started and consuming from: Endpoint[direct://add]
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Route: remove-direct-route started and consuming from: Endpoint[direct://remove]
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Route: file-marshal-split-service started and consuming from: Endpoint[file://src/data/articles?noop=true]
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Route: route1 started and consuming from: Endpoint[direct://error]
+[         Blueprint Extender: 3] JettyHttpComponent             INFO  Using default Jetty continuation timeout for: Endpoint[http://0.0.0.0:9191/blog/article/search/id/%7Bid%7D?httpMethodRestrict=GET]
+[         Blueprint Extender: 3] Server                         INFO  jetty-8.1.17.v20150415
+[         Blueprint Extender: 3] AbstractConnector              INFO  Started SelectChannelConnector@0.0.0.0:9191
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Route: rest-searchbyid started and consuming from: Endpoint[http://0.0.0.0:9191/blog/article/search/id/%7Bid%7D?httpMethodRestrict=GET]
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Route: rest-searchbyuser started and consuming from: Endpoint[http://0.0.0.0:9191/blog/article/search/user/%7Buser%7D?httpMethodRestrict=GET]
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Route: rest-put-article started and consuming from: Endpoint[http://0.0.0.0:9191/blog/article/%7Bid%7D?httpMethodRestrict=PUT]
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Route: rest-deletearticle started and consuming from: Endpoint[http://0.0.0.0:9191/blog/article/%7Bid%7D?httpMethodRestrict=DELETE]
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Route: searchbyid-direct-route started and consuming from: Endpoint[direct://searchById]
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Route: searchbyuser-direct-route started and consuming from: Endpoint[direct://searchByUser]
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Route: searchbyuser2-direct-route started and consuming from: Endpoint[direct://searchByUser2]
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Total 11 routes, of which 11 is started.
+[         Blueprint Extender: 3] BlueprintCamelContext          INFO  Apache Camel 2.15.1.redhat-620133 (CamelContext: camel-1) started in 0.660 seconds
+[ #0 - file://src/data/articles] add-direct-route               INFO  Add new Blog entry service called !
+[ #0 - file://src/data/articles] add-direct-route               INFO  Response received : 1
+[ #0 - file://src/data/articles] add-direct-route               INFO  Add new Blog entry service called !
+[ #0 - file://src/data/articles] add-direct-route               INFO  Response received : 2
+[ #0 - file://src/data/articles] add-direct-route               INFO  Add new Blog entry service called !
+[ #0 - file://src/data/articles] add-direct-route               INFO  Response received : 3
+...
 ----    
 
 NOTE : Additional OSGI parameters could be defined for the elasticsearch database using the `io.fabric8.elasticsearch-insight.cfg` file deployed into the `etc` folder of JBoss Fuse.
