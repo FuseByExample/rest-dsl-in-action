@@ -7,6 +7,8 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
 import org.apache.camel.model.dataformat.CsvDataFormat;
+import org.apache.camel.processor.ErrorHandler;
+import org.elasticsearch.client.transport.NoNodeAvailableException;
 
 import java.util.List;
 
@@ -17,11 +19,15 @@ public class FileToAddServiceRoute extends RouteBuilder {
         BindyCsvDataFormat csv = new BindyCsvDataFormat(Blog.class);
         
         from("{{fileUri}}").id(("file-marshal-split-service"))
-            .log(LoggingLevel.DEBUG,"Records received : ${body}")
+            .onException(NoNodeAvailableException.class).maximumRedeliveries(2).to("direct://error").handled(true).end()
+            .log(LoggingLevel.DEBUG, "Records received : ${body}")
             .unmarshal(csv)
             .split(body())
                 .setHeader("id").simple("${body.id}")
                 .to("direct:add");
+        
+        from("direct://error")
+           .log("No node Elasticsearch server is available");
 
     }
 }
