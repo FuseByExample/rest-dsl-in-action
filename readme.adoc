@@ -272,6 +272,7 @@ In order to perform a buk import of articles within the ElasticSearch database, 
     export DEMO_DIRECTORY=/Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-demo/
     
 . Copy the file 
++
 ----    
 cp $LAB_DIRECTORY/camel/src/data/articles/records.csv $FUSE_HOME/instances/demo/articles/
 ----
@@ -279,7 +280,6 @@ cp $LAB_DIRECTORY/camel/src/data/articles/records.csv $FUSE_HOME/instances/demo/
 [NOTE]
 ====
 The `articles` directory folder is scanned by the Apache Camel rote `FileToAddServiceRoute`
-
 ====
    
 ----
@@ -431,10 +431,11 @@ Does not work with Fabric & Fuse 6.2 - https://issues.jboss.org/browse/ENTESB-28
 
 - Delete and recreate kibana-int index
 
-  ----
-  http DELETE http://fusehost:9200/kibana-int
-  http PUT http://fusehost:9200/kibana-int
-  ----
+----
+http DELETE http://fusehost:9200/kibana-int
+http PUT http://fusehost:9200/kibana-int
+----
+  
 - Add fuse-lab dashboard
 
   ----
