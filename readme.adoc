@@ -213,21 +213,22 @@ Uploaded: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-
 +
     JBosFuse:karaf@root>fabric:container-add-profile demo gpe-fuse
 +
-. Verify that the container has been successfully provisioned and 
+. Verify that the container has been successfully provisioned and that the `demo` container contains the profiles `feature-camel` and`gpe-fuse`
 ---
-JBossFuse:karaf@root>fabric:container-list
-[id]                 [version]  [type]  [connected]  [profiles]                       [provision status]
+JBossFuse:karaf@root> fabric:container-list
+[id]                  [version]  [type]  [connected]  [profiles]                       [provision status]
 root*                 1.0        karaf   yes          fabric                           success
                                                       fabric-ensemble-0000-1
                                                       jboss-fuse-full
-  elasticsearch-node  1.0        karaf   yes          insight-elasticsearch.datastore  success
-  demo                1.0        karaf   yes          feature-camel                    success
+  elasticsearch-node  1.0        karaf   no           insight-elasticsearch.datastore  success
+  demo                1.0        karaf   no           feature-camel                    success
+                                                      gpe-fuse
 ----
-
++
 NOTE
 ====
-If you change th code of this lab, then redeploy if after doing a maven installation and running this command `mvn fabric8:deploy`.
-Next, the profile can updated on the container using these commands
+If you change the code of this demo, then you can redeploy if after doing a `mvn clean install` followed by the `mvn fabric8:deploy` command.
+Next, remove and add again the profile to the Fuse Container using these Fabric commands
 
 ----
 fabric:container-remove-profile lab gpe-fuse
