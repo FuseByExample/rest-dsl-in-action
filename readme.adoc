@@ -261,9 +261,9 @@ NOTE : Before to issue the HTTP GET request, you can change the content of the B
     
 ### Bul import
 
-In order to perform a buk import of articles within the ElasticSearch database, we will copy/paste the records.csv file from the $DEMO_DIRECTORY/camel/src/data` directory to the `articles` directory created under the local instance demo`
+In order to perform a buk import of articles within the ElasticSearch database, we will copy/paste the records.csv file from the `$DEMO_DIRECTORY/camel/src/data` directory to the `articles` directory created under the local instance `demo`.
 
-. Create the FUSE_HOME` ENV variable to point to the home directory of the installation directory of JBoss Fuse
+. Create the `FUSE_HOME` ENV variable to point to the home directory of the installation directory of JBoss Fuse
 
     export FUSE_HOME=/Users/chmoulli/Fuse/Fuse-servers/jboss-fuse-6.2.0.redhat-133
 
@@ -278,7 +278,7 @@ cp $LAB_DIRECTORY/camel/src/data/articles/records.csv $FUSE_HOME/instances/demo/
 +
 [NOTE]
 ====
-The `articles` directory folder is scanned by the Apache Camel route `FileToAddServiceRoute`
+The `articles` directory folder is scanned by the Apache Camel rote `FileToAddServiceRoute`
 
 ====
    
