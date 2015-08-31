@@ -228,7 +228,7 @@ root*                 1.0        karaf   yes          fabric                    
 +
 [NOTE]
 ====
-If you change the code of this demo, then you can redeploy if after doing a `mvn clean install` followed by the `mvn fabric8:deploy` command.
+If you change the code of this demo, then you can redeploy if after doig a `mvn clean install` followed by the `mvn fabric8:deploy` command.
 Next, remove and add again the profile to the Fuse Container using these Fabric commands
 
 ----
@@ -247,26 +247,42 @@ NOTE : Before to issue the HTTP GET request, you can change the content of the B
 
     http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
 
-* Search a user
+### Search a user
 
     http http://fusehost:9191/blog/article/search/user/cmoulliard
 
-* Search a user using its ID
+### Search a user using its ID
 
     http http://fusehost:9191/blog/article/search/user/1
 
-* Delete a user
+### Delete a user
 
     http DELETE http://fusehost:9191/blog/article/1
     
-* Copy the records.csv file
+### Bul import
 
-Copy/paste the records.csv file from the $LAB_DIRECTORY/camel/src/data directory to the `articles` directory created the local instance `ontainer `lab`
-    
+In order to perform a buk import of articles within the ElasticSearch database, we will copy/paste the records.csv file from the $DEMO_DIRECTORY/camel/src/data` directory to the `articles` directory created under the local instance demo`
+
+. Create the FUSE_HOME` ENV variable to point to the home directory of the installation directory of JBoss Fuse
+
     export FUSE_HOME=/Users/chmoulli/Fuse/Fuse-servers/jboss-fuse-6.2.0.redhat-133
-    export LAB_DIRECTORY=/Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab
-    cp $LAB_DIRECTORY/camel/src/data/articles/records.csv $FUSE_HOME/instances/lab/articles/
 
+. Create the `DEMO_DIRECTORY` ENV variable to point to the folder containing the demo project
+
+    export DEMO_DIRECTORY=/Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-demo/
+    
+. Copy the file 
+----    
+cp $LAB_DIRECTORY/camel/src/data/articles/records.csv $FUSE_HOME/instances/demo/articles/
+----
++
+[NOTE]
+====
+The `articles` directory folder is scanned by the Apache Camel route `FileToAddServiceRoute`
+
+====
+   
+----
 ## Use Kibana dashboard
 
 The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
