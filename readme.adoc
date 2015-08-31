@@ -116,13 +116,13 @@ Zookeeper server.
 ## Create a Fuse Fabric Server and 2 child containers
 
 . Next, within the Fuse Karaf console, issue this shell command `shell:source mvn:com.redhat.gpe/fuse/1.0/script/install` ro run using the script a series of commands
-
++
 [NOTE]
 ====
 The shell script contains some Fabric subshell commands responsible to setup the Fabric server and two containers (elasticsearch-node and demo). The first child container will be used as Elasticsearch
 database server and the demo Fuse managed container to run the Apache Camel Routes and expose the REST and File endpoints.
 ====
-
++
 ----
 $JBOSS_FUSE_INSTALL/bin/fuse
 
@@ -156,7 +156,7 @@ JBossFuse:karaf@root>shell:source mvn:com.redhat.gpe/fuse/1.0/script/install
 After a few moments, the server will report on the console that the Fabric Server and the 2 child containers have been created.
 +
 ----
-Waitingfor container: root
+Waiting for container: root
 Waiting for container root to provision.
 
 Creating new instance on SSH port 8102 and RMI ports 1100/44445 at: /Users/chmoulli/Fuse/Fuse-servers/jboss-fuse-6.2.0.redhat-133/instances/elasticsearch-node
