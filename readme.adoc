@@ -96,8 +96,9 @@ mvn clean install
 
 ## Edit Host file
 
-Edit the /etc/hosts file and add an entry to map the hostname `fusehost` with the IP address of the machine to be used. The value could be your local loopback address
-`127.0.0.1`, the Ethernet address assigned by the network card used (wifi, local network). The hostname is used by the ElasticSearch server to register the socket server when it is 
+. Edit the /etc/hosts file and add an entry to map the hostname `fusehost` with the IP address of the machine to be used. 
++
+NOTE:  The value could be your local loopback address `127.0.0.1`, the Ethernet address assigned by the network card used (wifi, local network). The hostname is used by the ElasticSearch server to register the socket server when it is
 started and also by the Apache Camel Elasticsearch component to access the server. Also, the Fuse Fabric Server will use it to assign an IP address to the socket server of the Apache
 Zookeeper server.
 
