@@ -26,11 +26,12 @@ The content of this HTTP request will be processed by an Apache Camel route as s
 The following table summaries the Routes used, REST Services exposed and the Bean Methods called like the Object type used to call the ElasticSearch database
 
 |====
-Route | Rest service | Bean method | Object Type
-
+| Rest URl | Operation | Route | Bean method | ElasticSearch Class Type
+| /blog/article/ | PUT | AddArticleToElasticRoute | ElasticSearchService.add() | IndexRequest
+| blog/article/search/user/{user} | GET | SearchArticleToElasticRoute | ElasticSearchService.getBlog() | GetResponse
+| blog/article/search/id/{id} | GET | SearchArticleToElasticRoute | ElasticSearchService.getBlogs() | SearchResponse
+| blog/article/{id} | DELETE | DeleteArticleToElasticRoute | ElasticSearchService.() | DeleteRequest
 |====
-
-
 
 # Prerequisites
 
