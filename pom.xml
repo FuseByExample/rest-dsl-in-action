@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.redhat.gpe</groupId>
-    <artifactId>fuse-lab</artifactId>
+    <artifactId>fuse-rest-dsl-demo</artifactId>
     <version>1.0</version>
 
-    <name>GPE :: JBoss Fuse :: Lab</name>
+    <name>JBoss Fuse :: REST DSL Demo :: Project</name>
 
     <packaging>pom</packaging>
 

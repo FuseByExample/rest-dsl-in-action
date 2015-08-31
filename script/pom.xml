@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.redhat.gpe</groupId>
-        <artifactId>fuse-lab</artifactId>
+        <artifactId>fuse-rest-dsl-demo</artifactId>
         <version>1.0</version>
     </parent>
 
     <artifactId>fuse</artifactId>
     <version>1.0</version>
 
-    <name>GPE :: JBoss Fuse :: Script</name>
+    <name>JBoss Fuse :: REST DSL Demo :: Script</name>
 
     <build>
         <defaultGoal>install</defaultGoal>
