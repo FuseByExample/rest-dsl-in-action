@@ -1,16 +1,10 @@
-package com.redhat.gpe.route;
+package org.jboss.fuse.route;
 
-import com.redhat.gpe.model.Blog;
-import org.apache.camel.Exchange;
+import org.jboss.fuse.model.Blog;
 import org.apache.camel.LoggingLevel;
-import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
-import org.apache.camel.model.dataformat.CsvDataFormat;
-import org.apache.camel.processor.ErrorHandler;
 import org.elasticsearch.client.transport.NoNodeAvailableException;
-
-import java.util.List;
 
 public class FileToAddServiceRoute extends RouteBuilder {
     @Override

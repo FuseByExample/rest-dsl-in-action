@@ -4,7 +4,7 @@
            xsi:schemaLocation="
            http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
 
-    <cm:property-placeholder id="lab-properties" persistent-id="com.redhat.gpe.lab">
+    <cm:property-placeholder id="lab-properties" persistent-id="org.jboss.fuse.demo">
         <cm:default-properties>
             <cm:property name="clustername" value="insight"/>
             <cm:property name="address" value="fusehost"/>
@@ -15,14 +15,14 @@
         </cm:default-properties>
     </cm:property-placeholder>
     
-    <bean id="elasticSearchService" class="com.redhat.gpe.service.ElasticSearchService" init-method="init" destroy-method="shutdown"/>
+    <bean id="elasticSearchService" class="org.jboss.fuse.service.ElasticSearchService" init-method="init" destroy-method="shutdown"/>
 
     <camelContext trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 
         <propertyPlaceholder id="properties" location="blueprint:lab-properties"/>
         
         <packageScan>
-            <package>com.redhat.gpe.route</package>
+            <package>org.jboss.fuse.route</package>
         </packageScan>
     </camelContext>
 

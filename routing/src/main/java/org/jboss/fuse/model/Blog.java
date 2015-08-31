@@ -1,4 +1,4 @@
-package com.redhat.gpe.model;
+package org.jboss.fuse.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

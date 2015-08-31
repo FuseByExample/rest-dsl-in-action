@@ -1,9 +1,8 @@
-package com.redhat.gpe.route;
+package org.jboss.fuse.route;
 
-import com.redhat.gpe.model.Blog;
-import com.redhat.gpe.service.ElasticSearchService;
+import org.jboss.fuse.model.Blog;
+import org.jboss.fuse.service.ElasticSearchService;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.jackson.JacksonDataFormat;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

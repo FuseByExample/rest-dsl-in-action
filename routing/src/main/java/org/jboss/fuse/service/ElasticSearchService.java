@@ -1,7 +1,7 @@
-package com.redhat.gpe.service;
+package org.jboss.fuse.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.redhat.gpe.model.Blog;
+import org.jboss.fuse.model.Blog;
 import org.apache.camel.Body;
 import org.apache.camel.Header;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;

@@ -29,7 +29,7 @@ http http://fusehost:8183/rest/blog/article/search/id/1
 Without Fabric
 
 features:install war
-install -s webbundle:mvn:com.redhat.gpe/kibana/1.0/war?Web-ContextPath=/kibana3
+install -s webbundle:mvn:org.jboss.fuse/kibana/1.0/war?Web-ContextPath=/kibana3
 
 Does not work with Fabric & Fuse 6.2 - https://issues.jboss.org/browse/ENTESB-2831[see ENTESB-2831]
 ----

@@ -1,7 +1,7 @@
-package com.redhat.gpe.route;
+package org.jboss.fuse.route;
 
-import com.redhat.gpe.model.Blog;
-import com.redhat.gpe.service.ElasticSearchService;
+import org.jboss.fuse.model.Blog;
+import org.jboss.fuse.service.ElasticSearchService;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.component.elasticsearch.ElasticsearchConfiguration;
 import org.apache.camel.component.jackson.JacksonDataFormat;

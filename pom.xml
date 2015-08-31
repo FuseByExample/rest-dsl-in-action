@@ -4,11 +4,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.redhat.gpe</groupId>
-    <artifactId>fuse-rest-dsl-demo</artifactId>
+    <groupId>org.jboss.fuse</groupId>
+    <artifactId>camel-rest-dsl-demo</artifactId>
     <version>1.0</version>
 
-    <name>JBoss Fuse :: REST DSL Demo :: Project</name>
+    <name>FuseByExample :: REST DSL Demo :: Project</name>
 
     <packaging>pom</packaging>
 

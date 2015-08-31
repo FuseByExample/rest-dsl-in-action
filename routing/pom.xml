@@ -4,15 +4,15 @@
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.redhat.gpe</groupId>
-        <artifactId>fuse-rest-dsl-demo</artifactId>
+        <groupId>org.jboss.fuse</groupId>
+        <artifactId>camel-rest-dsl-demo</artifactId>
         <version>1.0</version>
     </parent>
 
     <artifactId>routing</artifactId>
     <version>1.0</version>
 
-    <name>JBoss Fuse :: REST DSL Demo :: Routing</name>
+    <name>FuseByExample :: REST DSL Demo :: Routing</name>
 
     <packaging>bundle</packaging>
 
@@ -133,7 +133,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>fuse-lab</Bundle-SymbolicName>
-                        <Private-Package>com.redhat.gpe.*</Private-Package>
+                        <Private-Package>org.jboss.fuse.*</Private-Package>
                         <Import-Package>
                             org.json;resolution:=optional,
                             org.apache.camel.component.jetty,

@@ -144,7 +144,7 @@ Zookeeper server.
 
 ## Create a Fuse Fabric Server and 2 child containers
 
-. Next, within the Fuse Karaf console, issue this shell command `shell:source mvn:com.redhat.gpe/fuse/1.0/script/install` ro run using the script a series of commands
+. Next, within the Fuse Karaf console, issue this shell command `shell:source mvn:org.jboss.fuse/fuse/1.0/script/install` ro run using the script a series of commands
 +
 [NOTE]
 ====
@@ -178,7 +178,7 @@ or join an existing Fabric via 'fabric:join [someUrls]'
 
 Hit '<ctrl-d>' or 'osgi:shutdown' to shutdown JBoss Fuse.
 
-JBossFuse:karaf@root>shell:source mvn:com.redhat.gpe/fuse/1.0/script/install
+JBossFuse:karaf@root>shell:source mvn:org.jboss.fuse/deployment/1.0/script/install
 ...
 ----
 +
@@ -228,7 +228,7 @@ Uploaded: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-
 [INFO]
 [INFO] Profile page: http://127.0.0.1:8181/hawtio/index.html#/wiki/branch/1.0/view/fabric/profiles/gpe/fuse.profile
 [INFO]
-[INFO] Uploading file com.redhat.gpe.lab.properties to invoke mbean io.fabric8:type=Fabric on jolokia URL: http://localhost:8181/jolokia with user: admin
+[INFO] Uploading file org.jboss.fuse.demo.properties to invoke mbean io.fabric8:type=Fabric on jolokia URL: http://localhost:8181/jolokia with user: admin
 [INFO] Uploading file fuse-lab1.png to invoke mbean io.fabric8:type=Fabric on jolokia URL: http://localhost:8181/jolokia with user: admin
 [INFO] Uploading file Readme.md to invoke mbean io.fabric8:type=Fabric on jolokia URL: http://localhost:8181/jolokia with user: admin
 [INFO] Performing profile refresh on mbean: io.fabric8:type=Fabric version: 1.0 profile: gpe-fuse
@@ -279,7 +279,7 @@ at this address `ttp://localhost:9090/kibana3/index.html`
 ----
 mvn jetty:run
 ...
-[INFO] Configuring Jetty for project: GPE :: JBoss Fuse :: Kibana 3
+[INFO] Configuring Jetty for project: GPE :: FuseByExample :: Kibana 3
 [INFO] Webapp source directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp
 [INFO] Reload Mechanic: automatic
 [INFO] Classes directory /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/target/classes does not exist
@@ -446,7 +446,7 @@ http http://fusehost:9200/blog/article/2
 
 You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` or the profile `insight-elasticsearch.datastore` if a fabric server has been deployed into the JBoss Fuse .2.
 
-. Open a Windows or Unix terminal and move to the directory `fuse-rest-dsl-demo-master/routing`
+. Open a Windows or Unix terminal and move to the directory `camel-rest-dsl-demo-master/routing`
 . Launch Apache Camel
 
     mvn camel:run

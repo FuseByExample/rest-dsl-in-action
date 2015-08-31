@@ -1,6 +1,6 @@
-package com.redhat.gpe.route;
+package org.jboss.fuse.route;
 
-import com.redhat.gpe.service.ElasticSearchService;
+import org.jboss.fuse.service.ElasticSearchService;
 import org.apache.camel.Exchange;
 import org.apache.camel.component.elasticsearch.ElasticsearchConfiguration;
 import org.slf4j.Logger;
