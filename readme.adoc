@@ -226,7 +226,7 @@ root*                 1.0        karaf   yes          fabric                    
                                                       gpe-fuse
 ----
 +
-NOTE
+[NOTE]
 ====
 If you change the code of this demo, then you can redeploy if after doing a `mvn clean install` followed by the `mvn fabric8:deploy` command.
 Next, remove and add again the profile to the Fuse Container using these Fabric commands
