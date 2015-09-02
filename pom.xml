@@ -98,6 +98,7 @@
         <module>routing</module>
         <module>kibana</module>
         <module>script</module>
+        <module>security</module>
     </modules>
 
     <repositories>
