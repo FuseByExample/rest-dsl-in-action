@@ -484,8 +484,40 @@ WARNING: We will use the verify=no option of httpie to skip the host's SSL certi
 . Check the response
 +
 ----
+http --verify=no https://localhost:8443/apiman-gateway/fuse/blog-service/1.0/search/user/cmoulliard
+HTTP/1.1 200 OK
+Accept: */*
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Content-Type: application/json
+Date: Thu, 03 Sep 2015 13:00:34 GMT
+Server: Jetty(8.1.17.v20150415)
+Transfer-Encoding: chunked
+User-Agent: HTTPie/0.9.2
+X-Powered-By: Undertow/1
+breadcrumbId: ID-dabou-local-62090-1441284856992-0-11
+indexName: blog
+indexType: post
+user: cmoulliard
+
+[
+    {
+        "body": "Integration is hard. Integration should be easy.", 
+        "id": "1", 
+        "postDate": "2015-08-10T10:10", 
+        "title": "On distributed search", 
+        "user": "cmoulliard"
+    }
+]
+
 ----
 
+TODO: Verify how we can change the ${container:ip} variable
+Add config edit property "io.fabric8.elasticsearch-insight" to set this variable "network.host" to fusehost or 127.0.0.1
+
+----
+fabric:profile-edit --pid io.fabric8.elasticsearch-insight/network.host=127.0.0.1 insight-elasticsearch.node
+----
 
 # Replay
 
