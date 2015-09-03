@@ -266,6 +266,15 @@ fabric:container-add-profile lab gpe-fuse
 ----
 ====
 
+## Define Elasticsearch Data Mapping
+
+. Run these commands against the ElasticSearch node to create the Blog index and define the mapping of the fields
+----
+http PUT http://fusehost:9200/blog
+http PUT http://fusehost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
+http http://fusehost:9200/blog/_mapping/article
+----
+
 ## Use Kibana dashboard
 
 The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
@@ -487,7 +496,6 @@ If, for any reason, you would like to restart the demo from the beginning. Then,
 +
 NOTE: It will kill the jvm instances and delete the instances and some sub-folders defined under the data folder.
 . Stop the jetty web container started using the command `mvn jetty:run`
-
 
 # Troubleshooting
 
