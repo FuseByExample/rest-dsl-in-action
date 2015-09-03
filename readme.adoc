@@ -266,6 +266,14 @@ fabric:container-add-profile lab gpe-fuse
 ----
 ====
 
+TODO: Verify how we can change the ${container:ip} variable & Why an IP address is required
+. Add config edit property "io.fabric8.elasticsearch-insight" to set this variable "network.host" to fusehost or 127.0.0.1
+
+----
+fabric:profile-edit --pid io.fabric8.elasticsearch-insight/network.host=127.0.0.1 insight-elasticsearch.node
+----
+
+
 ## Define Elasticsearch Data Mapping
 
 . Run these commands against the ElasticSearch node to create the Blog index and define the mapping of the fields
@@ -510,13 +518,6 @@ user: cmoulliard
     }
 ]
 
-----
-
-TODO: Verify how we can change the ${container:ip} variable
-Add config edit property "io.fabric8.elasticsearch-insight" to set this variable "network.host" to fusehost or 127.0.0.1
-
-----
-fabric:profile-edit --pid io.fabric8.elasticsearch-insight/network.host=127.0.0.1 insight-elasticsearch.node
 ----
 
 # Replay
