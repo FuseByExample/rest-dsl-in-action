@@ -377,6 +377,44 @@ image::images/dashboard4.png[]
 
 ## Security governance with Apiman & Keycloak
 
+TODO : Describe what we will do here.
+
+. Download [WildFly](http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip) & [Apiman 1.1.7.Final overlay for WildFly 8.2](http://downloads.jboss.org/apiman/1.1.7.Final/apiman-distro-wildfly8-1.1.7.Final-overlay.zip)
+. Unpack the WildFly 8.2 zip
+. Unpack the apiman 1.1.7.Final WildFly 8 overlay zip inside the wildfly directory
+. Start WildFly 8 using the "standalone-apiman.xml" configuration
+. Point your browser at the apiman UI and login with admin/admin123!
++
+[NOTE]
+====
+You can use this list of instructions to download and install Apiman
+
+----
+mkdir ~/apiman-1.1.7.Final
+cd ~/apiman-1.1.7.Final
+curl http://downloads.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip -o wildfly-8.2.0.Final.zip
+curl http://downloads.jboss.org/apiman/1.1.7.Final/apiman-distro-wildfly8-1.1.7.Final-overlay.zip -o apiman-distro-wildfly8-1.1.7.Final-overlay.zip
+unzip wildfly-8.2.0.Final.zip
+unzip -o apiman-distro-wildfly8-1.1.7.Final-overlay.zip -d wildfly-8.2.0.Final
+cd wildfly-8.2.0.Final
+./bin/standalone.sh -c standalone-apiman.xml
+----
+====
++
+Now that our Apiman server has been launched, we will create an organization, configure the service that we would like to manage and different security policies (Basic Authentication, OAuth & Limit rates) that we will use for this demo.
++
+. Open your web browser at this address `http://localhost:8080/apimanui/` and encode `admin` for the username and`admin123!` as password to access the application.
+
+image::images/apiman-login.png[]
+
+. If the authentication succeeds, then you will be redirected to the `api management screen`
+
+image::images/apiman-management.png[]
+.
+
+
+
+
 TODO
 
 # Replay
@@ -387,7 +425,7 @@ If, for any reason, you would like to restart the demo from the beginning. Then,
 . Run this script `./bin/deletefabric8`. 
 +
 NOTE: It will kill the jvm instances and delete the instances and some sub-folders defined under the data folder.
-. Stop the jtty web container started using the command `mvn jetty:run`
+. Stop the jetty web container started using the command `mvn jetty:run`
 
 
 # Troubleshooting
