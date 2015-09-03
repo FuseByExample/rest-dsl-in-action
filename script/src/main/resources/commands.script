@@ -1,6 +1,6 @@
 http DELETE http://fusehost:9200/blog
 http PUT http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
+http PUT http://fusehost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
 http http://fusehost:9200/blog/_mapping/article
 
 http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
