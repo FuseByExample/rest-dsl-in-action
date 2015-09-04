@@ -572,11 +572,11 @@ curl 'http://fusehost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
 ----
 http DELETE http://fusehost:9200/blog
 http PUT http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
+http PUT http://fusehost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
 http http://fusehost:9200/blog/_mapping/article
 
-http PUT http://fusehost:9200/blog/article/1 < camel/data/elasticsearch/entry.json
-http PUT http://fusehost:9200/blog/article/2 < camel/data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/1 < data/elasticsearch/entry.json
+http PUT http://fusehost:9200/blog/article/2 < data/elasticsearch/entry.json
 
 http http://fusehost:9200/blog/article/1
 http http://fusehost:9200/blog/article/2
