@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REALM=demo
+REALM=fuse
 USER=demo
 PASSWORD=demo
 HOST=127.0.0.1
