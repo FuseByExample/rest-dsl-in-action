@@ -584,18 +584,25 @@ image::images/apiman-add-oauth2-plugin2.png[]
 
 image::images/keycloak-addrealm.png[]
 
-. Change Direct Grant Api
+. Change Direct Grant Api for the Fuse Realm
 
 image::images/keycloak-usedirectgrantapi.png[]
 
 . Add a client
 
+image::images/keycloak-addclient.png[]
+
+. Change Direct Grant Api
+
+
 image::images/keycloak-switchtopublicanddirectgrant.png[]
-image::images/keycloak-addcliuent.png[]
 
 . Add a user
 
 image::images/keycloak-adduser-password.png[]
+
+. Change password and disable to reset password
+
 image::images/keycloak-adduser.png[]
 
 . Create a new service version 3
