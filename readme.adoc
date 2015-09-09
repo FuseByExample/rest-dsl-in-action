@@ -582,9 +582,16 @@ image::images/apiman-add-oauth2-plugin2.png[]
 
 . Setup Keycloak realm
 
-image::images/keycloak-switchtopublicanddirectgrant.png[]
-image::images/keycloak-usedirectgrantapi.png[]
 image::images/keycloak-addrealm.png[]
+
+. Change Direct Grant Api
+
+image::images/keycloak-usedirectgrantapi.png[]
+
+. Add a client
+
+image::images/keycloak-switchtopublicanddirectgrant.png[]
+image::images/keycloak-addcliuent.png[]
 
 . Add a user
 
