@@ -261,8 +261,8 @@ If you change the code of this demo, then you can redeploy if after doig a `mvn 
 Next, remove and add again the profile to the Fuse Container using these Fabric commands
 
 ----
-fabric:container-remove-profile lab gpe-fuse
-fabric:container-add-profile lab gpe-fuse
+fabric:container-remove-profile demo gpe-fuse
+fabric:container-add-profile demo gpe-fuse
 ----
 ====
 
@@ -313,7 +313,7 @@ mvn jetty:run
 [INFO] Started Jetty Server
 ----
 +
-. When the server is launched, open your browser at the address `ttp://localhost:9090/kibana3/index.html`.
+. When the server is launched, open your browser at the address `http://localhost:9090/kibana3/index.html`.
 +
 NOTE: The first time, that you will connect to the Dashboard, the index HTML page will display general content about what is the kibana project and how to setup a dashboard and importing the data from the Elasticsearch Database.
 +
@@ -374,12 +374,12 @@ In order to perform a buk import of articles within the ElasticSearch database, 
 
 . Create the `DEMO_DIRECTORY` ENV variable to point to the folder containing the demo project
 
-    export DEMO_DIRECTORY=/Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-demo/
+    export DEMO_DIRECTORY=/Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-rest-dsl-demo/
     
 . Copy the file 
 +
 ----    
-cp $LAB_DIRECTORY/camel/src/data/articles/records.csv $FUSE_HOME/instances/demo/articles/
+cp $DEMO_DIRECTORY/routing/src/data/articles/records.csv $FUSE_HOME/instances/demo/articles/
 ----
 +
 [NOTE]
@@ -519,6 +519,10 @@ user: cmoulliard
 ]
 
 ----
+
+We will define a new security rule to be able to authenticate the HTTP request calling now the service 
+
+.
 
 # Replay
 
