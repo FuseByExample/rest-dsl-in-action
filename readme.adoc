@@ -522,8 +522,20 @@ user: cmoulliard
 
 We will define a new security rule to be able to authenticate the HTTP request calling now the service 
 
-. Intsructions to duplicate the service
+. Instructions to duplicate the service
 . Use Basic authentication
+
+image::images/apiman-blogservice-newservice-basic.png[]
+image::images/apiman-blogservice-newservice-basic1.png[]
+image::images/apiman-blogservice-newservice-addpolicy.png[]
+image::images/apiman-blogservice-newservice-addpolicy1.png[]
+image::images/apiman-blogservice-newservice-addpolicy2.png[]
+image::images/apiman-blogservice-newservice-addpolicy3.png[]
+image::images/apiman-blogservice-newservice-addpolicy4.png[]
+image::images/apiman-blogservice-newservice-addpolicy5.png[]
+image::images/apiman-blogservice-newservice-published.png[]
+
+
 . Request to be used
 +
 [source]

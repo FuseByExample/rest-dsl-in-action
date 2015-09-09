@@ -20,6 +20,12 @@ Using Servlet instead of Jetty
 
 http http://fusehost:8183/rest/blog/article/search/id/1
 
+# Keycloak plugin
+
+io.apiman.plugins
+apiman-plugins-keycloak-oauth-policy
+1.1.7.Final
+
 
 
 # Install cmd to deploy the Kibana3 war
