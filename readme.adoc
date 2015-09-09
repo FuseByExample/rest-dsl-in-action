@@ -522,7 +522,44 @@ user: cmoulliard
 
 We will define a new security rule to be able to authenticate the HTTP request calling now the service 
 
-.
+. Intsructions to duplicate the service
+. Use Basic authentication
+. Request to be used
++
+[source]
+----
+http --verify=no https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard
+HTTP/1.1 401 Unauthorized
+Connection: keep-alive
+Content-Length: 168
+Content-Type: application/json
+Date: Wed, 09 Sep 2015 10:01:54 GMT
+Server: WildFly/8
+WWW-Authenticate: BASIC realm="blog-basic-auth"
+X-Policy-Failure-Code: 10004
+X-Policy-Failure-Message: BASIC authentication failed.
+X-Policy-Failure-Type: Authentication
+X-Powered-By: Undertow/1
+
+{
+    "failureCode": 10004, 
+    "headers": {
+        "WWW-Authenticate": "BASIC realm=\"blog-basic-auth\""
+    }, 
+    "message": "BASIC authentication failed.", 
+    "responseCode": 0, 
+    "type": "Authentication"
+}
+----
++
+WARNING: The request fails as we haven't passed the credentials of the user to be used
+. New request
++
+[source]
+----
+http --verify=no -a charles:demo123 https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard
+----
+
 
 # Replay
 
