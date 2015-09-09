@@ -676,6 +676,16 @@ image::images/apiman-authorization-policy1.png[]
 
 image::images/apiman-add-authorizationpolicy.png[]
 
+. Use respectively these bash scripts to issue HTTP requests against the ApiMan gateway as an admin user or reader user
+
++
+[source]
+----
+./script/src/main/resources/oauth2-role-reader.sh
+./script/src/main/resources/oauth2-role-writer.sh
+----
+
+
 # Replay
 
 If, for any reason, you would like to restart the demo from the beginning. Then, perform these steps to clean the JBoss Fuse Server
