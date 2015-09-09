@@ -629,19 +629,26 @@ image::images/apiman-blogservice-newservice-oauth2-2.png[]
 
 image::images/apiman-blogservice-newservice-oauth2-3.png[]
 
+. Get Certificate
+
+keycloak-certificate.png
+
 . Save the policy and service
 
 image::images/apiman-blogservice-newservice-oauth2-4.png[]
 
-
+. Publish the service
+. Run this bash script
++
+[source]
+----
+./script/src/main/resources/oauth2-all-requests.sh
+----
++
 . Review metrics
 
 image::images/apiman-blogservice-newservice-oauth2-5.png[]
 image::images/apiman-blogservice-newservice-oauth2-6.png[]
-
-. Get Certificate
-
-keycloak-certificate.png
 
 ## Use case - Add roles
 
