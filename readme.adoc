@@ -607,12 +607,29 @@ image::images/keycloak-adduser-password.png[]
 
 
 . Create a new service version 3
+. Duplicate the service version 2 and remove the basic authentication policy
 
 image::images/apiman-blogservice-newservice-oauth2.png[]
+
+. Add a new policy and select "Keycloak Oauth Policy"
+
 image::images/apiman-blogservice-newservice-oauth2-1.png[]
+
+. Encode the endpoint 
+
 image::images/apiman-blogservice-newservice-oauth2-2.png[]
+
+. Copy / paste the certificate that you can get from Keycloak
+
 image::images/apiman-blogservice-newservice-oauth2-3.png[]
+
+. Save the policy and service
+
 image::images/apiman-blogservice-newservice-oauth2-4.png[]
+
+
+. Review metrics
+
 image::images/apiman-blogservice-newservice-oauth2-5.png[]
 image::images/apiman-blogservice-newservice-oauth2-6.png[]
 
