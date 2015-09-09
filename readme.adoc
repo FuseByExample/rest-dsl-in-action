@@ -535,7 +535,6 @@ image::images/apiman-blogservice-newservice-addpolicy4.png[]
 image::images/apiman-blogservice-newservice-addpolicy5.png[]
 image::images/apiman-blogservice-newservice-published.png[]
 
-
 . Request to be used
 +
 [source]
@@ -571,6 +570,40 @@ WARNING: The request fails as we haven't passed the credentials of the user to b
 ----
 http --verify=no -a charles:demo123 https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard
 ----
+
+Last use case that we will cover concerns Oauth2 & Openid-connect authentication
+
+. Use Oauth2 & Openid-connect authentication
+. Add Keycloak Oauth2 Plugin
+
+image::images/apiman-add-oauth2-plugin.png[]
+image::images/apiman-add-oauth2-plugin1.png[]
+image::images/apiman-add-oauth2-plugin2.png[]
+
+. Setup Keycloak realm
+
+image::images/keycloak-switchtopublicanddirectgrant.png[]
+image::images/keycloak-usedirectgrantapi.png[]
+image::images/keycloak-addrealm.png[]
+
+. Add a user
+
+image::images/keycloak-adduser-password.png[]
+image::images/keycloak-adduser.png[]
+
+. Create a new service version 3
+
+image::images/apiman-blogservice-newservice-oauth2.png[]
+image::images/apiman-blogservice-newservice-oauth2-1.png[]
+image::images/apiman-blogservice-newservice-oauth2-2.png[]
+image::images/apiman-blogservice-newservice-oauth2-3.png[]
+image::images/apiman-blogservice-newservice-oauth2-4.png[]
+image::images/apiman-blogservice-newservice-oauth2-5.png[]
+image::images/apiman-blogservice-newservice-oauth2-6.png[]
+
+. Get Certificate
+
+keycloak-certificate.png
 
 
 # Replay
