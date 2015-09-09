@@ -599,11 +599,12 @@ image::images/keycloak-switchtopublicanddirectgrant.png[]
 
 . Add a user
 
-image::images/keycloak-adduser-password.png[]
+image::images/keycloak-adduser.png[]
 
 . Change password and disable to reset password
 
-image::images/keycloak-adduser.png[]
+image::images/keycloak-adduser-password.png[]
+
 
 . Create a new service version 3
 
