@@ -442,7 +442,9 @@ image::images/apiman-fuse-organisation.png[]
 NOTE: As we will not define different SLA to manage the service, No [plan] will be defined for the demo
 +
 image::images/apiman-fuse-organisation-service.png[]
-+
+
+## Use case - Direct forward
+
 . Click on the button +New Service+ of this screen. 
 . Within +New Service+ screen, add +blog-service+ as Service Name and provide a +description+ to mention that this service
   is not secured "Unsecure service. No authentication will be required to access the service". When done, click on the "Create Service" button
@@ -520,6 +522,8 @@ user: cmoulliard
 
 ----
 
+## Use case - Basic Authentication
+
 We will define a new security rule to be able to authenticate the HTTP request calling now the service 
 
 . Instructions to duplicate the service
@@ -570,6 +574,8 @@ WARNING: The request fails as we haven't passed the credentials of the user to b
 ----
 http --verify=no -a charles:demo123 https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard
 ----
+
+## Use case - Oauth2 with Keycloak
 
 Last use case that we will cover concerns Oauth2 & Openid-connect authentication
 
