@@ -141,6 +141,7 @@
                             org.apache.camel.component.jackson,
                             org.apache.camel.model,
                             org.apache.camel.dataformat.bindy,
+                            org.apache.camel.spi,
                             *
                         </Import-Package>
                     </instructions>
