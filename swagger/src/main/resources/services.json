@@ -10,7 +10,9 @@
   "paths": {
     "/blog/article/search/id/{id}": {
       "get": {
-        "tags": [ "Blog Search Id operation" ],
+        "tags": [
+          "Blog Search Id operation"
+        ],
         "produces": [
           "application/json"
         ],
@@ -28,7 +30,7 @@
         ],
         "responses": {
           "200": {
-            "description": "blog article response",
+            "description": "Article retrieved",
             "schema": {
               "$ref": "#/definitions/Blog"
             }
@@ -38,7 +40,9 @@
     },
     "/blog/article/search/user/{user}": {
       "get": {
-        "tags": [ "Blog Search User operation" ],
+        "tags": [
+          "Blog Search User operation"
+        ],
         "produces": [
           "application/json"
         ],
@@ -69,7 +73,7 @@
     },
     "/blog/article/{id}" : {
       "put": {
-        "tags": [ "Add a new Bloig Article" ],
+        "tags": [ "Add a new Blog Article" ],
         "parameters": [
           {
             "name": "id",
@@ -91,29 +95,29 @@
       }
     }
   },
-  "definitions":{
+  "definitions": {
     "Blog": {
       "type": "object",
       "properties": {
         "id": {
-          "type":"string",
-          "example":"1"
+          "type": "string",
+          "example": "1"
         },
         "user": {
-          "type":"string",
-          "example":"cmoulliard"
+          "type": "string",
+          "example": "cmoulliard"
         },
         "body": {
-          "type":"string",
-          "example":"This is a blog article"
+          "type": "string",
+          "example": "This is a blog article"
         },
         "title": {
-          "type":"string",
-          "example":"Title of the blog article"
+          "type": "string",
+          "example": "Title of the blog article"
         },
         "postDate": {
-          "type":"date-time",
-          "example":"2015-08-10T10:10"
+          "type": "date-time",
+          "example": "2015-08-10T10:10"
         }
       }
     }

@@ -115,10 +115,14 @@
                             <outputDirectory>${basedir}/src/main/webapp</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${project.build.directory}/swagger-ui-${swagger-ui-version}/dist</directory>
+                                    <directory>${project.build.directory}/swagger-ui-${swagger-ui-version}/dist
+                                    </directory>
                                 </resource>
                                 <resource>
                                     <directory>${project.build.directory}/classes</directory>
+                                    <includes>
+                                        <include>**/*.json</include>
+                                    </includes>
                                 </resource>
                             </resources>
                         </configuration>
