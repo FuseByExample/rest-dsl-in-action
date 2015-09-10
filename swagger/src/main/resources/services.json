@@ -28,7 +28,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Article retrieved",
             "schema": {
               "type": "string"
             }
