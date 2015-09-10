@@ -62,9 +62,6 @@
                             <resources>
                                 <resource>
                                     <directory>${project.build.directory}/swagger-ui-${swagger-ui-version}/dist</directory>
-                                    <excludes>
-                                        <exclude>**/index.html</exclude>
-                                    </excludes>
                                 </resource>
                                 <resource>
                                     <directory>${project.build.directory}/classes</directory>
@@ -74,29 +71,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--            <plugin>
-                            <groupId>com.google.code.maven-replacer-plugin</groupId>
-                            <artifactId>replacer</artifactId>
-                            <version>1.5.3</version>
-                            <executions>
-                                <execution>
-                                    <phase>prepare-package</phase>
-                                    <goals>
-                                        <goal>replace</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                            <configuration>
-                                <file>${project.build.directory}/${project.artifactId}-${project.version}/index.html</file>
-                                <replacements>
-                                    <replacement>
-                                        <token>url: "http://petstore.swagger.wordnik.com/api/api-docs"</token>
-                                        <value>url: "http://localhost:8000/api-docs"</value>
-                                    </replacement>
-                                </replacements>
-                            </configuration>
-                        </plugin>-->
 
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
