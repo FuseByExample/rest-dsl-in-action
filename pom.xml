@@ -99,6 +99,7 @@
         <module>kibana</module>
         <module>script</module>
         <module>security</module>
+        <module>swagger</module>
     </modules>
 
     <repositories>

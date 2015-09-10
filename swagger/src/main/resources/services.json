@@ -1,0 +1,11 @@
+{
+  "apiVersion": "1.0",
+  "apis": [
+    {
+      "path": "/api/blog.yaml",
+      "description": "Blog REST DSL Service"
+    }
+  ],
+  "basePath": "http://localhost:8000",
+  "swaggerVersion": "1.0"
+}
