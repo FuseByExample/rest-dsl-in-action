@@ -1,6 +1,7 @@
 {
   "swagger": "2.0",
-  "basePath": "http://localhost:8000",
+  "host": "localhost:9191",
+  "basePath": "/",
   "info": {
     "description": "Blog Article REST Services",
     "version": "1.0",
@@ -10,7 +11,9 @@
     "/blog/article/search/{id}": {
       "get": {
         "produces": [
-          "application/xml",
+          "application/json"
+        ],
+        "consumes": [
           "application/json"
         ],
         "parameters": [
