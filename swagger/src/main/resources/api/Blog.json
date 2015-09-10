@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type":"string",
+      "example":"1"
+    },
+    "user": {
+      "type":"string",
+      "example":"cmoulliard"
+    },
+    "body": {
+      "type":"string",
+      "example":"This is a blog article"
+    },
+    "title": {
+      "type":"string",
+      "example":"Title of the blog article"
+    },
+    "postDate": {
+      "type":"date-time",
+      "example":"2015-08-10T10:10"
+    }
+  }
+}
