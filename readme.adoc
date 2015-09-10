@@ -398,7 +398,7 @@ The documentation of the REST Services has been created and is defined within th
 The file has been produced manually as camel-swagger component 2.15 packaged within JBoss Fuse 6.2 doesn't parse yet the REST DSL syntax to generate it. This feature should be available
 for the next release of JBoss Fuse.
 
-To access the documentation and run the queres against the service, here are the requests to followed
+To access the documentation and run the queries against the service, here are the requests to followed
 
 . Open a terminal within the +swagger+ maven module
 
@@ -411,10 +411,6 @@ To access the documentation and run the queres against the service, here are the
  . When the jetty instance is started, open yur browser at this address
     
     http://localhost:8000?url=services.json
-    
-    
-
-
 
 ## Security governance with Apiman & Keycloak
 
