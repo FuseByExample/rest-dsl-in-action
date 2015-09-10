@@ -1,11 +1,28 @@
 {
-  "apiVersion": "1.0",
-  "apis": [
-    {
-      "path": "/api/blog.yaml",
-      "description": "Blog REST DSL Service"
-    }
-  ],
+  "swagger": "2.0",
   "basePath": "http://localhost:8000",
-  "swaggerVersion": "1.0"
+  "info": {
+    "description": "Blog Article REST Services",
+    "version": "1.0",
+    "title": "Blog Article REST Services"
+  },
+  "paths": {
+    "/blog/article/search/{id}": {
+      "get": {
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user to return",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    }
+  }
 }

@@ -112,6 +112,7 @@
                         <host>localhost</host>
                         <port>${jetty.port}</port>
                     </httpConnector>
+                    <scanIntervalSeconds>5</scanIntervalSeconds>
                 </configuration>
             </plugin>
         </plugins>
