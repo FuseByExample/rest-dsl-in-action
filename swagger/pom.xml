@@ -120,9 +120,9 @@
                                 </resource>
                                 <resource>
                                     <directory>${project.build.directory}/classes</directory>
-                                    <includes>
+<!--                                    <includes>
                                         <include>**/*.json</include>
-                                    </includes>
+                                    </includes>-->
                                 </resource>
                             </resources>
                         </configuration>

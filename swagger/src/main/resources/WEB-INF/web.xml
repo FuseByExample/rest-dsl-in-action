@@ -1,4 +1,6 @@
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
     <filter>
         <filter-name>cross-origin</filter-name>
@@ -9,7 +11,7 @@
         </init-param>
         <init-param>
             <param-name>allowedMethods</param-name>
-            <param-value>GET,POST,HEAD</param-value>
+            <param-value>GET,POST,HEAD,PUT</param-value>
         </init-param>
         <init-param>
             <param-name>allowedHeaders</param-name>
