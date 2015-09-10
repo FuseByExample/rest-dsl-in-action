@@ -144,7 +144,7 @@ Zookeeper server.
 
 ## Create a Fuse Fabric Server and 2 child containers
 
-. Next, within the Fuse Karaf console, issue this shell command `shell:source mvn:org.jboss.fuse/fuse/1.0/script/install` ro run using the script a series of commands
+. Next, within the Fuse Karaf console, issue this shell command `shell:source mvn:org.jboss.fuse/deployment/1.0/script/install` ro run using the script a series of commands
 +
 [NOTE]
 ====
