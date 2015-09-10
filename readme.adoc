@@ -410,7 +410,7 @@ To access the documentation and run the queries against the service, here are th
     
  . When the jetty instance is started, open yur browser at this address
     
-    http://localhost:8000/services.json
+    http://localhost:8000/?url=services.json
 
 ## Security governance with Apiman & Keycloak
 
