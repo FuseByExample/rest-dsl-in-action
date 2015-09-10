@@ -32,7 +32,7 @@ echo ">>> GET Blog article : 1"
 http --verify=no GET $URL/search/id/1 "Authorization: Bearer $access_token"
 
 echo ">>> GET Blog articles of Charles Moulliard"
-http --verify=no GET $URL/search/id/cmoulliard "Authorization: Bearer $access_token"
+http --verify=no GET $URL/search/user/cmoulliard "Authorization: Bearer $access_token"
 
 echo ">>> PUT Blog article n° 10"
 echo '{ "user": "cmoulliard", "postDate": "2015-09-15T10:10", "body": "Integration is hard - 10", "title": "On distributed search" }' | http --verify=no PUT $URL/10 "Authorization: Bearer $access_token"

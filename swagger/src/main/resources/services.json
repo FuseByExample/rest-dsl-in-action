@@ -66,6 +66,29 @@
           }
         }
       }
+    },
+    "/blog/article/{id}" : {
+      "put": {
+        "tags": [ "Add a new Bloig Article" ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user to insert",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "blog",
+            "in": "body",
+            "description": "Blog Article to add to the ES DB",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Blog"
+            }
+          }
+        ]
+      }
     }
   },
   "definitions":{
