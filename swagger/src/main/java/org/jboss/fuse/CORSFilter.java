@@ -28,6 +28,11 @@ public class CORSFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
         
         LOG.info("Filter called");
+        
+        HttpServletRequest req = (HttpServletRequest)request;
+        StringBuffer urlBuffer = req.getRequestURL();
+
+        LOG.info("HTTP URL : " + urlBuffer.toString());
 
         HttpServletResponse reply = (HttpServletResponse) response;
         reply.addHeader(ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, "*");
