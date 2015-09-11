@@ -71,9 +71,11 @@
         }
       }
     },
-    "/blog/article/{id}" : {
+    "/blog/article/{id}": {
       "put": {
-        "tags": [ "Add a new Blog Article" ],
+        "tags": [
+          "Add a new Blog Article"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -92,6 +94,27 @@
             }
           }
         ]
+      },
+      "delete": {
+        "description": "deletes a blog article based on the ID supplied",
+        "operationId": "deleteBlog",
+        "tags": [
+          "Delete a Blog Article"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Blog to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "blog article deleted"
+          }
+        }
       }
     }
   },
