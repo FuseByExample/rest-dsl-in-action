@@ -2,7 +2,7 @@
 
 # rm -rf src/main/webapp/*
 mvn clean
-mvn install
+mvn package
 mvn install
 
 mvn jetty:run
