@@ -13,6 +13,8 @@
         "tags": [
           "Blog Search Id operation"
         ],
+        "description":"Search Blog Articles based on User ID",
+        "operationId": "searchBlogByID",
         "produces": [
           "application/json"
         ],
@@ -43,6 +45,8 @@
         "tags": [
           "Blog Search User operation"
         ],
+        "description":"Search Blog Articles for a User",
+        "operationId": "searchBlogForUser",
         "produces": [
           "application/json"
         ],
@@ -73,6 +77,8 @@
     },
     "/blog/article/{id}": {
       "put": {
+        "description":"Add a new Blog Article",
+        "operationId": "addBlog",
         "tags": [
           "Add a new Blog Article"
         ],
