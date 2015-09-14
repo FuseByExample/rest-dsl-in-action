@@ -20,18 +20,18 @@ public class RestToServicesRoute extends RouteBuilder {
                 .dataFormatProperty("prettyPrint", "true");
 
         rest("/blog/article").id("rest-blog-service").produces("application/json").consumes("application/json")
-                
-                .get("/search/id/{id}").id("rest-searchbyid")
-                    .to("direct:searchById")
 
-                .get("/search/user/{user}").id("rest-searchbyuser").outTypeList(Blog.class)
-                   .to("direct:searchByUser")
+           .get("/search/id/{id}").id("rest-searchbyid")
+               .to("direct:searchById")
 
-                .put("/{id}").id("rest-put-article").type(Blog.class)
-                    .to("direct:add")
-                
-                .delete("/{id}").id("rest-deletearticle").type(Blog.class)
-                   .to("direct:remove");
+           .get("/search/user/{user}").id("rest-searchbyuser").outTypeList(Blog.class)
+              .to("direct:searchByUser")
+
+           .put("/{id}").id("rest-put-article").type(Blog.class)
+               .to("direct:add")
+
+           .delete("/{id}").id("rest-deletearticle").type(Blog.class)
+              .to("direct:remove");
 
         /* 
          * Workaround to support HTTP OPTIONS request required for Swagger API when CORS is enabled
