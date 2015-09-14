@@ -1,14 +1,14 @@
 {
   "swagger": "2.0",
   "host": "localhost:9191",
-  "basePath": "/",
+  "basePath": "/blog/article",
   "info": {
     "description": "Blog Article REST Services",
     "version": "1.0",
     "title": "Blog Article REST Services"
   },
   "paths": {
-    "/blog/article/search/id/{id}": {
+    "/search/id/{id}": {
       "get": {
         "tags": [
           "Blog Search Id operation"
@@ -40,7 +40,7 @@
         }
       }
     },
-    "/blog/article/search/user/{user}": {
+    "/search/user/{user}": {
       "get": {
         "tags": [
           "Blog Search User operation"
@@ -75,7 +75,7 @@
         }
       }
     },
-    "/blog/article/{id}": {
+    "/": {
       "put": {
         "description":"Add a new Blog Article",
         "operationId": "addBlog",
@@ -83,13 +83,6 @@
           "Add a new Blog Article"
         ],
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the user to insert",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "blog",
             "in": "body",
