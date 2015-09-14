@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 
 public class RestToServicesRoute extends RouteBuilder {
 
-    final static Logger LOG = LoggerFactory.getLogger(ElasticSearchService.class);
-
     @Override
     public void configure() throws Exception {
 
