@@ -27,22 +27,20 @@ public class CORSFilter implements Filter {
             ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
         
-        LOG.info("Filter called");
-        
         HttpServletRequest req = (HttpServletRequest)request;
         StringBuffer urlBuffer = req.getRequestURL();
-
-        LOG.info("HTTP URL : " + urlBuffer.toString());
 
         HttpServletResponse reply = (HttpServletResponse) response;
         reply.addHeader(ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, "*");
         reply.addHeader(ACCESS_CONTROL_ALLOW_METHODS_HEADER, "GET, POST, DELETE, PUT, PATCH, OPTIONS");
         reply.addHeader(ACCESS_CONTROL_ALLOW_HEADERS_HEADER, "X-Requested-With,api_key,Content-Type,Accept,Origin");
 
-        LOG.info("Added : " + ACCESS_CONTROL_ALLOW_ORIGIN_HEADER + ": " + "*");
-        LOG.info("Added : " + ACCESS_CONTROL_ALLOW_METHODS_HEADER + ": " + "GET, POST, DELETE, PUT, PATCH, OPTIONS");
-        LOG.info("Added : " + ACCESS_CONTROL_ALLOW_HEADERS_HEADER + ": " + "X-Requested-With,Content-Type,api_key,Accept,Origin");
-        
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("HTTP URL : " + urlBuffer.toString());
+            LOG.debug("Added : " + ACCESS_CONTROL_ALLOW_ORIGIN_HEADER + ": " + "*");
+            LOG.debug("Added : " + ACCESS_CONTROL_ALLOW_METHODS_HEADER + ": " + "GET, POST, DELETE, PUT, PATCH, OPTIONS");
+            LOG.debug("Added : " + ACCESS_CONTROL_ALLOW_HEADERS_HEADER + ": " + "X-Requested-With,Content-Type,api_key,Accept,Origin");
+        }
         chain.doFilter(request, reply);
     }
 }
