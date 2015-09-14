@@ -16,6 +16,7 @@ public class AddArticleToElasticRoute extends OnExceptionElasticSearch {
     public void configure() throws Exception {
 
         JacksonDataFormat jacksondf = new JacksonDataFormat(Blog.class);
+        final String ID = "id";
 
         from("direct:add").id("add-direct-route")
                 .log(LoggingLevel.INFO,"Add new Blog entry service called !")
@@ -24,7 +25,8 @@ public class AddArticleToElasticRoute extends OnExceptionElasticSearch {
                 .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
                 .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_INDEX)
 
-                // Transform Java Object to JSON
+                // Transform Java Blog Object to JSON String. IT will be used as Source Body content to insert the record in ElasticSearch
+                .setHeader(ID).simple("${body.id}")
                 .marshal(jacksondf)
                 
                 // Call the add service of the elasticsearchService POJO to generate the IndexRequest object
