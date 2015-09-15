@@ -37,12 +37,13 @@ public class RestToServicesRoute extends RouteBuilder {
             * Workaround to support HTTP OPTIONS request required for Swagger API when CORS is enabled
             * The Allow Header reports the operations supported.
             * A new verb has been added - https://issues.apache.org/jira/browse/CAMEL-9129 but it will be available for 2.16 or 2.15.x
-            */
+            * */
            rest("/blog/article").id("rest-options")
              .verb("options").route()
              .setHeader("Access-Control-Allow-Origin", constant("*"))
              .setHeader("Access-Control-Allow-Methods", constant("GET, HEAD, POST, PUT, DELETE, OPTIONS"))
              .setHeader("Access-Control-Allow-Headers", constant("Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"))
              .setHeader("Allow", constant("GET, HEAD, POST, PUT, DELETE, OPTIONS"));
+             
     }
 }
