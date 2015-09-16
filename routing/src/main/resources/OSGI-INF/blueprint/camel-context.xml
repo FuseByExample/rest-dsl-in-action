@@ -16,7 +16,8 @@
     </cm:property-placeholder>
     
     <bean id="elasticSearchService" class="org.jboss.fuse.service.ElasticSearchService" init-method="init" destroy-method="shutdown"/>
-
+    <bean id="elasticSearchEventNotifier" class="org.jboss.fuse.service.ElasticSearchEventNotifier"/>
+    
     <camelContext trace="false" xmlns="http://camel.apache.org/schema/blueprint">
 
         <propertyPlaceholder id="properties" location="blueprint:lab-properties"/>
@@ -24,6 +25,7 @@
         <packageScan>
             <package>org.jboss.fuse.route</package>
         </packageScan>
+        
     </camelContext>
 
 </blueprint>
