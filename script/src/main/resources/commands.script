@@ -18,6 +18,10 @@ Using Servlet instead of Jetty
 
 http http://fusehost:8183/rest/blog/article/search/id/1
 
+# To get Kibana Dashobard
+
+http http://fusehost:9200/kibana-int/dashboard/Camel/_source
+
 # Keycloak plugin
 
 io.apiman.plugins
