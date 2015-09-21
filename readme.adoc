@@ -764,11 +764,23 @@ application is authorized to access the service according to the credentials pro
 
 In order to use Oauth2 with Apiman, we will first install a new plugin as the Oauth2 plugin is not installed per default. Here are the steps required to install it
 
-. Return to the home page of the ApiMan Management Server and click on the ``
+. Return to the home page of the ApiMan Management Server and click on the link `Manager plugins` of the System Administration section.
 +
 image::images/apiman-add-oauth2-plugin.png[]
 +
+. Next, click on the `Add Plugin` button in order to pass the information required to install the plugin
++
 image::images/apiman-add-oauth2-plugin1.png[]
++
+. Fill the fields using these values and click on the `Add plugin` button when this is done
++
+----
+Group Id : io.apiman.plugins
+Artifact ID : apiman-plugins-keycloak-oauth-policy
+Version : 1.1.8.Final
+----
++
+. When we will return to the plugins screen, we can see that a new plugin entry has been added
 +
 image::images/apiman-add-oauth2-plugin2.png[]
 
