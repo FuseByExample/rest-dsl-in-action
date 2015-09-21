@@ -483,7 +483,7 @@ image::images/dashboard4.png[]
 
 ## Swagger documentation (optional)
 
-For the purpose of this demo, we have documented the REST Services using the http://swagger.io/[Swagger API]. The documentation is defined within the `swagger/src/main/resources/services.json` file of the swagger maven module.
+For the purpose of this demo, we have documented the REST Services using the http://swagger.io/[Swagger API]. The documentation is defined within the `swagger/srcmain/resources/services.json` file of the swagger maven module.
 The file has been produced manually as camel-swagger component 2.15 packaged within JBoss Fuse 6.2 doesn't parse yet the REST DSL syntax to generate it. This feature should be available
 for the next release of JBoss Fuse.
 
@@ -525,17 +525,21 @@ image::images/swagger2.png[]
 . Review the results using the `Kibana` dashboard and search for the id which is equal to `21`
 +
 image::images/swagger3.png[]
-+
-   
+
 ## Security governance with Apiman & Keycloak
 
-TODO : Describe what we will do here.
+During the first part of the demo, we have deployed the Apache Camel Routes exposing the REST services to create, search or delete a user into a JBoss Fuse Karaf container
+and installed also an Elasticsearch server to collect the data from the different REST Services. Now, within the next section of the demo, we will
+use the ApiMan & Keycloak projects to secure our endpoints in order to authenticate the incoming HTTP request using Basic Authentication but also OAuth2 to authorize the access
+to the service based on the role provided.
+
+The instructions required to install the server and to configure them are described hereafter :
 
 . Download [WildFly](http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip) & [Apiman 1.1.7.Final overlay for WildFly 8.2](http://downloads.jboss.org/apiman/1.1.7.Final/apiman-distro-wildfly8-1.1.7.Final-overlay.zip)
-. Unpack the WildFly 8.2 zip
-. Unpack the apiman 1.1.7.Final WildFly 8 overlay zip inside the wildfly directory
-. Start WildFly 8 using the "standalone-apiman.xml" configuration
-. Point your browser at the apiman UI and login with admin/admin123!
+. Unpack the `WildFly 8.2 zip`
+. Unpack the `apiman 1.1.7.Final WildFly 8 overlay zip` inside the wildfly directory
+. Start WildFly 8 using the `standalone-apiman.xml` configuration file
+. Point your browser at the apiman UI and login using `admin` as user and `admin123!` as password
 +
 [NOTE]
 ====
