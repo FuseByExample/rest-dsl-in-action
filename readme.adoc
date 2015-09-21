@@ -679,7 +679,7 @@ The steps needed to realize the use case are described hereafter
 +
 image::images/apiman-blogservice-newservice-basic.png[]
 +
-. Encode `2.0` as Version number and click on the button `Create Version`
+. Encode `2.0` as Version number and click on the butto `Create Version`
 +
 image::images/apiman-blogservice-newservice-basic1.png[]
 +
@@ -695,17 +695,23 @@ image::images/apiman-blogservice-newservice-addpolicy1.png[]
 +
 image::images/apiman-blogservice-newservice-addpolicy2.png[]
 +
-. WWWWWWW
+. Choose as Identity Source, `static` within the dropdown list
 +
 image::images/apiman-blogservice-newservice-addpolicy3.png[]
 +
+. Add a user and password (example : charles/demo)
++
 image::images/apiman-blogservice-newservice-addpolicy4.png[]
++
+. Save the policy by clikcing on the `Add policy ` button. Then, you will return to the service definition screen where you will publish the service
 +
 image::images/apiman-blogservice-newservice-addpolicy5.png[]
 +
+. Verify that the service has been published
++
 image::images/apiman-blogservice-newservice-published.png[]
-
-. Request to be used
++
+. Issue a HTTP Request to be access the search service
 +
 [source]
 ----
