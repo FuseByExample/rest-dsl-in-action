@@ -96,6 +96,7 @@ from("direct:add").id("add-direct-route")
 - http://www.jboss.org/download-manager/file/jboss-devstudio-8.1.0.GA-standalone_jar.jar[JBoss Developer Studio]
 - https://github.com/jkbrzt/httpie[httpie]
 - http://curl.haxx.se/download.html[curl] (optional)
+- http://www.apiman.io/latest/download.html[Apiman 1.1.8.Final]
 - JDK 1.7
 - Apache Maven 3.x
 
