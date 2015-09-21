@@ -557,13 +557,13 @@ cd wildfly-8.2.0.Final
 ----
 ====
 
-Now that our Apiman server has been launched, we will create an organization to manage the different services that we would like to manage using the following security policies; Basic Authentication, OAuth & Limit rates.
-+
-. Open your web browser at this address `http://localhost:8080/apimanui/` and encode `admin` for the username and`admin123!` as password to access the application.
+Now that our Apiman server has been launched, we will create an organization to manage the different services that we would like to secure using the following security policies; Basic Authentication, OAuth & Limit rates.
+
+. Open your web browser at this address `http://localhost:8080/apimanui/` and encode `admin` for the username and `admin123!` as password to access the application.
 
 image::images/apiman-login.png[]
 
-. If the authentication succeeds, then you will be redirected to the `api management screen`
+. If the authentication succeeds, then you will be redirected to the `Api Management screen`
 
 image::images/apiman-management.png[]
 
