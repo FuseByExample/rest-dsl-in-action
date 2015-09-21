@@ -585,7 +585,8 @@ image::images/apiman-fuse-organisation-service.png[]
 ## Use case - Direct forward
 
 The first use case that we will deal with is very simple and can be compared to a proxy forwarding scenario where the incoming request is matched to a service
-and next forwarded to the real service or endpoint exposing the REST endpoint. To design it, we will create a service and specify the address of the service.
+and next forwarded to the real endpoint exposing the REST service. To design it, we will create a service, specify the address of the service and publish the service in order to let APiMan Gateway to
+accept the HTTP requests.
 
 . Click on the button +New Service+ of this screen. 
 . Within +New Service+ screen, add +blog-service+ as Service Name and provide a +description+ to mention that this service
