@@ -543,7 +543,7 @@ The instructions required to install the server and to configure them are descri
 +
 [NOTE]
 ====
-You can use this list of instructions to download and install Apiman
+You can use this list of instructions to download and install Apiman locally
 
 ----
 mkdir ~/apiman-1.1.7.Final
@@ -556,8 +556,8 @@ cd wildfly-8.2.0.Final
 ./bin/standalone.sh -c standalone-apiman.xml
 ----
 ====
-+
-Now that our Apiman server has been launched, we will create an organization, configure the service that we would like to manage and different security policies (Basic Authentication, OAuth & Limit rates) that we will use for this demo.
+
+Now that our Apiman server has been launched, we will create an organization to manage the different services that we would like to manage using the following security policies; Basic Authentication, OAuth & Limit rates.
 +
 . Open your web browser at this address `http://localhost:8080/apimanui/` and encode `admin` for the username and`admin123!` as password to access the application.
 
