@@ -2,7 +2,7 @@
 
 REALM=fuse
 USER=admin
-PASSWORD=admin123
+PASSWORD=admin
 CLIENT_ID=fuse
 HOST=localhost
 PORT_HTTP=8080
@@ -21,6 +21,7 @@ URL=$APIGATEWAY/$ORG/$SERVICE/$VERSION
 echo ">>> Token query"
 #echo "curl -X POST http://127.0.0.1:8080/auth/realms/$REALM/protocol/openid-connect/token  -H 'Content-Type: application/x-www-form-urlencoded' -d 'username=$USER' -d 'password=$PASSWORD' -d 'grant_type=password' -d 'client_id=$USER'"
 echo "http --verify=no -f http://$HOST:$PORT_HTTP/auth/realms/$REALM/protocol/openid-connect/token username=$USER password=$PASSWORD grant_type=password client_id=$CLIENT_ID"
+http --verify=no -f http://$HOST:$PORT_HTTP/auth/realms/$REALM/protocol/openid-connect/token username=$USER password=$PASSWORD grant_type=password client_id=$CLIENT_ID
 
 echo ">>> TOKEN Received"
 echo $access_token

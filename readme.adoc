@@ -854,11 +854,124 @@ image::images/apiman-blogservice-newservice-oauth2-3.png[]
 image::images/apiman-blogservice-newservice-oauth2-4.png[]
 +
 . Publish the service like we have done before
-. When the service has been published, you will use this bash script responsible to call the OAuth2 server to get a token that next the application will use to issue the request against the Api Gateway
+. When the service has been published, you will use a bash script responsible to call the OAuth2 server to get a token that next the application will use to issue the CRUD requests against the Api Gateway
 +
 [source]
 ----
+#!/usr/bin/env bash
+
+REALM=fuse
+USER=admin
+PASSWORD=admin
+CLIENT_ID=fuse
+HOST=localhost
+PORT_HTTP=8080
+PORT_HTTPS=8443
+
+auth_result=$(http --verify=no -f http://$HOST:$PORT_HTTP/auth/realms/$REALM/protocol/openid-connect/token username=$USER password=$PASSWORD grant_type=password client_id=$CLIENT_ID)
+access_token=$(echo -e "$auth_result" | awk -F"," '{print $1}' | awk -F":" '{print $2}' | sed s/\"//g | tr -d ' ')
+
+APIGATEWAY=https://$HOST:$PORT_HTTPS/apiman-gateway
+ORG=fuse
+SERVICE=blog-service
+VERSION=3.0
+URL=$APIGATEWAY/$ORG/$SERVICE/$VERSION
+
+echo ">>> Token query"
+#echo "curl -X POST http://127.0.0.1:8080/auth/realms/$REALM/protocol/openid-connect/token  -H 'Content-Type: application/x-www-form-urlencoded' -d 'username=$USER' -d 'password=$PASSWORD' -d 'grant_type=password' -d 'client_id=$USER'"
+echo "http --verify=no -f http://$HOST:$PORT_HTTP/auth/realms/$REALM/protocol/openid-connect/token username=$USER password=$PASSWORD grant_type=password client_id=$CLIENT_ID"
+
+echo ">>> TOKEN Received"
+echo $access_token
+
+echo ">>> Gateway Service URL"
+echo "$URL"
+
+echo ">>> GET Blog article : 1"
+http --verify=no GET $URL/search/id/1 "Authorization: Bearer $access_token"
+
+echo ">>> GET Blog articles of Charles Moulliard"
+http --verify=no GET $URL/search/user/cmoulliard "Authorization: Bearer $access_token"
+
+echo ">>> PUT Blog article n° 10"
+echo '{ "user": "cmoulliard", "postDate": "2015-09-15T10:10", "body": "Integration is hard - 10", "title": "On distributed search" }' | http --verify=no PUT $URL/10 "Authorization: Bearer $access_token"
+
+echo ">>> DELETE Blog Article n° 10"
+http --verify=no DELETE $URL/10 "Authorization: Bearer $access_token"
+
+echo ">>> GET Blog article : 10"
+http --verify=no GET $URL/search/id/10 "Authorization: Bearer $access_token"
+----
++
+. To execute the script, use one of the existing terminal and run from the root of the project, this request
++
+----
 ./script/src/main/resources/oauth2-all-requests.sh
+----
++
+. If the requests are issued correctly, you should be able to see the token received and the CRUD requests.
++
+----
+./script/src/main/resources/oauth2-all-requests.sh
+>>> Token query
+http --verify=no -f http://localhost:8080/auth/realms/fuse/protocol/openid-connect/token username=admin password=admin grant_type=password client_id=fuse
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Type: application/json
+Date: Mon, 21 Sep 2015 14:58:46 GMT
+Server: WildFly/8
+Transfer-Encoding: chunked
+X-Powered-By: Undertow/1
+
+{
+    "access_token": "eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIwY2M2M2M0NS1kMGU5LTRmOWYtYjhlYy00OTM1NWYxZjllZjEiLCJleHAiOjE0NDI4NDc4MjYsIm5iZiI6MCwiaWF0IjoxNDQyODQ3NTI2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvZnVzZSIsImF1ZCI6ImZ1c2UiLCJzdWIiOiIzNTkxZTQxNy03YzYwLTQ0NjQtODcxNC05NjE5MGM3ZmFkOTIiLCJhenAiOiJmdXNlIiwic2Vzc2lvbl9zdGF0ZSI6ImVlNTU2NjUxLTc5MDctNDk1OC05NmYyLTVmNTFhYzI4NTU4NCIsImNsaWVudF9zZXNzaW9uIjoiOTY2MzAxMmEtYTRhZi00MjFmLWFkZDgtMDYzODYwNTNiYTMyIiwiYWxsb3dlZC1vcmlnaW5zIjpbXSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJ2aWV3LXByb2ZpbGUiXX19LCJuYW1lIjoiYWRtaW4gIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiYWRtaW4ifQ.MnWNFgmiMl6StVLfVsCiubOaEa1ntf0XPCvlgJTt2l16J6wE_dDOx8Neu0KhwESVG0J7t1tBCpLyT1q60hHWy6alcYjDDhETe65Wy_g2DKBDtkcRB7IGFSXUZHbjqy-VHeHHypaVuQLUxagz8Z7H_9HiixrubkT3D7y7fleiXrI0mmPPJpvPzABoHEUP0iF6W-G4llUYEfxBX2qAC_eOgjallbpI3zt8cICcl_Yy4YAogYB43PTSF-GzvMIqrJFZM0j648C6dpCSOylJWUcsN0ytLFTJHiGzqAG9K2hO4aIHECqVuXJoCr-F-kmWUrsnhAWXANNfLLLuZfC5ke8qPg",
+    "expires_in": 300,
+    "id_token": "eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiI1ZDZmNzQ2ZS0xMDY2LTQ5YzEtODRhZS0xMjJhYTg4OTcwMzkiLCJleHAiOjE0NDI4NDc4MjYsIm5iZiI6MCwiaWF0IjoxNDQyODQ3NTI2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvZnVzZSIsImF1ZCI6ImZ1c2UiLCJzdWIiOiIzNTkxZTQxNy03YzYwLTQ0NjQtODcxNC05NjE5MGM3ZmFkOTIiLCJhenAiOiJmdXNlIiwic2Vzc2lvbl9zdGF0ZSI6ImVlNTU2NjUxLTc5MDctNDk1OC05NmYyLTVmNTFhYzI4NTU4NCIsIm5hbWUiOiJhZG1pbiAiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhZG1pbiIsImdpdmVuX25hbWUiOiJhZG1pbiJ9.JzzhOj1c2XXrnr2r_s-83RsNPgHRP4Q_FGJVlEhUDycLnSgHAndrWj1GVsdTo-uGKeXJl3G-j0eUQwrSgtnr-Z_33iHroa58oEJ0w5u_Be53acWXInuJEvfsoN9VkimKW2sEx5VCo8nVru0TMZoNS3mHGcdkB0ZGF9VHxflbgOSWTagIV8wVJdd2-L6oujR7N7W39IJFvtHYQTi20xvihmHa5yrpDRfnpBOa0d_JBS_QznHnbQc8qKzeRP1gEfWuYCLp-g-16Trgl8acPAFsEKsBTswYw2B3sgxrn3sEz0NmsNxb5KNA7B3p7o2migXULktN-CjlcCNuIw3ZggJ9Lw",
+    "not-before-policy": 0,
+    "refresh_expires_in": 1800,
+    "refresh_token": "eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJkNmJhODBlNC01OTVmLTQzODItYmRiMy05N2Q5ZTAwN2U0NzkiLCJleHAiOjE0NDI4NDkzMjYsIm5iZiI6MCwiaWF0IjoxNDQyODQ3NTI2LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvZnVzZSIsInN1YiI6IjM1OTFlNDE3LTdjNjAtNDQ2NC04NzE0LTk2MTkwYzdmYWQ5MiIsInR5cCI6IlJFRlJFU0giLCJhenAiOiJmdXNlIiwic2Vzc2lvbl9zdGF0ZSI6ImVlNTU2NjUxLTc5MDctNDk1OC05NmYyLTVmNTFhYzI4NTU4NCIsImNsaWVudF9zZXNzaW9uIjoiOTY2MzAxMmEtYTRhZi00MjFmLWFkZDgtMDYzODYwNTNiYTMyIiwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJ2aWV3LXByb2ZpbGUiXX19fQ.UqgCnsFdAajkmebdvwwA_HP8Hk2xXKZcODz8pDeBw9qL547dyI-VWcgZaFsnxFRvXg__JXyaPx5QeRGNA3_9PveW5cveGeav1DLIvuCjLBZaoWcxNK4QVzXXOBMzSqlfMpbH7PC2SRE401Nss9AyRI-54lECX4QAj6lY3r9_zsALpPd3pznuexSItvjcbyF24OBfw0uy6bZoneMs5aEQLltKc7S2F1kFNy9bSzM_xiSiDQJJtZHQUsym-TtWYPAQyv9gyD3qCD5-sAo3tHgtU60girhAztWFffRRktigUlopLtETs94QtJCyr-Ql0d9bui2pjSKZTOsug23hev4C7Q",
+    "session-state": "ee556651-7907-4958-96f2-5f51ac285584",
+    "token_type": "bearer"
+}
+
+>>> TOKEN Received
+eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJhZjY4ZmFjNi1mZDUwLTRiNzMtYmQzNy01YzU1NWE4ZTU2MWUiLCJleHAiOjE0NDI4NDc4MjUsIm5iZiI6MCwiaWF0IjoxNDQyODQ3NTI1LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvZnVzZSIsImF1ZCI6ImZ1c2UiLCJzdWIiOiIzNTkxZTQxNy03YzYwLTQ0NjQtODcxNC05NjE5MGM3ZmFkOTIiLCJhenAiOiJmdXNlIiwic2Vzc2lvbl9zdGF0ZSI6ImY1OGQ1ZGZjLTZlNGMtNGFkMi1iZDJmLTcwNzEzZjZiOTQyZCIsImNsaWVudF9zZXNzaW9uIjoiZjA2YjY3M2YtZWNiZS00N2YyLWJhNzYtYjZhNTkwMWQ1YWZlIiwiYWxsb3dlZC1vcmlnaW5zIjpbXSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJ2aWV3LXByb2ZpbGUiXX19LCJuYW1lIjoiYWRtaW4gIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiYWRtaW4ifQ.Ts82zYqhYl2K6MF2qCaSc_MQNJodqk_wggGYuFmcumnaYXFeK598p0WbBfAZyZ0nNuBcLiru_qH-Epk5HxjfP66rfdsi0vCWkWx80PYm41Yq0b1KQR_DvzTA6uaxdMJADba3xk9wykZn3Oe-1JN4nTku76q_4ks484gK3ErN9LwX4ZmfffF5pXZB2B7WL7fWDCbmLu3z2BP10qgScaf6LWybzuukLbFiKlJbym_NIc8inbTNDIJFEjRBTl5KPdU37pZTGYefpBB7eqIy1v1WPfC8Mbips7-fXlN6cxkKafDObrkiFCgN5AcwG4g9U5zhkLlGb3J9SbORbmgRVE0mOQ
+>>> Gateway Service URL
+https://localhost:8443/apiman-gateway/fuse/blog-service/3.0
+>>> GET Blog article : 1
+HTTP/1.1 200 OK
+Accept: */*
+Accept-Encoding: gzip, deflate
+Access-Control-Allow-Headers: Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers
+Access-Control-Allow-Methods: GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 3600
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJhZjY4ZmFjNi1mZDUwLTRiNzMtYmQzNy01YzU1NWE4ZTU2MWUiLCJleHAiOjE0NDI4NDc4MjUsIm5iZiI6MCwiaWF0IjoxNDQyODQ3NTI1LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvZnVzZSIsImF1ZCI6ImZ1c2UiLCJzdWIiOiIzNTkxZTQxNy03YzYwLTQ0NjQtODcxNC05NjE5MGM3ZmFkOTIiLCJhenAiOiJmdXNlIiwic2Vzc2lvbl9zdGF0ZSI6ImY1OGQ1ZGZjLTZlNGMtNGFkMi1iZDJmLTcwNzEzZjZiOTQyZCIsImNsaWVudF9zZXNzaW9uIjoiZjA2YjY3M2YtZWNiZS00N2YyLWJhNzYtYjZhNTkwMWQ1YWZlIiwiYWxsb3dlZC1vcmlnaW5zIjpbXSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJ2aWV3LXByb2ZpbGUiXX19LCJuYW1lIjoiYWRtaW4gIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiYWRtaW4ifQ.Ts82zYqhYl2K6MF2qCaSc_MQNJodqk_wggGYuFmcumnaYXFeK598p0WbBfAZyZ0nNuBcLiru_qH-Epk5HxjfP66rfdsi0vCWkWx80PYm41Yq0b1KQR_DvzTA6uaxdMJADba3xk9wykZn3Oe-1JN4nTku76q_4ks484gK3ErN9LwX4ZmfffF5pXZB2B7WL7fWDCbmLu3z2BP10qgScaf6LWybzuukLbFiKlJbym_NIc8inbTNDIJFEjRBTl5KPdU37pZTGYefpBB7eqIy1v1WPfC8Mbips7-fXlN6cxkKafDObrkiFCgN5AcwG4g9U5zhkLlGb3J9SbORbmgRVE0mOQ
+Connection: keep-alive
+Content-Type: application/json
+Date: Mon, 21 Sep 2015 14:58:47 GMT
+OkHttp-Received-Millis: 1442847527382
+OkHttp-Response-Source: NETWORK 200
+OkHttp-Selected-Protocol: http/1.1
+OkHttp-Sent-Millis: 1442847527376
+Server: Jetty(8.1.17.v20150415)
+Transfer-Encoding: chunked
+User-Agent: HTTPie/0.9.2
+X-Powered-By: Undertow/1
+breadcrumbId: ID-dabou-local-53720-1442828961817-0-135
+id: 1
+indexName: blog
+indexType: post
+operation: GET_BY_ID
+
+{
+    "body": "Integration is hard 1.",
+    "id": "1",
+    "postDate": "2015-09-29T05:15",
+    "title": "On distributed search",
+    "user": "cmoulliard"
+}
+
 ----
 +
 . Review metrics
