@@ -7,7 +7,7 @@
     <cm:property-placeholder id="lab-properties" persistent-id="org.jboss.fuse.demo">
         <cm:default-properties>
             <cm:property name="clustername" value="insight"/>
-            <cm:property name="address" value="fusehost"/>
+            <cm:property name="address" value="localhost"/>
             <cm:property name="port" value="9200"/>
             <cm:property name="indexname" value="blog"/>
             <cm:property name="indextype" value="post"/>

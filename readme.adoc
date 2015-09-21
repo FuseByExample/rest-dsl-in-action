@@ -129,7 +129,7 @@ mvn clean install
 
 ## Edit Host file
 
-. Edit the /etc/hosts file and add an entry to map the hostname `fusehost` with the IP address of the machine to be used. 
+. Edit the /etc/hosts file and add an entry to map the hostname `localhost` with the IP address of the machine to be used.
 +
 NOTE:  The value could be your local loopback address `127.0.0.1` when NOT connected to a network, otherwise, the Ethernet address assigned by the network card used (wifi, local network). The hostname is used by the ElasticSearch server to register the socket server when it is
 started and also by the Apache Camel Elasticsearch component to access the server. Also, the Fuse Fabric Server will use it to assign an IP address to the socket server of the Apache
@@ -196,8 +196,8 @@ The following containers have been created successfully:
 	Container: lab.
 ----
 +
-. You can verify/control that the 2 containers are running by issuing the command `fabric:container-list` and inspecting the column `connected` which represent the state of the Fuse
-  OSGI container created. If the status is equal to `yes`, that means tha tthe containe has been created successfully. the column `provision status` reports the status about the provisioning of the
+. You can verify/control that the 2 containers are running by issuing the command `fabric:container-list` and inspecting the column `connected` which represents the state of the Fuse
+  OSGI container created. If the status is equal to `yes`, that means that the container has been created successfully. the column `provision status` reports the status about the provisioning of the
   container. If the status is equal to `success`, that means that the server has been packaged with the required OSGI bundles, Config Properties files, ...
 +  
 ----
@@ -212,8 +212,9 @@ root*                 1.0        karaf   yes          fabric                    
 
 ## Deploy the Fabric project into the Fabric Server
 
-. Use the terminal created to compile this demo and move to the routing directory `fuse-lab/routing`
-. Run this command to deploy the configuration of the demo project into the fuse Fabric Server as `pe-fuse` profile
+. Use the terminal opened previously to compile this demo
+. Move to the routing directory `fuse-lab/routing`
+. Run this command to deploy the configuration of the demo project into the fuse Fabric Server as the `gpe-fuse` profile
 +
 ----
 mvn fabric8:deploy
@@ -237,12 +238,64 @@ Uploaded: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-
 [INFO] ------------------------------------------------------------------------
 ----
 +
-. Now that the profile has been created and published on JBoss Fuse, we will install it into the `demo` Fuse Lab Managed container
-. Assign the profile `gpe-fuse` profile to our `demo` container using this fabric command executed within the JBoss Fuse console
+. To verify that the profile has been created and published on JBoss Fuse, use this command within the JBoss Fuse Karaf Console 
++
+----
+JBossFuse:karaf@root> fabric:profile-display gpe-fuse
+Profile id: gpe-fuse
+Version   : 1.0
+Attributes:
+	abstract: false
+	parents: feature-camel
+Containers:
+
+Container settings
+----------------------------
+Features :
+	camel-jetty
+	camel-http4
+	camel-jackson
+	camel-elasticsearch
+	camel-bindy
+
+Bundles :
+	mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json/20140107_1
+	mvn:org.jboss.fuse/routing/1.0
+
+Agent Properties :
+	  lastRefresh.gpe-fuse = 1442824458002
+
+
+Configuration details
+----------------------------
+PID: io.fabric8.web.contextPath
+  org.jboss.fuse/routing routing
+
+
+PID: org.jboss.fuse.demo
+  port 9200
+  indextype post
+  address localhost
+  clustername insight
+  fileUri file://articles?noop=true
+  indexname blog
+
+
+
+Other resources
+----------------------------
+Resource: Readme.md
+Resource: dependencies/org.jboss.fuse/routing-requirements.json
+Resource: fuse-lab1.png
+----
+ 
+. Now, we will install it into the `demo` Fuse Lab Managed container
+. Assign the profile `gpe-fuse` profile to our `demo` container using this fabric command `fabric:container-add-profile demo gpe-fuse` executed within the JBoss Fuse console
 +
     JBosFuse:karaf@root>fabric:container-add-profile demo gpe-fuse
 +
-. Verify that the container has been successfully provisioned and that the `demo` container contains the profiles `feature-camel` and `gpe-fuse`
+. Verify that the container has been successfully provisioned and that the `demo` container contains the profiles `feature-camel` and `gpe-fuse` by using this command
+  `abric:container-list` that you will execute within the console.
 +
 ----
 JBossFuse:karaf@root> fabric:container-list
@@ -257,7 +310,7 @@ root*                 1.0        karaf   yes          fabric                    
 +
 [NOTE]
 ====
-If you change the code of this demo, then you can redeploy if after doig a `mvn clean install` followed by the `mvn fabric8:deploy` command.
+If you change the code of this demo, then you can redeploy if after doing a `mvn clean install` followed by the `mvn fabric8:deploy` command.
 Next, remove and add again the profile to the Fuse Container using these Fabric commands
 
 ----
@@ -266,21 +319,46 @@ fabric:container-add-profile demo gpe-fuse
 ----
 ====
 
-TODO: Verify how we can change the ${container:ip} variable & Why an IP address is required
-. Add config edit property "io.fabric8.elasticsearch-insight" to set this variable "network.host" to fusehost or 127.0.0.1
-
-----
-fabric:profile-edit --pid io.fabric8.elasticsearch-insight/network.host=127.0.0.1 insight-elasticsearch.node
-----
-
-
 ## Define Elasticsearch Data Mapping
 
-. Run these commands against the ElasticSearch node to create the Blog index and define the mapping of the fields
+In order to collect the data using the ElasticSearch No SQL database, we will first create an Index with the name `Blog` and the type `article`.
+Next, we will define the mapping of the fields and their type of a Blog Article and how ElasticSearch will manage them from JSon documents
+
++
 ----
-http PUT http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
-http http://fusehost:9200/blog/_mapping/article
+{
+  "article": {
+    "properties": {
+      "user": {
+        "type": "string"
+      },
+      "title": {
+        "type": "string"
+      },
+      "postDate": {
+        "type": "date",
+        "format": "yyyy-MM-dd'T'HH:mm"
+      },
+      "body": {
+        "type": "string"
+      },
+      "id": {
+        "type": "integer"
+      }
+    }
+  }
+}
+----
++
+. Run these commands within the terminal of the project in order to access the HTTP Server of Elasticsearch and configure the Index and the type
+----
+http PUT http://localhost:9200/blog
+http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
+http http://localhost:9200/blog/_mapping/article
+
+curl -X PUT http://localhost:9200/blog
+curl -X PUT http://localhost:9200/blog/_mapping/article -d @data/elasticsearch/mapping.json
+curl http://localhost:9200/blog/_mapping/article
 ----
 
 ## Use Kibana dashboard
@@ -288,7 +366,7 @@ http http://fusehost:9200/blog/_mapping/article
 The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
 The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
 This lab provides a jetty maven goal that we will launch in order to start a local HTTP Server that we can access from the browser
-at this address `ttp://localhost:9090/kibana3/index.html`
+at this address `http://localhost:9090/kibana3/index.html`
 
 . To start locally the HTTP Server, open a Windows or unix terminal and move to the home directory of the project containing the code.
 . Switch to the folder `kibana` and run this maven command `mvn jetty:run`.
@@ -325,7 +403,7 @@ For the purpose of this lab, we have prepare a dashboard which is already config
   This HTTP request calls a REST service of the Elasticsearch server to insert the `fuse-lab` dashboard type using the `dashboard.json` file as input.
 +
 ----
-http PUT http://fusehost:9200/kibana-int/dashboard/fusedemo < data/elasticsearch/dashboard.json
+http PUT http://localhost:9200/kibana-int/dashboard/fusedemo < data/elasticsearch/dashboard.json
 ----
 +
 . Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to load the `fuse-lab` dashboard.
@@ -341,7 +419,7 @@ image::images/dashboard3.png[]
 .. Add a user using this Httpie request from the terminal
 +
 ----
-http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
+http PUT http://localhost:9191/blog/article/1 < data/elasticsearch/entry.json
 ----
 +
 NOTE: Before to issue the HTTP GET request, you can change the content ofthe Blog Article that you will publish
@@ -349,19 +427,19 @@ NOTE: Before to issue the HTTP GET request, you can change the content ofthe Blo
 .. Search the user `cmoulliard`
 +
 ----
-http http://fusehost:9191/blog/article/search/user/cmoulliard
+http http://localhost:9191/blog/article/search/user/cmoulliard
 ----
 +
 .. Search the user which has been encoded with the id `1`
 +
 ----
-http http://fusehost:9191/blog/article/search/user/1
+http http://localhost:9191/blog/article/search/user/1
 ----
 +
 .. Delete a user.
 +
 ----
-http DELETE http://fusehost:9191/blog/article/1
+http DELETE http://localhost:9191/blog/article/1
 ----
     
 ### Bulk import
@@ -476,7 +554,7 @@ image::images/apiman-fuse-organisation-addservice.png[]
 +
 image::images/apiman-blogservice.png[]
 +
-. Click on the +implementation+ link and add the Api endpoints +http://fusehost:9191/blog/article+, select +REST+ for the +Api Type+ dropdown box.
+. Click on the +implementation+ link and add the Api endpoints +http://localhost:9191/blog/article+, select +REST+ for the +Api Type+ dropdown box.
 . Click on the +Save+ button
 +
 image::images/apiman-blogservice-api.png[]
@@ -730,49 +808,49 @@ NOTE: It will kill the jvm instances and delete the instances and some sub-folde
 WARNING : The hostname must be changed depending if you run locally or remotely the JBoss Fuse Server
 +
 ----
-http http://fusehost:9191/blog/post/1 pretty==true
-http http://fusehost:9200/blog/post/_search q=="user:cmoulliard" pretty==true
+http http://localhost:9191/blog/post/1 pretty==true
+http http://localhost:9200/blog/post/_search q=="user:cmoulliard" pretty==true
 
-curl 'http://fusehost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
+curl 'http://localhost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
 ----
 
 * Delete all articles
 
-    http DELETE http://fusehost:9200/blog/post/_query q=="user:*"
+    http DELETE http://localhost:9200/blog/post/_query q=="user:*"
 
 * Delete Index
 
-    http DELETE http://fusehost:9200/blog
+    http DELETE http://localhost:9200/blog
 
 * Create Index
 
-    http PUT http://fusehost:9200/blog
+    http PUT http://localhost:9200/blog
 
 * Add mapping
 
-    http PUT http://fusehost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
+    http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
 
 * Check mapping
 
-    http http://fusehost:9200/blog/_mapping/article
+    http http://localhost:9200/blog/_mapping/article
 
 * Add user
 
-    http PUT http://fusehost:9200/blog/article/1 < camel/data/elasticsearch/entry.json
+    http PUT http://localhost:9200/blog/article/1 < camel/data/elasticsearch/entry.json
 
 * All requests
 
 ----
-http DELETE http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
-http http://fusehost:9200/blog/_mapping/article
+http DELETE http://localhost:9200/blog
+http PUT http://localhost:9200/blog
+http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
+http http://localhost:9200/blog/_mapping/article
 
-http PUT http://fusehost:9200/blog/article/1 < data/elasticsearch/entry.json
-http PUT http://fusehost:9200/blog/article/2 < data/elasticsearch/entry.json
+http PUT http://localhost:9200/blog/article/1 < data/elasticsearch/entry.json
+http PUT http://localhost:9200/blog/article/2 < data/elasticsearch/entry.json
 
-http http://fusehost:9200/blog/article/1
-http http://fusehost:9200/blog/article/2
+http http://localhost:9200/blog/article/1
+http http://localhost:9200/blog/article/2
 ----
 
 # Minimal installation
@@ -790,7 +868,7 @@ You can also run the project locally using `mvn camel:run` at the condition that
 [         Blueprint Extender: 3] BlueprintCamelContext          INFO  Apache Camel 2.15.1.redhat-620133 (CamelContext: camel-1) is starting
 [         Blueprint Extender: 3] ManagedManagementStrategy      INFO  JMX is enabled
 [         Blueprint Extender: 3] ElasticsearchEndpoint          INFO  Joining ElasticSearch cluster insight
-[         Blueprint Extender: 3] ElasticsearchEndpoint          INFO  REMOTE ELASTICSEARCH: fusehost
+[         Blueprint Extender: 3] ElasticsearchEndpoint          INFO  REMOTE ELASTICSEARCH: localhost
 [         Blueprint Extender: 3] plugins                        INFO  [Sack] loaded [], sites []
 [         Blueprint Extender: 3] JacksonDataFormat              INFO  Registering module: com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule@5ce285fa
 [         Blueprint Extender: 3] JacksonDataFormat              INFO  Registering module: com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule@5272a5f
@@ -841,25 +919,25 @@ It will delete the blog index, create a new index, insert 3 articles, search for
 the user id = 1
 
 ----
-http DELETE http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
-http http://fusehost:9200/blog/_mapping/article
+http DELETE http://localhost:9200/blog
+http PUT http://localhost:9200/blog
+http PUT http://localhost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
+http http://localhost:9200/blog/_mapping/article
 
-http PUT http://fusehost:9191/blog/article/1 < data/elasticsearch/entry.json
-http PUT http://fusehost:9191/blog/article/2 < data/elasticsearch/entry.json
-http PUT http://fusehost:9191/blog/article/3 < data/elasticsearch/entry.json
+http PUT http://localhost:9191/blog/article/1 < data/elasticsearch/entry.json
+http PUT http://localhost:9191/blog/article/2 < data/elasticsearch/entry.json
+http PUT http://localhost:9191/blog/article/3 < data/elasticsearch/entry.json
 
-http http://fusehost:9191/blog/article/search/id/1
-http http://fusehost:9191/blog/article/search/id/4
+http http://localhost:9191/blog/article/search/id/1
+http http://localhost:9191/blog/article/search/id/4
 
-http http://fusehost:9191/blog/article/search/user/cmoulliard
-http http://fusehost:9191/blog/article/search/user/cmoullia
+http http://localhost:9191/blog/article/search/user/cmoulliard
+http http://localhost:9191/blog/article/search/user/cmoullia
 
-http DELETE http://fusehost:9191/blog/article/1
-http http://fusehost:9191/blog/article/search/id/1
+http DELETE http://localhost:9191/blog/article/1
+http http://localhost:9191/blog/article/search/id/1
 
 Using Servlet instead of Jetty
 
-http http://fusehost:8183/rest/blog/article/search/id/1
+http http://localhost:8183/rest/blog/article/search/id/1
 ----

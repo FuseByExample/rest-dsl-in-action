@@ -1,26 +1,26 @@
-http DELETE http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog
-http PUT http://fusehost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
-http http://fusehost:9200/blog/_mapping/article
+http DELETE http://localhost:9200/blog
+http PUT http://localhost:9200/blog
+http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
+http http://localhost:9200/blog/_mapping/article
 
-http PUT http://fusehost:9191/blog/article < data/elasticsearch/entry.json
+http PUT http://localhost:9191/blog/article < data/elasticsearch/entry.json
 
-http http://fusehost:9191/blog/article/search/id/1
-http http://fusehost:9191/blog/article/search/id/4
+http http://localhost:9191/blog/article/search/id/1
+http http://localhost:9191/blog/article/search/id/4
 
-http http://fusehost:9191/blog/article/search/user/cmoulliard
-http http://fusehost:9191/blog/article/search/user/cmoullia
+http http://localhost:9191/blog/article/search/user/cmoulliard
+http http://localhost:9191/blog/article/search/user/cmoullia
 
-http DELETE http://fusehost:9191/blog/article/1
-http http://fusehost:9191/blog/article/search/id/1
+http DELETE http://localhost:9191/blog/article/1
+http http://localhost:9191/blog/article/search/id/1
 
 Using Servlet instead of Jetty
 
-http http://fusehost:8183/rest/blog/article/search/id/1
+http http://localhost:8183/rest/blog/article/search/id/1
 
 # To get Kibana Dashobard
 
-http http://fusehost:9200/kibana-int/dashboard/Camel/_source
+http http://localhost:9200/kibana-int/dashboard/Camel/_source
 
 # Keycloak plugin
 
@@ -46,28 +46,28 @@ Does not work with Fabric & Fuse 6.2 - https://issues.jboss.org/browse/ENTESB-28
 - Delete and recreate kibana-int index
 
 ----
-http DELETE http://fusehost:9200/kibana-int
-http PUT http://fusehost:9200/kibana-int
+http DELETE http://localhost:9200/kibana-int
+http PUT http://localhost:9200/kibana-int
 ----
 
 - Add fuse-lab dashboard
 
   ----
-  http PUT http://fusehost:9200/kibana-int/dashboard/fuse-lab < data/elasticsearch/dashboard.json
+  http PUT http://localhost:9200/kibana-int/dashboard/fuse-lab < data/elasticsearch/dashboard.json
   ----
 - Delete dashboard
 
   ----
-  http DELETE http://fusehost:9200/kibana-int/dashboard/fuse-lab
+  http DELETE http://localhost:9200/kibana-int/dashboard/fuse-lab
   ----
 - Export existing kibana dashboard from ES to a file
 
   ----
-  http http://fusehost:9200/kibana-int/dashboard/fuse-lab/_source > fuse-lab.json
+  http http://localhost:9200/kibana-int/dashboard/fuse-lab/_source > fuse-lab.json
   ----
 - Get Dashboards
 
   ----
-  http http://fusehost:9200/_search q=="dashboard:*"
-  http http://fusehost:9200/kibana-int/_search q=="title:fuse-lab" pretty==true
+  http http://localhost:9200/_search q=="dashboard:*"
+  http http://localhost:9200/kibana-int/_search q=="title:fuse-lab" pretty==true
   ----
