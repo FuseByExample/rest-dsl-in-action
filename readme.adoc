@@ -807,7 +807,7 @@ image::images/keycloak-addclient.png[]
 +
 . Add within the fied `Client ID`, `fuse` as name of the application that we will authorize
 +
-. Change next `Direct Grant Api` by clicking on the `on/off` button. This step is required to allow REST Apiman to use the REST APi to access the Relam managed by the Oauth2 server
+. Change next `Direct Grant Api` by clicking on the `on/off` button. This step is required to allow REST Apiman to use the REST APi to access the Realm managed by the Oauth2 server. The `Client Protocol` that we will use is `openid-connect` and the access type is `public`.
 +
 image::images/keycloak-switchtopublicanddirectgrant.png[]
 
