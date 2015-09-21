@@ -989,7 +989,7 @@ image::images/apiman-blogservice-newservice-oauth2-6.png[]
 To be exhaustive, we will now extend the OAuth2 Fuse Realm to specify 2 roles (writer/reader) to restrict the access to the service according to them. Typically, we will create the writer role to let a 
 user to PUT or DELETE a blog article while a reader role will only allow the users to query the REST services.
 
-. Open your web browser at this address to open the Oauth2 server `http://localhost:8080/auth/admin`
+. Open your web browser at this address to open the Oauth2 server `http:/localhost:8080/auth/admin`
 . Select the `fuse` realm and add 2 roles by clicking on the tab `Roles`
 . Click on the button `Add Role` and fill the field `Role name` with the `reader` value
 . Save the role by clicking on the button `Save`
@@ -1014,13 +1014,23 @@ image::images/keycloak-addrole-reader-to-user.png[]
 +
 image::images/keycloak-addrole-writerreader-to-admin.png[]
 +
-. Create from the previous service a new
-. Add an authorization policy
-
+. We can leaver the OAuth2 server platform and return to Apiman in order to create a new service - version 4.0
++ 
+NOTE: Clone the Service - version 3.0 and specify 4.0 as the vesion name of this service
++
+. Add a new policy by clicking on the button `Policy`. Within the dropdown list, select the value `Authorization Policy`
++
 image::images/apiman-authorization-policy.png[]
-
-. Define 3 resources mapping to assign a role to a verb and a path
-
++
+. We will now define 3 rules to map a path to a verb and a role by using the `Add Authorization Rule` section of the screen. Encode the information as defined within the following table
++
+|===
+Path | Verb | Role required
+.* | PUT | Writer
+.* | DELETE | Writer
+.* | GET | reader
+|===
++
 image::images/apiman-authorization-policy1.png[]
 
 image::images/apiman-add-authorizationpolicy.png[]
