@@ -844,7 +844,7 @@ image::images/apiman-blogservice-newservice-oauth2-2.png[]
 +
 image::images/keycloak-certificate.png[]
 +
-. Finally, select `true` as the value of the field `Forward Realm Roles` to send to the application, the roles defined within the realm. They will be used within the last use cases to control if the application
+. Finally, select `true` as the value of the field Forward Realm Roles` to send to the application, the roles defined within the realm. They will be used within the last use cases to control if the application
   calling the Oauth2 server is authorized according to its role to use a specific service.
 +
 image::images/apiman-blogservice-newservice-oauth2-3.png[]
@@ -974,7 +974,8 @@ operation: GET_BY_ID
 
 ----
 +
-. Review metrics
+. When the ApiMan gateway will recieve the requests, it will insert the information usign a local ElasticsSearch database. The `Review metrics` tab that 
+  we have / service can allow us to check the completed or failed requests.
 +
 image::images/apiman-blogservice-newservice-oauth2-5.png[]
 +
