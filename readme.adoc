@@ -793,7 +793,7 @@ the service. To achieve this goal, we will first configure Keycloak which is the
 +
 image::images/keycloak-addrealm.png[]
 +
-. Next add `Fuse` as name and save the result by clicking on the `save` button
+. Next add `Fuse` as name within the screen `Add Realm` and save the result by clicking on the `save` button
 +
 image::images/keycloak-addrealm1.png[]
 +
