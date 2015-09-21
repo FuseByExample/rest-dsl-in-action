@@ -567,7 +567,7 @@ image::images/apiman-login.png[]
 +
 image::images/apiman-management.png[]
 +
-. Click on the link `Create a New Organization` and encode `Fuse` as organization name within the field `Organization Name` of the new screen displayed.
+. Click on the link Create a New Organization` and encode `Fuse` as organization name within the field `Organization Name` of the new screen displayed.
 . Next, click on the `Create Organisation` button.
 +
 image::images/apiman-organization.png[]
@@ -590,11 +590,11 @@ accept the HTTP requests.
 
 . Click on the button `New Service` of this screen.
 . Within `New Service` screen, add `blog-service` as Service Name and provide a `description` to mention that this service
-  is not secured "Unsecure service. No authentication will be required to access the service". When done, click on the "Create Service" button
+  is not secured "Insecure service. No authentication will be required to access the service". When done, click on the `Create Service` button
 +
 image::images/apiman-fuse-organisation-addservice.png[]
 +
-. You will be redirected to the `blog-service+, version `1.0` screen where we will add the URL of the REST Service exposed by the Apache Camel
+. You will be redirected to the `blog-service`, version `1.0` screen where we will add the URL of the REST Service exposed by the Apache Camel
   and specify that the service is [public].
 +
 image::images/apiman-blogservice.png[]
