@@ -784,9 +784,18 @@ Version : 1.1.8.Final
 +
 image::images/apiman-add-oauth2-plugin2.png[]
 
-. Setup Keycloak realm
+Like we have done for the basic authentication we will also create a realm that the OAuth2 server will use to manage the credentials, the roles and the applications authorized to access
+the service. To achieve this goal, we will first configure Keycloak which is the Oauth2 server used by Apiman behind the scene to authorize the applications.
 
+. First, log on to the KeyCloak server usign the username `admin` and password `admin123!` at this address `http://localhost:8080/auth/admin`
+. If the authentication succeeds, then you will access the Management console from where we will create a new Realm
+. Click on the button `add Realm` which is displayed at the top part of the screen
++
 image::images/keycloak-addrealm.png[]
++
+. Next add `Fuse` as name and save the result by clicking on the `save` button
++
+image::images/keycloak-addrealm1.png[]
 
 . Change Direct Grant Api for the Fuse Realm
 
