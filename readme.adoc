@@ -572,11 +572,11 @@ image::images/apiman-management.png[]
 +
 image::images/apiman-organization.png[]
 +
-. The +Fuse+ Organization screen is displayed
+. The Web UI is refreshed and a new organization called +Fuse+ is displayed under the `Home` screen
 +
 image::images/apiman-fuse-organisation.png[]
 +
-. Click on `Service` Tab of the `Fuse` organization to register the REST Service that we will manage
+. Click on the `Service` Tab of the `Fuse` organization to register the REST Service that we will manage
 +
 NOTE: As we will not define different SLA to manage the service, No [plan] will be defined for the demo
 +
