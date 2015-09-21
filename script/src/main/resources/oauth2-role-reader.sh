@@ -15,7 +15,7 @@ access_token=$(echo -e "$auth_result" | awk -F"," '{print $1}' | awk -F":" '{pri
 APIGATEWAY=https://$HOST:$PORT_HTTPS/apiman-gateway
 ORG=fuse
 SERVICE=blog-service
-VERSION=6.0
+VERSION=4.0
 URL=$APIGATEWAY/$ORG/$SERVICE/$VERSION/
 
 echo ">>> Token query"
