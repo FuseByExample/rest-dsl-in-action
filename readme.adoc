@@ -599,7 +599,7 @@ image::images/apiman-fuse-organisation-addservice.png[]
 +
 image::images/apiman-blogservice.png[]
 +
-. Click on the `implementation` link and add the Api endpoint `http://localhost:9191/blog/article`, select `REST` from the `Api Type` dropdown box. The API endpoint corresponds to our REST Service path as defined within the REST DSL `/blog/article`.
+. Click on the `implementation` link and add the Api endpoint `http://localhost:9191/blog/article`, select `REST` from the `Api Type` dropdown box. The API endpoint corresponds to our REST Service path as defined within the REST DSL `blog/article`.
 . Click on the `Save` button
 +
 image::images/apiman-blogservice-api.png[]
@@ -617,7 +617,7 @@ NOTE: When a service is published, then the Api endpoint will become available a
 +
 image::images/apiman-blogservice-publish.png[]
 +
-NOTE: The screen is refreshed and additional information appears under the list like `Contracts, Endpoint, Activity, Metrics+
+NOTE: The screen is refreshed and additional information appears under the list like `Contracts, Endpoint, Activity, Metrics`
 +
 . Click on `Endpoint` to see the URL address of the endpoint exposed by the Api Gateway and select it
 +
