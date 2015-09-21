@@ -537,7 +537,7 @@ The instructions required to install the server and to configure them are descri
 
 . Download [WildFly](http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip) & [Apiman 1.1.7.Final overlay for WildFly 8.2](http://downloads.jboss.org/apiman/1.1.7.Final/apiman-distro-wildfly8-1.1.7.Final-overlay.zip)
 . Unpack the `WildFly 8.2 zip`
-. Unpack the `apiman 1.1.7.Final WildFly 8 overlay zip` inside the wildfly directory
+. Unpack the`apiman 1.1.7.Final WildFly 8 overlay zip` inside the wildfly directory
 . Start WildFly 8 using the `standalone-apiman.xml` configuration file
 . Point your browser at the apiman UI and login using `admin` as user and `admin123!` as password
 +
@@ -560,23 +560,23 @@ cd wildfly-8.2.0.Final
 Now that our Apiman server has been launched, we will create an organization to manage the different services that we would like to secure using the following security policies; Basic Authentication, OAuth & Limit rates.
 
 . Open your web browser at this address `http://localhost:8080/apimanui/` and encode `admin` for the username and `admin123!` as password to access the application.
-
++
 image::images/apiman-login.png[]
-
++
 . If the authentication succeeds, then you will be redirected to the `Api Management screen`
-
++
 image::images/apiman-management.png[]
-
-. Click on the link "Create a New Organization" and encode `Fuse` as organization name within the field `Organization Nae` of the new screen displayed. 
-. Next, click on the +Create Organisation+ button.
-
++
+. Click on the link `Create a New Organization` and encode `Fuse` as organization name within the field `Organization Name` of the new screen displayed.
+. Next, click on the `Create Organisation` button.
++
 image::images/apiman-organization.png[]
-
++
 . The +Fuse+ Organization screen is displayed
-
++
 image::images/apiman-fuse-organisation.png[]
-
-. Click on +Service+ Tab of the +Fuse+ organization to register the REST Service that we will manage
++
+. Click on `Service` Tab of the `Fuse` organization to register the REST Service that we will manage
 +
 NOTE: As we will not define different SLA to manage the service, No [plan] will be defined for the demo
 +
