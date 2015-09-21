@@ -590,7 +590,7 @@ accept the HTTP requests.
 
 . Click on the button `New Service` of this screen.
 . Within `New Service` screen, add `blog-service` as Service Name and provide a `description` to mention that this service
-  is not secured "Insecure service. No authentication will be required to access the service". When done, click on the `Create Service` button
+  is not secured "Insecure service. No authentication will be required to access the service". When done, click on the Create Service` button
 +
 image::images/apiman-fuse-organisation-addservice.png[]
 +
@@ -599,7 +599,7 @@ image::images/apiman-fuse-organisation-addservice.png[]
 +
 image::images/apiman-blogservice.png[]
 +
-. Click on the `implementation` link and add the Api endpoints `http://localhost:9191/blog/article`, select `REST` for the `Api Type` dropdown box.
+. Click on the `implementation` link and add the Api endpoint `http://localhost:9191/blog/article`, select `REST` from the `Api Type` dropdown box. The API endpoint corresponds to our REST Service path as defined within the REST DSL `/blog/article`.
 . Click on the `Save` button
 +
 image::images/apiman-blogservice-api.png[]
