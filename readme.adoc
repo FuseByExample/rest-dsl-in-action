@@ -980,7 +980,7 @@ operation: GET_BY_ID
 +
 image::images/apiman-blogservice-newservice-oauth2-5.png[]
 +
-. Or Select `Response Type` to see the details according to the HTTP operation type
+. Or Select `Response Type` to see the details according to the status (successfull, fail, error)
 +
 image::images/apiman-blogservice-newservice-oauth2-6.png[]
 
