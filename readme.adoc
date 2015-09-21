@@ -818,17 +818,19 @@ image::images/keycloak-switchtopublicanddirectgrant.png[]
 image::images/keycloak-adduser.png[]
 +
 . Fill the fields `Username` and `First Name` with the value `admin` and save the modifications done by clicking on the `Save` button
-. As the platform generates a password, we will change it to use our own password. So, click on the `Credential` tab and encode your the `admin` password within the fields
+. As the platform generates a password, we will change it to use our own password. So, click on the `Credentials` tab and encode the `admin` password within the fields
   `New password` and `Password confirmation`. Disable the option `Temporary` by clicking on the `on/off` button
 +
 image::images/keycloak-adduser-password.png[]
 
+We have finished to create the REALM within Keycloak Server as also the client ID auhorized to access the platform and finally we have define a admin user like its password. The next 
+step will consist to create a new version fo the service like we did for the Basic authentication but now using Oauth Policy.
+So, from the home page of the Apiman Management Console, seclect the service version 2.0 of `Blog-service`
 
-. Create a new service version 3
 . Duplicate the service version 2 and remove the basic authentication policy
-
++
 image::images/apiman-blogservice-newservice-oauth2.png[]
-
++
 . Add a new policy and select "Keycloak Oauth Policy"
 
 image::images/apiman-blogservice-newservice-oauth2-1.png[]
