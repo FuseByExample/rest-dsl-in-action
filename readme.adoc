@@ -827,12 +827,12 @@ We have finished to create the REALM within Keycloak Server as also the client I
 step will consist to create a new version fo the service like we did for the Basic authentication but now using Oauth Policy.
 So, from the home page of the Apiman Management Console, seclect the service version 2.0 of `Blog-service`
 
-. Duplicate the service version 2 and remove the basic authentication policy
+. Duplicate the service `version 2` by clicking on the button `New Version` and when the screen is refreshed, seclect `Policies` tab to remove the basic authentication policy defined
 +
 image::images/apiman-blogservice-newservice-oauth2.png[]
 +
 . Add a new policy and select "Keycloak Oauth Policy"
-
++
 image::images/apiman-blogservice-newservice-oauth2-1.png[]
 
 . Encode the endpoint 
