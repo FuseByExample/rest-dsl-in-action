@@ -489,7 +489,7 @@ for the next release of JBoss Fuse.
 
 To access the documentation and run the queries against the service, here are the instruction to follow
 
-. Open a terminal within the +swagger+ maven module
+. Open a terminal within the `swagger` maven module
 
     cd swagger
 
@@ -501,8 +501,8 @@ To access the documentation and run the queries against the service, here are th
    
    http://localhost:8000/?url=services.json
    
-. You can now add a user by clicking on the service +Add a new Blog Article+. 
-. To select the user data, just click on the Model schema and the field (left part of the service +Add a new Blog Article+ will be populated.
+. You can now add a user by clicking on the service `Add a new Blog Article`.
+. To select the user data, just click on the Model schema and the field (left part of the service `Add a new Blog Article` will be populated.
 . Change the data to be used
 +
 ----
@@ -514,15 +514,15 @@ To access the documentation and run the queries against the service, here are th
   "postDate": "2015-10-03T10:10"
 }
 ----
-. Click on try out button
+. Click on `try it out!` button
 +
 image::images/swagger1.png[]
 +
-. Search for a user using the service +Blog Search Id operation+ and fill the parameter with the id +21+
+. Search for a user using the service +Blog Search Id operation+ and fill the parameter with the id `21`
 +
 image::images/swagger2.png[]
 +   
-. Review the results using the +Kibana+ dashboard and search for the id which is equal to +21+
+. Review the results using the `Kibana` dashboard and search for the id which is equal to `21`
 +
 image::images/swagger3.png[]
 +
