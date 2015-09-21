@@ -594,8 +594,8 @@ accept the HTTP requests.
 +
 image::images/apiman-fuse-organisation-addservice.png[]
 +
-. You will be redirected to the `blog-service`, version `1.0` screen where we will add the URL of the REST Service exposed by the Apache Camel
-  and specify that the service is [public].
+. You will be redirected to the `blog-service`, version `1.0` screen where we will add the URL of the REST Service exposed by the Apache Camel REST DSL
+  and specify that the service is http://www.apiman.io/latest/user-guide.html#_services[public].
 +
 image::images/apiman-blogservice.png[]
 +
