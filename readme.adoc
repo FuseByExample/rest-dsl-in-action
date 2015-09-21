@@ -974,10 +974,10 @@ operation: GET_BY_ID
 
 ----
 +
-. When the ApiMan gateway will recieve the requests, it will insert the information into a local ElasticsSearch database. The `eview metrics` tab that
-  we have / service can allow us to check the completed or failed requests. You can view the responses / usage
+. When the ApiMan gateway will receive the HTTP requests, it will log the information (Number of requests, number of responses / type) into a local ElasticsSearch database. The `Metrics` tab that
+  we have / service can allow us to check these data. You can view the responses / usage using the `Show` dropdown list and filter the services for the last hour, days ...
 +
-image::images/apiman-blogservice-newservice-oauth2-5.png[]
+image::images/apiman-blogservice-newservie-oauth2-5.png[]
 +
 . Or Select `Response Type` to see the details according to the HTTP operation type
 +
