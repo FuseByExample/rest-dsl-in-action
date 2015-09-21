@@ -976,7 +976,7 @@ operation: GET_BY_ID
 +
 . When the ApiMan gateway will receive the HTTP requests, it will log the information (Number of requests, number of responses / type) into a local ElasticsSearch database. The `Metrics` tab that
   we have / service can allow us to check these data.
-. You can view the responses / usage using the `Show` dropdown list and filter the services for the last hour, days ...
+. You can view the responses / usage using the`Show` dropdown list and filter the services for the last hour, days ...
 +
 image::images/apiman-blogservice-newservice-oauth2-5.png[]
 +
@@ -986,14 +986,20 @@ image::images/apiman-blogservice-newservice-oauth2-6.png[]
 
 ## Use case - Add roles
 
-. Open keycloak, select fuse realm and add 2 roles
-. Add reader role
+To be exhaustive, we will now extend the OAuth2 Fuse Realm to specify 2 roles (writer/reader) to restrict the access to the service according to them. Typically, a writer user will be able to PUT or DELETE 
+a blog article while a reader user will only be able to query the REST services.
 
+. Open your web browser at this address to open the Oauth2 server `http://localhost:8080/auth/admin`
+. Select the `fuse` realm and add 2 roles by clicking on the tab `Roles`
+. Click on the button `Add Role` and fill the field `Role name ` with the `reader` value
+. Save the role by clicking on the button `Save`
++
 image::images/keycloak-addrole-reader.png[]
-
-. Add writer role 
-
++
+. Repeat the operation to create a `writer` role
++
 image::images/keycloak-addrole-writer.png[]
++
 
 image::images/keycloak-addroles.png[]
 
@@ -1072,7 +1078,7 @@ curl 'http://localhost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
 
 * Add user
 
-    http PUT http://localhost:9200/blog/article/1 < camel/data/elasticsearch/entry.json
+    http PUT http://localhost:9200/blog/article/1 < data/elasticsearch/entry.json
 
 * All requests
 
@@ -1160,20 +1166,13 @@ http PUT http://localhost:9200/blog
 http PUT http://localhost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
 http http://localhost:9200/blog/_mapping/article
 
-http PUT http://localhost:9191/blog/article/1 < data/elasticsearch/entry.json
-http PUT http://localhost:9191/blog/article/2 < data/elasticsearch/entry.json
-http PUT http://localhost:9191/blog/article/3 < data/elasticsearch/entry.json
+http PUT http://localhost:9191/blog/article < data/elasticsearch/entry.json
 
-http http://localhost:9191/blog/article/search/id/1
-http http://localhost:9191/blog/article/search/id/4
+http http://localhost:9191/blog/article/search/id/0
 
 http http://localhost:9191/blog/article/search/user/cmoulliard
 http http://localhost:9191/blog/article/search/user/cmoullia
 
 http DELETE http://localhost:9191/blog/article/1
 http http://localhost:9191/blog/article/search/id/1
-
-Using Servlet instead of Jetty
-
-http http://localhost:8183/rest/blog/article/search/id/1
 ----
