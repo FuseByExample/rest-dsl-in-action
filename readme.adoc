@@ -578,11 +578,14 @@ image::images/apiman-fuse-organisation.png[]
 +
 . Click on the `Service` Tab of the `Fuse` organization to register the REST Service that we will manage
 +
-NOTE: As we will not define different SLA to manage the service, No [plan] will be defined for the demo
+NOTE: As we will not define different SLA (e.g. quotas, ...) to manage the service, No http://www.apiman.io/latest/user-guide.html#_plans[plan] will be defined for the demo
 +
 image::images/apiman-fuse-organisation-service.png[]
 
 ## Use case - Direct forward
+
+The first use case that we will deal with is very simple and can be compared to a proxy forwarding scenario where the incoming request is matched to a service
+and next forwarded to the real service or endpoint exposing the REST endpoint. To design it, we will create a service and specify the address of the service.
 
 . Click on the button +New Service+ of this screen. 
 . Within +New Service+ screen, add +blog-service+ as Service Name and provide a +description+ to mention that this service
