@@ -628,11 +628,13 @@ image::images/apiman-blogservice-unsecure-endpoint.png[]
 [source]
 ----
 http --verify=no https://localhost:8443/apiman-gateway/fuse/blog-service/1.0/search/user/cmoulliard
+
+curl -k https://localhost:8443/apiman-gateway/fuse/blog-service/1.0/search/user/cmoulliard
 ----
 +
-NOTE: Add at the end of the Api endpoint the path of one of the CRUD service
+NOTE: Remark that we have added at the end of the Api endpoint the path of `search/user/${username}` service
 +
-WARNING: We will use the verify=no option of httpie to skip the host's SSL certificate verification
+WARNING: We will use the verify=no option of httpie to skip the host's SSL certificate verification or -k of curl
 +
 . Check the response
 +
