@@ -518,7 +518,7 @@ To access the documentation and run the queries against the service, here are th
 +
 image::images/swagger1.png[]
 +
-. Search for a user using the service +Blog Search Id operation+ and fill the parameter with the id `21`
+. Search for a user using the service `Blog Search Id operation` and fill the parameter with the id `21`
 +
 image::images/swagger2.png[]
 +   
@@ -572,7 +572,7 @@ image::images/apiman-management.png[]
 +
 image::images/apiman-organization.png[]
 +
-. The Web UI is refreshed and a new organization called +Fuse+ is displayed under the `Home` screen
+. The Web UI is refreshed and a new organization called `Fuse` is displayed under the `Home` screen
 +
 image::images/apiman-fuse-organisation.png[]
 +
@@ -588,24 +588,24 @@ The first use case that we will deal with is very simple and can be compared to 
 and next forwarded to the real endpoint exposing the REST service. To design it, we will create a service, specify the address of the service and publish the service in order to let APiMan Gateway to
 accept the HTTP requests.
 
-. Click on the button +New Service+ of this screen. 
-. Within +New Service+ screen, add +blog-service+ as Service Name and provide a +description+ to mention that this service
+. Click on the button `New Service` of this screen.
+. Within `New Service` screen, add `blog-service` as Service Name and provide a `description` to mention that this service
   is not secured "Unsecure service. No authentication will be required to access the service". When done, click on the "Create Service" button
 +
 image::images/apiman-fuse-organisation-addservice.png[]
 +
-. You will be redirected to the +blog-service+, version +1.0+ screen where we will add the URL of the REST Service exposed by the Apache Camel
+. You will be redirected to the `blog-service+, version `1.0` screen where we will add the URL of the REST Service exposed by the Apache Camel
   and specify that the service is [public].
 +
 image::images/apiman-blogservice.png[]
 +
-. Click on the +implementation+ link and add the Api endpoints +http://localhost:9191/blog/article+, select +REST+ for the +Api Type+ dropdown box.
-. Click on the +Save+ button
+. Click on the `implementation` link and add the Api endpoints `http://localhost:9191/blog/article`, select `REST` for the `Api Type` dropdown box.
+. Click on the `Save` button
 +
 image::images/apiman-blogservice-api.png[]
 + 
-. From the +blog-service+ screen, select the +Plans+ and click within the checkbox +Make this service public+ as we haven't defined any plans. 
-. Save the service definition by clicking again on the +save+ button.
+. From the `blog-service` screen, select the `Plans` and click within the checkbox `Make this service public` as we haven't defined any plans.
+. Save the service definition by clicking again on the `save` button.
 +
 image::images/apiman-blogservice-plans.png[]
 +
@@ -613,13 +613,13 @@ image::images/apiman-blogservice-plans.png[]
 +
 NOTE: When a service is published, then the Api endpoint will become available and the Api Gateway will be able to process HTTP requests addressed to this service.
 +
-. Click on the +Publish+ button of the +blog-service+ screen.
+. Click on the `Publish` button of the `blog-service` screen.
 +
 image::images/apiman-blogservice-publish.png[]
 +
-NOTE: The screen is refreshed and additional information appears under the list like +Contracts, Endpoint, Activity, Metrics+
+NOTE: The screen is refreshed and additional information appears under the list like `Contracts, Endpoint, Activity, Metrics+
 +
-. Click on +Endpoint+ to see the URL address of the endpoint exposed by the Api Gateway and select it
+. Click on `Endpoint` to see the URL address of the endpoint exposed by the Api Gateway and select it
 +
 image::images/apiman-blogservice-unsecure-endpoint.png[]
 +
