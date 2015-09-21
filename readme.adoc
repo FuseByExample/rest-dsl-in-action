@@ -986,12 +986,12 @@ image::images/apiman-blogservice-newservice-oauth2-6.png[]
 
 ## Use case - Add roles
 
-To be exhaustive, we will now extend the OAuth2 Fuse Realm to specify 2 roles (writer/reader) to restrict the access to the service according to them. Typically, a writer user will be able to PUT or DELETE 
-a blog article while a reader user will only be able to query the REST services.
+To be exhaustive, we will now extend the OAuth2 Fuse Realm to specify 2 roles (writer/reader) to restrict the access to the service according to them. Typically, we will create the writer role to let a 
+user to PUT or DELETE a blog article while a reader role will only allow the users to query the REST services.
 
 . Open your web browser at this address to open the Oauth2 server `http://localhost:8080/auth/admin`
 . Select the `fuse` realm and add 2 roles by clicking on the tab `Roles`
-. Click on the button `Add Role` and fill the field `Role name ` with the `reader` value
+. Click on the button `Add Role` and fill the field `Role name` with the `reader` value
 . Save the role by clicking on the button `Save`
 +
 image::images/keycloak-addrole-reader.png[]
