@@ -1047,6 +1047,10 @@ image::images/apiman-add-authorizationpolicy.png[]
 ./script/src/main/resources/oauth2-role-writer.sh
 ----
 +
+. Verify the metrics
++
+image::images/apiman-blogservice-oauth2-metrics.png[]
++
 NOTE: You can also change the login/password to test if it works or create new users within the Oauth2 Server.
 +
 NOTE : The content of the JSon Web token replied to the application can be visualized using this web server - http://jwt.io/. Click on the Debugger link and add within the field the content of the token displayed in the terminal by the bash script
