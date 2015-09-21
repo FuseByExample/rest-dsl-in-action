@@ -1046,6 +1046,8 @@ image::images/apiman-add-authorizationpolicy.png[]
 ./script/src/main/resources/oauth2-role-reader.sh
 ./script/src/main/resources/oauth2-role-writer.sh
 ----
++
+NOTE: You can also change the login/password to test if it works or create new users within the Oauth2 Server.
 
 # Replay
 

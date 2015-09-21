@@ -2,7 +2,7 @@
 
 REALM=fuse
 USER=admin
-PASSWORD=admin123
+PASSWORD=admin
 CLIENT_ID=fuse
 HOST=localhost
 PORT_HTTP=8080
