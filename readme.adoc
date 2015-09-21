@@ -1004,7 +1004,7 @@ image::images/keycloak-addrole-writer.png[]
 +
 image::images/keycloak-addroles.png[]
 +
-. Now, we will assign the roles to their respective users. So, let's say that the admin user can have the writer and reader roles while a lambda user will only be able to use the reader role
+. Now, we will assign the roles to their respective users. So, let's say that the `admin` user can has the `writer` and `reader` roles while a lambda user will only be able to use the `reader` role
 . Create a new user as we did previously using as name `reader` and password `reader`. Don't forget to disable the temporary option.
 . Save it and select the `Role Mappings` tab to assign the `reader` role
 +
