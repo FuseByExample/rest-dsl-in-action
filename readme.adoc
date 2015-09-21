@@ -326,7 +326,6 @@ For the purpose of this lab, we have prepare a dashboard which is already config
 +
 ----
 http PUT http://fusehost:9200/kibana-int/dashboard/fusedemo < data/elasticsearch/dashboard.json
-http PUT http://fusehost:9200/kibana-int/dashboard/fusecamel < data/elasticsearch/dashboard-camel.json
 ----
 +
 . Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to load the `fuse-lab` dashboard.
