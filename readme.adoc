@@ -831,7 +831,7 @@ So, from the home page of the Apiman Management Console, seclect the service ver
 +
 image::images/apiman-blogservice-newservice-oauth2.png[]
 +
-. Add a new policy and select "Keycloak Oauth Policy"
+. Add a new policy by clicking on the button `Add policy`. When the screen `Add policy` appears, select `Keycloak Oauth Policy` within the dropdown list of the policy type.
 +
 image::images/apiman-blogservice-newservice-oauth2-1.png[]
 
