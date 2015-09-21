@@ -670,7 +670,7 @@ user: cmoulliard
 ## Use case - Basic Authentication
 
 Based on the previous service created, we will define a new security policy to be able to authenticate the HTTP request using Basic authentication as the previous was too insecure.
-From the service version 1.0 created, we will create a new (= clone the previous and extend the features) service and add a Basic authentication policy. The credentials ill be managed
+From the service version 1.0 created, we will create a new (= clone the previous and extend the features) service and add a Basic authentication policy. The credentials will be managed
 locally using a static list of users and passwords.
 
 The steps needed to realize the use case are described hereafter
@@ -683,7 +683,7 @@ image::images/apiman-blogservice-newservice-basic.png[]
 +
 image::images/apiman-blogservice-newservice-basic1.png[]
 +
-. When the screen has been refreshed. Click on the `Add policy` button which is available for the policies tab. Click on it.
+. When the screen has been refreshed. Click on the `Add policy` button which is available under the policies tab. Click on it.
 +
 image::images/apiman-blogservice-newservice-addpolicy.png[]
 +
@@ -694,6 +694,8 @@ image::images/apiman-blogservice-newservice-addpolicy1.png[]
 . Add `blog-basic-auth` as Authentication Realm. Click within the checkboxes `Transport security required` and `Basic Auth required`
 +
 image::images/apiman-blogservice-newservice-addpolicy2.png[]
++
+. WWWWWWW
 +
 image::images/apiman-blogservice-newservice-addpolicy3.png[]
 +
