@@ -703,11 +703,13 @@ image::images/apiman-blogservice-newservice-addpolicy3.png[]
 +
 image::images/apiman-blogservice-newservice-addpolicy4.png[]
 +
-. Save the policy by clikcing on the `Add policy ` button. Then, you will return to the service definition screen where you will publish the service
+. Save the policy by clikcing on the `Add policy` button. Then, you will return to the service definition screen where you will publish the service.
 +
 image::images/apiman-blogservice-newservice-addpolicy5.png[]
 +
-. Verify that the service has been published
+. Click on the `Publish` button to publish it. 
++
+NOTE: Check the url of the endpoint to be use to access the new service
 +
 image::images/apiman-blogservice-newservice-published.png[]
 +
