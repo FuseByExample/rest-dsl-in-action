@@ -15,7 +15,7 @@
     <name>FuseByExample :: REST DSL Demo :: Swagger</name>
     <properties>
         <swagger-ui-version>2.1.2</swagger-ui-version>
-        <jetty-version>9.3.3.v20150827</jetty-version>
+        <jetty-version>9.2.3.v20140905</jetty-version>
         <jetty.port>8000</jetty.port>
     </properties>
     
@@ -89,15 +89,6 @@
 
     <build>
         <plugins>
-
-<!--            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>-->
-
             <plugin>
                 <groupId>com.googlecode.maven-download-plugin</groupId>
                 <artifactId>download-maven-plugin</artifactId>
@@ -159,14 +150,7 @@
                         <host>localhost</host>
                         <port>${jetty.port}</port>
                     </httpConnector>
-                    <scanIntervalSeconds>5</scanIntervalSeconds>
-                    <systemProperties>
-                        <systemProperty>
-                            <name>log4j.configuration</name>
-                            <value>file:${project.build.directory}/classes/log4j.properties</value>
-                        </systemProperty>
-                    </systemProperties>
-                    
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
                 </configuration>
             </plugin>
         </plugins>

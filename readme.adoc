@@ -427,7 +427,7 @@ http PUT http://localhost:9191/blog/article < data/elasticsearch/entry.json
 curl -X PUT http://localhost:9191/blog/article -d @data/elasticsearch/entry.json
 ----
 +
-NOTE: Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish by editing the file `data/elasticsearch/entry.json`
+NOTE: Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish by editing the file `data/elasticserch/entry.json`
 +
 .. Search the user `cmoulliard`
 +
@@ -481,19 +481,19 @@ The `articles` directory folder is scanned by the Apache Camel rote `FileToAddSe
 .Demo dashboard with articles
 image::images/dashboard4.png[]
 
-## Swagger documentation
+## Swagger documentation (optional)
 
-The documentation of the REST Services has been created and is defined within the services.json file of the swagger maven module under this folder +src/main/resources/services.json+.
+For the purpose of this demo, we have documented the REST Services using the http://swagger.io/[Swagger API]. The documentation is defined within the `swagger/src/main/resources/services.json` file of the swagger maven module.
 The file has been produced manually as camel-swagger component 2.15 packaged within JBoss Fuse 6.2 doesn't parse yet the REST DSL syntax to generate it. This feature should be available
 for the next release of JBoss Fuse.
 
-To access the documentation and run the queries against the service, here are the requests to followed
+To access the documentation and run the queries against the service, here are the instruction to follow
 
 . Open a terminal within the +swagger+ maven module
 
     cd swagger
 
-. Launch the script +./run_jetty.sh+ to build the project locally and start a jetty instance
+. Launch the script +./run_jetty.sh+ to build the project locally and start a jetty instance with Swagger UI
 
     ./run_jetty.sh
     
