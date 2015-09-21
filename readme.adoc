@@ -497,10 +497,36 @@ To access the documentation and run the queries against the service, here are th
 
     ./run_jetty.sh
     
- . When the jetty instance is started, open yur browser at this address
-    
-    http://localhost:8000/?url=services.json
-
+. When the jetty instance is started, open your browser at this address
+   
+   http://localhost:8000/?url=services.json
+   
+. You can now add a user by clicking on the service +Add a new Blog Article+. 
+. To select the user data, just click on the Model schema and the field (left part of the service +Add a new Blog Article+ will be populated.
+. Change the data to be used
++
+----
+{
+  "id": "21",
+  "user": "cmoulliard",
+  "body": "This is a blog article",
+  "title": "Title of the blog article",
+  "postDate": "2015-10-03T10:10"
+}
+----
+. Click on try out button
++
+image::images/swagger1.png[]
++
+. Search for a user using the service +Blog Search Id operation+ and fill the parameter with the id +21+
++
+image::images/swagger2.png[]
++   
+. Review the results using the +Kibana+ dashboard and search for the id which is equal to +21+
++
+image::images/swagger3.png[]
++
+   
 ## Security governance with Apiman & Keycloak
 
 TODO : Describe what we will do here.
