@@ -1025,10 +1025,10 @@ image::images/apiman-authorization-policy.png[]
 . We will now define 3 rules to map a path to a verb and a role by using the `Add Authorization Rule` section of the screen. Encode the information as defined within the following table
 +
 |===
-Path | Verb | Role required
-.* | PUT | Writer
-.* | DELETE | Writer
-.* | GET | reader
+|Path | Verb | Role required
+| .* | PUT | Writer
+| .* | DELETE | Writer
+| .* | GET | reader
 |===
 +
 image::images/apiman-authorization-policy1.png[]
