@@ -797,17 +797,18 @@ image::images/keycloak-addrealm.png[]
 +
 image::images/keycloak-addrealm1.png[]
 +
-. From the setings Fuse screen, select (if not yet done) the `Direct Grant Api` by clicking on the `on/off` button that we have within the `Login` tab and save the action done.
+. From the settings Fuse screen, select (if not yet done) the `Direct Grant Api` by clicking on the `on/off` button that we have within the `Login` tab and save the action done.
 +
 image::images/keycloak-usedirectgrantapi.png[]
 +
-. Add a client
-
+. Next, we will define the application which is a client which is authorized to access the fuse realm. So click on the tab `Clients` and click on the button `Create`
++
 image::images/keycloak-addclient.png[]
-
-. Change Direct Grant Api
-
-
++
+. Add within the fied `Client ID`, `fuse` as name of the application that we will authorize
++
+. Change next `Direct Grant Api` by clicking on the `on/off` button. This step is required to allow REST Apiman to use the REST APi to access the Relam managed by the Oauth2 server
++
 image::images/keycloak-switchtopublicanddirectgrant.png[]
 
 . Add a user
