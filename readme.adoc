@@ -1022,20 +1022,23 @@ NOTE: Clone the Service - version 3.0 and specify 4.0 as the vesion name of this
 +
 image::images/apiman-authorization-policy.png[]
 +
-. We will now define 3 rules to map a path to a verb and a role by using the `Add Authorization Rule` section of the screen. Encode the information as defined within the following table
+. We will now define 3 rules to map a path to a REST verb (which corresponds to the HTTP operation) and a role by using the `Add Authorization Rule` section of the screen. Encode the information as defined within the following table
 +
 |===
 |Path | Verb | Role required
 | .* | PUT | Writer
 | .* | DELETE | Writer
-| .* | GET | reader
+| .* | GET | Reader
 |===
 +
 image::images/apiman-authorization-policy1.png[]
-
++
+. Save the result by clicking on the button `Update Policy`
+. Publish the service version 4.0
++
 image::images/apiman-add-authorizationpolicy.png[]
-
-. Use respectively these bash scripts to issue HTTP requests against the ApiMan gateway as an admin user or reader user
++
+. Use respectively these bash scripts to issue HTTP requests against the ApiMan gateway but using a different username (admin or reader)
 
 +
 [source]
@@ -1043,7 +1046,6 @@ image::images/apiman-add-authorizationpolicy.png[]
 ./script/src/main/resources/oauth2-role-reader.sh
 ./script/src/main/resources/oauth2-role-writer.sh
 ----
-
 
 # Replay
 
