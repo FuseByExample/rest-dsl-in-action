@@ -632,7 +632,7 @@ http --verify=no https://localhost:8443/apiman-gateway/fuse/blog-service/1.0/sea
 curl -k https://localhost:8443/apiman-gateway/fuse/blog-service/1.0/search/user/cmoulliard
 ----
 +
-NOTE: Remark that we have added at the end of the Api endpoint the path of `search/user/${username}` service
+NOTE: Remark that we have added at the end of the Api endpoint the path of search/user/${username}` service
 +
 WARNING: We will use the verify=no option of httpie to skip the host's SSL certificate verification or -k of curl
 +
@@ -669,19 +669,38 @@ user: cmoulliard
 
 ## Use case - Basic Authentication
 
-We will define a new security rule to be able to authenticate the HTTP request calling now the service 
+Based on the previous service created, we will define a new security policy to be able to authenticate the HTTP request using Basic authentication as the previous was too insecure.
+From the service version 1.0 created, we will create a new (= clone the previous and extend the features) service and add a Basic authentication policy. The credentials ill be managed
+locally using a static list of users and passwords.
 
-. Instructions to duplicate the service
-. Use Basic authentication
+The steps needed to realize the use case are described hereafter
 
+. First, we will duplicate the existing service to create a new. So, from the blog-service web page, click on the button `New Version`
++
 image::images/apiman-blogservice-newservice-basic.png[]
++
+. Encode `2.0` as Version number and click on the button `Create Version`
++
 image::images/apiman-blogservice-newservice-basic1.png[]
++
+. When the screen has been refreshed. Click on the `Add policy` button which is available for the policies tab. Click on it.
++
 image::images/apiman-blogservice-newservice-addpolicy.png[]
++
+. Select `Basic Authentication Policy` within the dropdown `Policy Type` list
++
 image::images/apiman-blogservice-newservice-addpolicy1.png[]
++
+. Add `blog-basic-auth` as Authentication Realm. Click within the checkboxes `Transport security required` and `Basic Auth required`
++
 image::images/apiman-blogservice-newservice-addpolicy2.png[]
++
 image::images/apiman-blogservice-newservice-addpolicy3.png[]
++
 image::images/apiman-blogservice-newservice-addpolicy4.png[]
++
 image::images/apiman-blogservice-newservice-addpolicy5.png[]
++
 image::images/apiman-blogservice-newservice-published.png[]
 
 . Request to be used
