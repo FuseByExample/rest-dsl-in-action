@@ -844,7 +844,7 @@ image::images/apiman-blogservice-newservice-oauth2-2.png[]
 +
 image::images/keycloak-certificate.png[]
 +
-. Finally, select `true` as the value of the field `Foward Realm Roles` to send to the application, the roles defined within the realm. They will be used within the last use cases to control if the application
+. Finally, select `true` as the value of the field `Forward Realm Roles` to send to the application, the roles defined within the realm. They will be used within the last use cases to control if the application
   calling the Oauth2 server is authorized according to its role to use a specific service.
 +
 image::images/apiman-blogservice-newservice-oauth2-3.png[]
