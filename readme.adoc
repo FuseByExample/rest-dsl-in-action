@@ -1000,18 +1000,19 @@ image::images/keycloak-addrole-reader.png[]
 +
 image::images/keycloak-addrole-writer.png[]
 +
-
+. When you return to the `Roles` screen, a table will display the 2 roles created
++
 image::images/keycloak-addroles.png[]
-
-. Assign the roles to the user admin adn reader
-.. Add reader role to the newly created read user
-
++
+. Now, we will assign the roles to their respective users. So, let's say that the admin user can have the writer and reader roles while a lambda user will only be able to use the reader role
+. Create a new user as we did previously using as name `reader` and passwaord `reader`. Save it and select the `Role Mappings` tab to assign the `reader` role
++
 image::images/keycloak-addrole-reader-to-user.png[]
-
-.. Add writer role to the admin user
-
++
+. Assign the roles `writer` and `reader` to the admin user
++
 image::images/keycloak-addrole-writerreader-to-admin.png[]
-
++
 . Create from the previous service a new
 . Add an authorization policy
 
