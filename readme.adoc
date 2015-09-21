@@ -107,7 +107,7 @@ Follow these instructions to install and configure JBoss Developer Studio 8.1.0.
 
 In order to use the demo, we have to realize these tasks which are described hereafter :
 
-* https://github.com/gpe-mw-training/fuse-lab-emea-2015/archive/master.zip[Download] and compile the project locally
+* https://github.com/FuseByExample/rest-dsl-in-action/archive/master.zip[Download] and compile the project locally
 * Edit the hosts file to add an entry
 * Download and install the JBoss Fuse Server
 * Edit the etc/users.properties file of the server to define an admin user
@@ -119,11 +119,11 @@ In order to use the demo, we have to realize these tasks which are described her
 
 ## Compile Project 
 
-. Open a Windows or Unix terminal. Unzip the material of the demo and move to that directory `fuse-demo-2015-master`
+. Open a Windows or Unix terminal. Unzip the material of the demo and move to that directory `rest-dsl-in-action-master`
 . Build your maven project locally
 +
 ----
-cd fuse-demo-2015-master
+cd rest-dsl-in-action-master
 mvn clean install
 ----
 
@@ -289,7 +289,7 @@ Resource: dependencies/org.jboss.fuse/routing-requirements.json
 Resource: fuse-lab1.png
 ----
  
-. Now, we will install it into the `demo` Fuse Lab Managed container
+. Now, we will install it into the `demo` Fuse Demo Managed container
 . Assign the profile `gpe-fuse` profile to our `demo` container using this fabric command `fabric:container-add-profile demo gpe-fuse` executed within the JBoss Fuse console
 +
     JBosFuse:karaf@root>fabric:container-add-profile demo gpe-fuse
@@ -323,7 +323,6 @@ fabric:container-add-profile demo gpe-fuse
 
 In order to collect the data using the ElasticSearch No SQL database, we will first create an Index with the name `Blog` and the type `article`.
 Next, we will define the mapping of the fields and their type of a Blog Article and how ElasticSearch will manage them from JSon documents
-
 +
 ----
 {
@@ -360,12 +359,14 @@ curl -X PUT http://localhost:9200/blog
 curl -X PUT http://localhost:9200/blog/_mapping/article -d @data/elasticsearch/mapping.json
 curl http://localhost:9200/blog/_mapping/article
 ----
++
+NOTE: The first command creates the index, the second creates the mapping and the last collect from ES the mapping created.
 
 ## Use Kibana dashboard
 
 The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
 The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
-This lab provides a jetty maven goal that we will launch in order to start a local HTTP Server that we can access from the browser
+This demo provides a jetty maven goal that we will launch in order to start a local HTTP Server that we can access from the browser
 at this address `http://localhost:9090/kibana3/index.html`
 
 . To start locally the HTTP Server, open a Windows or unix terminal and move to the home directory of the project containing the code.
@@ -374,20 +375,20 @@ at this address `http://localhost:9090/kibana3/index.html`
 ----
 mvn jetty:run
 ...
-[INFO] Configuring Jetty for project: GPE :: FuseByExample :: Kibana 3
-[INFO] Webapp source directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp
+[INFO] Configuring Jetty for project: FuseByExample :: REST DSL Demo :: Kibana 3
+[INFO] Webapp source directory = /Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/src/main/webapp
 [INFO] Reload Mechanic: automatic
-[INFO] Classes directory /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/target/classes does not exist
+[INFO] Classes directory /Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/target/classes does not exist
 [INFO] Context path = /kibana3
-[INFO] Tmp directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/target/tmp
+[INFO] Tmp directory = /Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/target/tmp
 [INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
 [INFO] Web overrides =  none
-[INFO] web.xml file = file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/WEB-INF/web.xml
-[INFO] Webapp directory = /Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp
-2015-08-28 15:18:54.367:INFO:oejs.Server:main: jetty-9.3.0.M1
-2015-08-28 15:18:57.074:INFO:oejsh.ContextHandler:main: Started o.e.j.m.p.JettyWebAppContext@5893efc3{/kibana3,file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/,AVAILABLE}{file:///Users/chmoulli/RedHat/GPE/GPE-Courses/fuse-lab/kibana/src/main/webapp/}
-2015-08-28 15:18:57.091:INFO:oejs.ServerConnector:main: Started ServerConnector@22cf08dc{HTTP/1.1,[http/1.1]}{localhost:9090}
-2015-08-28 15:18:57.092:INFO:oejs.Server:main: Started @5692ms
+[INFO] web.xml file = file:///Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/src/main/webapp/WEB-INF/web.xml
+[INFO] Webapp directory = /Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/src/main/webapp
+2015-09-21 11:46:46.627:INFO:oejs.Server:main: jetty-9.3.0.M1
+2015-09-21 11:46:48.507:INFO:oejsh.ContextHandler:main: Started o.e.j.m.p.JettyWebAppContext@70325d20{/kibana3,file:///Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/src/main/webapp/,AVAILABLE}{file:///Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/src/main/webapp/}
+2015-09-21 11:46:48.710:INFO:oejs.ServerConnector:main: Started ServerConnector@53afb8df{HTTP/1.1,[http/1.1]}{localhost:9090}
+2015-09-21 11:46:48.711:INFO:oejs.Server:main: Started @4174ms
 [INFO] Started Jetty Server
 ----
 +
@@ -397,20 +398,20 @@ NOTE: The first time, that you will connect to the Dashboard, the index HTML pag
 +
 image::images/dashboard1.png[]
 +
-For the purpose of this lab, we have prepare a dashboard which is already configured with the panels and the type fields that we would like to display graphically using a histogram and list panels.
+For the purpose of this demo, we have prepare a dashboard which is already configured with the panels and the type fields that we would like to display graphically using a histogram and list panels.
 +
-. In order to add the JSON dashboard document definition to the Elasticsearch server within the `kibana-int` index, you will issue a HTTP request at the root of the `fuse-lab` project.
-  This HTTP request calls a REST service of the Elasticsearch server to insert the `fuse-lab` dashboard type using the `dashboard.json` file as input.
+. In order to add the JSON dashboard document definition to the Elasticsearch server within the `kibana-int` index, you will issue a HTTP request at the root of the `fuse-demo` project.
+  This HTTP request calls a REST service of the Elasticsearch server to insert the `fuse-demo` dashboard type using the `dashboard.json` file as input.
 +
 ----
 http PUT http://localhost:9200/kibana-int/dashboard/fusedemo < data/elasticsearch/dashboard.json
 ----
 +
-. Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to load the `fuse-lab` dashboard.
+. Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to load the `fuse-demo` dashboard.
 +
 image::images/dashboard2.png[]
 +
-The fuse-lab dashboard contain our panels without any data as we haven't yet populated the database with records
+The fuse-demo dashboard contain our panels without any data as we haven't yet populated the database with records
 +
 image::images/dashboard3.png[]
 +
@@ -467,7 +468,7 @@ The `articles` directory folder is scanned by the Apache Camel rote `FileToAddSe
 +
 . Within your browser, refresh your dashboard and you will see the data.
 
-.Lab dashboard with articles
+.Demo dashboard with articles
 image::images/dashboard4.png[]
 
 ## Swagger documentation
