@@ -808,15 +808,19 @@ image::images/keycloak-addclient.png[]
 . Add within the fied `Client ID`, `fuse` as name of the application that we will authorize
 +
 . Change next `Direct Grant Api` by clicking on the `on/off` button. This step is required to allow REST Apiman to use the REST APi to access the Realm managed by the Oauth2 server. The `Client Protocol` that we will use is `openid-connect` and the access type is `public`.
+ Save the result by clicking on the button `Save`.
 +
 image::images/keycloak-switchtopublicanddirectgrant.png[]
 
-. Add a user
-
+. As an application (or client) will be authenticated by the Oauth2 Server, we will now define an `admin` user and setup its password to access the platform. So, select the tab `Users` and click
+  on the `Add user` button
++
 image::images/keycloak-adduser.png[]
-
-. Change password and disable to reset password
-
++
+. Fill the fields `Username` and `First Name` with the value `admin` and save the modifications done by clicking on the `Save` button
+. As the platform generates a password, we will change it to use our own password. So, click on the `Credential` tab and encode your the `admin` password within the fields
+  `New password` and `Password confirmation`. Disable the option `Temporary` by clicking on the `on/off` button
++
 image::images/keycloak-adduser-password.png[]
 
 
