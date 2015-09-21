@@ -835,14 +835,15 @@ image::images/apiman-blogservice-newservice-oauth2.png[]
 +
 image::images/apiman-blogservice-newservice-oauth2-1.png[]
 
-. Encode the endpoint 
-
+. Encode the endpoint of the REST api which is authorized to access the Oauth2 Server to request a Oauth2 Token. So, fill the field `Realm` with this url `http://localhost:8080/auth/realms/fuse`
+  and add to the field `Keycloak Realm Certificate` the certificate which has been generated for the `Fuse` realm. the certificate can be retrived from the Oauth2 Server as explained just after.
++
 image::images/apiman-blogservice-newservice-oauth2-2.png[]
-
-. Copy / paste the certificate that you can get from Keycloak
-
++
+. Copy / paste the certificate that you can get from the Keycloak server (`http://localhost:8080/auth/admin/master/console/#/realms/fuse/keys-settings`) under the screen `Settings`, `Keys` tab
++
 image::images/apiman-blogservice-newservice-oauth2-3.png[]
-
++
 . Get Certificate
 
 keycloak-certificate.png
