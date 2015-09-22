@@ -986,7 +986,7 @@ image::images/apiman-blogservice-newservice-oauth2-5.png[]
 +
 image::images/apiman-blogservice-newservice-oauth2-6.png[]
 
-= Use case - Add roles
+== Use case - Add roles
 
 To be exhaustive, we will now extend the OAuth2 Fuse Realm to specify 2 roles (writer/reader) to restrict the access to the service according to them. Typically, we will create the writer role to let a 
 user to PUT or DELETE a blog article while a reader role will only allow the users to query the REST services.
