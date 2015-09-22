@@ -1,7 +1,7 @@
 :sectanchors:
 :toc: macro
-:toc-placement: left
 :toclevels: 2
+:toc-title: Content
 
 toc::[]
 
