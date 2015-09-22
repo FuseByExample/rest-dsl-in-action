@@ -1108,26 +1108,11 @@ curl 'http://localhost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
 
     http PUT http://localhost:9200/blog/article/1 < data/elasticsearch/entry.json
 
-* All requests
-
-----
-http DELETE http://localhost:9200/blog
-http PUT http://localhost:9200/blog
-http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
-http http://localhost:9200/blog/_mapping/article
-
-http PUT http://localhost:9200/blog/article/1 < data/elasticsearch/entry.json
-http PUT http://localhost:9200/blog/article/2 < data/elasticsearch/entry.json
-
-http http://localhost:9200/blog/article/1
-http http://localhost:9200/blog/article/2
-----
-
 = Minimal installation
 
-You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` or the profile `insight-elasticsearch.datastore` if a fabric server has been deployed into the JBoss Fuse .2.
+You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` or the profile `insight-elasticsearch.datastore` has been deployed into JBoss Fuse 6.2.
 
-. Open a Windows or Unix terminal and move to the directory `camel-rest-dsl-demo-master/routing`
+. Open a Windows or Unix terminal and move to the directory `rest-dsl-in-action-master/routing`
 . Launch Apache Camel
 
     mvn camel:run
@@ -1179,19 +1164,19 @@ You can also run the project locally using `mvn camel:run` at the condition that
 ...
 ----    
 
-NOTE : Additional OSGI parameters could be defined for the elasticsearch database using the `io.fabric8.elasticsearch-insight.cfg` file deployed into the `etc` folder of JBoss Fuse.
-That should also work if you deploy locally an Elasticsearch instance but this feature hasn't been tested.
+NOTE : Additional parameters could be defined for the elasticsearch database using the `io.fabric8.elasticsearch-insight.cfg` config file deployed into the `etc` folder of JBoss Fuse.
+That should also work if you deploy locally an Elasticsearch instance on your machine but this use case hasn't been tested.
 
 = CRUD requests - all in
 
-When you would like test your project, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
-It will delete the blog index, create a new index, insert 3 articles, search for user or base on id and will delete
-the user id = 1
+When you would like test your project and if the Elasticsearch server is running locally, you can copy/paste this list of HTTPie queries to play with the CRUD scenario
+It will delete the blog index, create a new index, insert articles, search using a user name or id and will delete
+a user.
 
 ----
 http DELETE http://localhost:9200/blog
 http PUT http://localhost:9200/blog
-http PUT http://localhost:9200/blog/_mapping/article < camel/data/elasticsearch/mapping.json
+http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
 http http://localhost:9200/blog/_mapping/article
 
 http PUT http://localhost:9191/blog/article < data/elasticsearch/entry.json
