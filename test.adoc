@@ -1,0 +1,12 @@
+:sectanchors:
+:toc: macro
+:toclevels: 2
+
+toc::[]
+
+= REST DSL in Action
+
+This JBoss Fuse demo will demonstrate how the new Apache Camel REST DSL syntax can be used to expose REST Services that we will use to add, search or delete
+articles for a blog into the Elasticsearch database. The use case has been enriched to expose also a file endpoint, as you can see within the following picture, which
+is responsible to poll a folder, to consumes csv files and insert all the articles into the database. The Apache Camel Elasticsearch component is called from different routes
+and will communicate with the ElasticSearch Database to perform the CRUD operations.
