@@ -1,6 +1,7 @@
 :sectanchors:
 :toc: macro
-:toc-placement: preamble
+:toc-placement: left
+:toclevels: 2
 
 toc::[]
 
