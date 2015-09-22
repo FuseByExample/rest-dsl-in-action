@@ -10,8 +10,8 @@ toc::[]
 
 == Goals
 
-* Using the `Rest` and `Elasticsearch` components of Apache Camel, expose CRUD services for a repository of blog articles.
-* Secure RESTful endpoints using `APIMan` and `Keycloak`.
+* Using the new `Rest` DSL and `Elasticsearch` component of Apache Camel, expose CRUD services for a repository of blog articles.
+* Secure RESTful endpoints using `APIMan` and `Keycloak` according to different scenari : basic authentication, Oauth2 & Oauth2 & roles.
 * Populate and query an Elasticsearch database using the `Elasticsearch` component of Apache Camel.
 * Analyze the Elasticsearch data using `Kibana`.
 * Document the RESTful endpoints using Swagger API.
