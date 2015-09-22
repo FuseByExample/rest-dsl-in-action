@@ -1,0 +1,31 @@
+source: .
+destination: generated_html_content
+
+mode: 'development'
+tracer: 'false'
+level: 'INFO'
+dirname: /Users/chmoulli/log
+logname: hyla.log
+
+#
+# Styles
+# Supported :  liberation, asciidoctor, colony, foundation, foundation-lime, foundation-potion, github, golo, iconic, maker, readthedocs, riak, rocket-panda, rubygems
+#
+style: asciidoctor
+
+#
+# Asciidoctor and attributes options
+#
+backend: html5
+doctype: book
+attributes:
+   source-highlighter: coderay # prettify, pygments, coderay, highlightjs
+   #highlightjs-theme: sunburst
+   linkcss!: true
+   data-uri: true
+   allow-uri-read: true
+   last-update-label!:
+   stylesdir: /Users/chmoulli/.rbenv/versions/1.9.3-p484/lib/ruby/gems/1.9.1/gems/hyla-1.0.8/lib/resources/assets/styles
+   safe: unsafe
+
+rendering: adoc2html
