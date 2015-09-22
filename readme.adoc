@@ -2,8 +2,15 @@
 :toc: macro
 :toclevels: 2
 :toc-title: Content
+:numbered:
 
 toc::[]
+
+. Goals
+.. Using the `Rest` and `Elasticsearch` components of Apache Camel, expose CRUD services for a repository of blog articles.
+.. Secure RESTful endpoints using `APIMan` and `Keycloak`.
+.. Populate and query an Elasticsearch database using the `Elasticsearch` component of Apache Camel.
+.. Analyze the Elasticsearch data using `Kibana`.
 
 = REST DSL in Action
 
