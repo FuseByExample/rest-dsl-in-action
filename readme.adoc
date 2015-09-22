@@ -1,4 +1,6 @@
-:sectanchors: 
+:sectanchors:
+:toc: manual
+:toc-placement: preamble
 
 # REST DSL in Action
 
