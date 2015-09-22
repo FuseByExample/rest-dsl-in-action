@@ -1,6 +1,8 @@
 :sectanchors:
-:toc:
+:toc: macro
 :toc-placement: preamble
+
+toc::[]
 
 = REST DSL in Action
 
