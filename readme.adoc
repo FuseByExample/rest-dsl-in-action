@@ -1,10 +1,12 @@
 :sectanchors:
-:toc: right
+:toc: macro
 :toclevels: 2
 :toc-title: Table of Content
 :numbered:
 
 = REST DSL in Action
+
+toc::[]
 
 == Goals
 

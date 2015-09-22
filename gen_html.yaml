@@ -27,5 +27,7 @@ attributes:
    last-update-label!:
    stylesdir: /Users/chmoulli/.rbenv/versions/1.9.3-p484/lib/ruby/gems/1.9.1/gems/hyla-1.0.8/lib/resources/assets/styles
    safe: unsafe
+   
+   :toc: macro
 
 rendering: adoc2html
