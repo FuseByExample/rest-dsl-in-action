@@ -1,5 +1,5 @@
 :sectanchors:
-:toc: manual
+:toc:
 :toc-placement: preamble
 
 = REST DSL in Action
