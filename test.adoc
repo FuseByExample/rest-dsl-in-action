@@ -1,6 +1,7 @@
 :sectanchors:
 :toc: macro
 :toclevels: 2
+:toc-title: Content
 
 toc::[]
 
