@@ -105,10 +105,6 @@ from("direct:add").id("add-direct-route")
 - JDK 1.7
 - Apache Maven 3.x
 
-= Getting started
-
-Follow these instructions to install and configure JBoss Developer Studio 8.1.0.GA and JBoss Fuse 6.2.GA - https://www.jboss.org/products/fuse/get-started/
-
 = Installation
 
 In order to use the demo, we have to realize these tasks which are described hereafter :
@@ -135,7 +131,7 @@ mvn clean install
 
 == Edit Host file
 
-. Edit the /etc/hosts file and add an entry to map the hostname `localhost` with the IP address of the machine to be used.
+. Edit the /etc/hosts file and add an entry to map the hostname `localhost` with the loopback IP address - 127.0.0.1.
 +
 NOTE:  The value could be your local loopback address `127.0.0.1` when NOT connected to a network, otherwise, the Ethernet address assigned by the network card used (wifi, local network). The hostname is used by the ElasticSearch server to register the socket server when it is
 started and also by the Apache Camel Elasticsearch component to access the server. Also, the Fuse Fabric Server will use it to assign an IP address to the socket server of the Apache
@@ -325,7 +321,7 @@ fabric:container-add-profile demo gpe-fuse
 ----
 ====
 
-== Define Elasticsearch Data Mapping
+= Setup Elasticsearch Data Mapping
 
 In order to collect the data using the ElasticSearch No SQL database, we will first create an Index with the name `Blog` and the type `article`.
 Next, we will define the mapping of the fields and their type of a Blog Article and how ElasticSearch will manage them from JSon documents
@@ -368,7 +364,7 @@ curl http://localhost:9200/blog/_mapping/article
 +
 NOTE: The first command creates the index, the second creates the mapping and the last collect from ES the mapping created.
 
-== Use Kibana dashboard
+= Use Kibana dashboard
 
 The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
 The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
@@ -459,7 +455,7 @@ http DELETE http://localhost:9191/blog/article/0
 curl -X DELETE http://localhost:9191/blog/article/0
 ----
     
-=== Bulk import
+== Bulk import
 
 In order to perform a buk import of articles within the ElasticSearch database, we will copy/paste the records.csv file from the `$DEMO_DIRECTORY/camel/src/data` directory to the `articles` directory created under the local instance `demo`.
 
@@ -487,7 +483,7 @@ The `articles` directory folder is scanned by the Apache Camel rote `FileToAddSe
 .Demo dashboard with articles
 image::images/dashboard4.png[]
 
-== Swagger documentation (optional)
+= Swagger documentation (optional)
 
 For the purpose of this demo, we have documented the REST Services using the http://swagger.io/[Swagger API]. The documentation is defined within the `swagger/srcmain/resources/services.json` file of the swagger maven module.
 The file has been produced manually as camel-swagger component 2.15 packaged within JBoss Fuse 6.2 doesn't parse yet the REST DSL syntax to generate it. This feature should be available
@@ -532,7 +528,7 @@ image::images/swagger2.png[]
 +
 image::images/swagger3.png[]
 
-== Security governance with Apiman & Keycloak
+= Security governance with Apiman & Keycloak
 
 During the first part of the demo, we have deployed the Apache Camel Routes exposing the REST services to create, search or delete a user into a JBoss Fuse Karaf container
 and installed also an Elasticsearch server to collect the data from the different REST Services. Now, within the next section of the demo, we will
