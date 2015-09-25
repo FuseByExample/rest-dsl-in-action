@@ -603,18 +603,18 @@ The `articles` directory folder is scanned by the Apache Camel rote `FileToAddSe
 .Demo dashboard with articles
 image::images/dashboard4.png[]
 
-= Swagger documentation (optional)
+== Swagger documentation (optional)
 
-For the purpose of this demo, we have documented the REST Services using the http://swagger.io/[Swagger API]. The documentation is defined within the `swagger/srcmain/resources/services.json` file of the swagger maven module.
-The file has been produced manually as camel-swagger component 2.15 packaged within JBoss Fuse 6.2 doesn't parse yet the REST DSL syntax to generate it. This feature should be available
-for the next release of JBoss Fuse.
+The Camel REST services included in this project have been documented using the http://swagger.io/[Swagger API].
+The documentation is defined within the `swagger/src/main/resources/services.json` file of the swagger maven module.
 
-To access the documentation and run the queries against the service, here are the instruction to follow
+NOTE: This swagger file has been produced manually.
+The camel-swagger component (version 2.15) packaged within JBoss Fuse 6.2 doesn't yet parse the REST DSL syntax to automatically generate the REST documentation.
+This feature should be available in the next release of JBoss Fuse.
 
-. Open a terminal within the `swagger` maven module
+To access the Swagger documentation, execute the following:
 
-    cd swagger
-
+. In a terminal window, change to the `$DEMO_DIRECTORY/swagger` directory.
 . Launch the script +./run_jetty.sh+ to build the project locally and start a jetty instance with Swagger UI
 
     ./run_jetty.sh
@@ -648,7 +648,7 @@ image::images/swagger2.png[]
 +
 image::images/swagger3.png[]
 
-= Security governance with Apiman & Keycloak
+== Security governance with Apiman & Keycloak
 
 During the first part of the demo, we have deployed the Apache Camel Routes exposing the REST services to create, search or delete a user into a JBoss Fuse Karaf container
 and installed also an Elasticsearch server to collect the data from the different REST Services. Now, within the next section of the demo, we will
