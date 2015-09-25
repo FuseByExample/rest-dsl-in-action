@@ -3,6 +3,8 @@
 :toclevels: 2
 :toc-title: Table of Content
 :numbered:
+:httpie: link:https://github.com/jkbrzt/httpie[httpie]
+:curl: link:http://curl.haxx.se/download.html[curl]
 
 = REST DSL in Action
 
@@ -115,8 +117,7 @@ from("direct:add").id("add-direct-route")
 
 - http://www.jboss.org/download-manager/file/jboss-fuse-6.2.0.GA-full_zip.zip[JBoss Fuse 6.2.GA]
 - http://www.jboss.org/download-manager/file/jboss-devstudio-8.1.0.GA-standalone_jar.jar[JBoss Developer Studio]
-- https://github.com/jkbrzt/httpie[httpie]
-- http://curl.haxx.se/download.html[curl] (optional)
+- {httpie} or {curl}
 - http://www.apiman.io/latest/download.html[Apiman 1.1.8.Final]
 - JDK 1.7
 - Apache Maven 3.x
@@ -138,8 +139,10 @@ The following is an overview of the installation steps involved with this projec
 === Compile Project
 
 . Open a Windows or Unix terminal.
-Clone this project to your local workstation and change directory into the root of the project: `rest-dsl-in-action`
-. Build your maven project locally
+. Using the `git` utility, clone this project to your local workstation.
++
+NOTE: For the purposes of these lab instructions, the directory of this cloned project on your local workstation will be referred to as: `$LAB_HOME`.
+. Change directory into: `$LAB_HOME` and build the maven project:
 +
 ----
 cd rest-dsl-in-action
@@ -261,13 +264,15 @@ root*                 1.0        karaf   yes          fabric                    
 
 === Deploy the Fabric project into the Fabric Server
 
-. Use the terminal opened previously to compile this demo.
-. Change to the `routing` directory of this project: `rest-dsl-in-action/routing`
-. Run this command to deploy the configuration of the demo project into the fuse Fabric Server as the `gpe-fuse` profile
+. In a terminal window, change to the `routing` directory of this project: `rest-dsl-in-action/routing`
+. Execute the following command:
 +
 ----
 mvn fabric8:deploy
 ----
++
+Doing so will deploy the `demo` project configuration into the `gpe-fuse` profile of the Fabric Server.
+
 .. If Fuse has not been previously run on your workstation, it's likely that the following prompt will appear:
 +
 -----
@@ -286,7 +291,7 @@ Copied original: /home/jbride/.m2/settings.xml to: /home/jbride/.m2/settings.xml
 Updated settings file: /home/jbride/.m2/settings.xml
 -----
 +
-If prompted as per above, use username / password credentials of `admin / admin`  (as per the default in `$FUSE_INSTALL/etc/user.properties`).
+If prompted as per above, respond with a `y` (to allow for a modification to your `~/.m2/settings.xml`) and use username / password credentials of `admin / admin`  (as per the default in `$FUSE_INSTALL/etc/user.properties`).
 .. Once deployment is complete, you should see output similar to the following:
 +
 ----
@@ -311,7 +316,7 @@ Uploaded: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-
 [INFO] ------------------------------------------------------------------------
 ----
 +
-. To verify that the profile has been created and published on JBoss Fuse, use this command within the JBoss Fuse Karaf Console:
+. To verify that the profile has been created and published on JBoss Fuse, use the following command within the JBoss Fuse Karaf Console:
 +
 ----
 JBossFuse:karaf@root> fabric:profile-display gpe-fuse
@@ -362,7 +367,7 @@ Resource: dependencies/org.jboss.fuse/routing-requirements.json
 Resource: fuse-lab1.png
 ----
 
-. Now, we will install the `gpe-fuse` profile into the `demo` Fuse Demo Managed container
+. Afterwards, install the `gpe-fuse` profile into the `demo` Fuse Demo Managed container
 .. Assign the `gpe-fuse` profile to our `demo` container by executing the following fabric command within the JBoss Fuse Console:
 +
 -----
@@ -397,11 +402,13 @@ fabric:container-add-profile demo gpe-fuse
 ----
 ====
 
-= Setup Elasticsearch Data Mapping
+== Setup Elasticsearch Data Mapping
 
-In order to collect the data using the ElasticSearch No SQL database, we will first create an Index with the name `Blog` and the type `article`.
-Next, we will define the mapping of the fields and their type of a Blog Article and how ElasticSearch will manage them from JSon documents
-+
+In order to collect the data using the ElasticSearch No SQL database, an index a name of `blog` and type `article` needs to be created.
+
+In addition, the properties of the new type `article` need to be defined.
+To do so, the following JSON definition will be used:
+
 ----
 {
   "article": {
@@ -426,19 +433,26 @@ Next, we will define the mapping of the fields and their type of a Blog Article 
   }
 }
 ----
+
+. In a terminal window, change directory to `$LAB_HOME`.
+. The steps previously discussed in this section can be executed using the `http` command (from the {httpie} utility) or `curl`:
+.. Using the `http` utility, execute the following 3 commands:
 +
-. Run these commands within the terminal of the project in order to access the HTTP Server of Elasticsearch and configure the Index and the type
 ----
 http PUT http://localhost:9200/blog
 http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
 http http://localhost:9200/blog/_mapping/article
-
+----
+.. or using {curl} utility, execute the following 3 commands:
++
+----
 curl -X PUT http://localhost:9200/blog
 curl -X PUT http://localhost:9200/blog/_mapping/article -d @data/elasticsearch/mapping.json
 curl http://localhost:9200/blog/_mapping/article
 ----
 +
-NOTE: The first command creates the index, the second creates the mapping and the last collect from ES the mapping created.
+NOTE: The first command creates the index and the second command defines the properties of the new type `article`.
+The third command confirms that the mapping between the `article` type and its properties have been created.
 
 = Use Kibana dashboard
 
