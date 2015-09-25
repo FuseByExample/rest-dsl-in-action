@@ -5,6 +5,8 @@
 :numbered:
 :httpie: link:https://github.com/jkbrzt/httpie[httpie]
 :curl: link:http://curl.haxx.se/download.html[curl]
+:wildfly: link:http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip[Wildfly]
+:apiman: link:http://downloads.jboss.org/apiman/1.1.7.Final/apiman-distro-wildfly8-1.1.7.Final-overlay.zip[APIMan]
 
 = REST DSL in Action
 
@@ -650,22 +652,22 @@ image::images/swagger3.png[]
 
 == Security governance with Apiman & Keycloak
 
-During the first part of the demo, we have deployed the Apache Camel Routes exposing the REST services to create, search or delete a user into a JBoss Fuse Karaf container
-and installed also an Elasticsearch server to collect the data from the different REST Services. Now, within the next section of the demo, we will
-use the ApiMan & Keycloak projects to secure our endpoints in order to authenticate the incoming HTTP request using Basic Authentication but also OAuth2 to authorize the access
-to the service based on the role provided.
+=== Install and start APIMan
+During the first part of this demo, Apache Camel Routes exposing the REST services have been deployed.
 
-The instructions required to install the server and to configure them are described hereafter :
+In this section of the lab, ApiMan & Keycloak are used to secure these REST endpoints.
+In particular,  incoming HTTP requests will be authenticated and authorization will be granted based on the role of the authenticated user.
 
-. Download [WildFly](http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip) & [Apiman 1.1.7.Final overlay for WildFly 8.2](http://downloads.jboss.org/apiman/1.1.7.Final/apiman-distro-wildfly8-1.1.7.Final-overlay.zip)
-. Unpack the `WildFly 8.2 zip`
-. Unpack the`apiman 1.1.7.Final WildFly 8 overlay zip` inside the wildfly directory
+An overview of the installation instructions for APIMan are as follows:
+
+. Download {wildfly} and unzip
+. Download {apiman} and unzip inside the wildfly directory
 . Start WildFly 8 using the `standalone-apiman.xml` configuration file
 . Point your browser at the apiman UI and login using `admin` as user and `admin123!` as password
 +
 [NOTE]
 ====
-You can use this list of instructions to download and install Apiman locally
+The following are specific commands that can be used to install APIMan:
 
 ----
 mkdir ~/apiman-1.1.7.Final
@@ -679,38 +681,39 @@ cd wildfly-8.2.0.Final
 ----
 ====
 
-Now that our Apiman server has been launched, we will create an organization to manage the different services that we would like to secure using the following security policies; Basic Authentication, OAuth & Limit rates.
-
-. Open your web browser at this address `http://localhost:8080/apimanui/` and encode `admin` for the username and `admin123!` as password to access the application.
+. In your browser, navigate to the following URL and authenticate in using the credentials: `admin / admin123!`.
 +
 image::images/apiman-login.png[]
-+
-. If the authentication succeeds, then you will be redirected to the `Api Management screen`
+. Once authenticated, your browser will be redirected to the `Api Management screen`:
 +
 image::images/apiman-management.png[]
-+
-. Click on the link Create a New Organization` and encode `Fuse` as organization name within the field `Organization Name` of the new screen displayed.
-. Next, click on the `Create Organisation` button.
+
+=== Create an Organization in APIMan
+Now that the Apiman server has been launched, an `organization` is needed to manage the different Camel REST services that need to be secured.
+
+. In the `Organizations` section of the `APIMan` home page, click on the `Create a New Organization` link.
 +
 image::images/apiman-organization.png[]
+. Enter `Fuse` in the  `Organization Name` text box.
+. Click on the `Create Organisation` button.
 +
-. The Web UI is refreshed and a new organization called `Fuse` is displayed under the `Home` screen
+. The Web UI will refresh and a new organization called `Fuse` will appear in the `Home` screen
 +
 image::images/apiman-fuse-organisation.png[]
 +
-. Click on the `Service` Tab of the `Fuse` organization to register the REST Service that we will manage
+. Click on the `Services` Tab of the `Fuse` organization to register the first REST Service to be secured.
 +
 NOTE: As we will not define different SLA (e.g. quotas, ...) to manage the service, No http://www.apiman.io/latest/user-guide.html=_plans[plan] will be defined for the demo
 +
 image::images/apiman-fuse-organisation-service.png[]
 
-== Use case - Direct forward
+=== Use case - Direct forward
 
-The first use case that we will deal with is very simple and can be compared to a proxy forwarding scenario where the incoming request is matched to a service
-and next forwarded to the real endpoint exposing the REST service. To design it, we will create a service, specify the address of the service and publish the service in order to let APiMan Gateway to
+The first use case that we will deal with is very simple and can be compared to a proxy forwarding scenario: the incoming request is matched to a service
+and then forwarded to the real endpoint exposing the REST service. To design it, we will create a service, specify the address of the service and publish the service in order to let APiMan Gateway to
 accept the HTTP requests.
 
-. Click on the button `New Service` of this screen.
+. In the `Services` screen of the `Fuse` organization, click the button: `New Service`.
 . Within `New Service` screen, add `blog-service` as Service Name and provide a `description` to mention that this service
   is not secured "Insecure service. No authentication will be required to access the service". When done, click on the Create Service` button
 +
@@ -749,9 +752,9 @@ image::images/apiman-blogservice-unsecure-endpoint.png[]
 +
 [source]
 ----
-http --verify=no https://localhost:8443/apiman-gateway/fuse/blog-service/1.0/search/user/cmoulliard
+http --verify=no https://localhost:8443/apiman-gateway/Fuse/blog-service/1.0/search/user/cmoulliard
 
-curl -k https://localhost:8443/apiman-gateway/fuse/blog-service/1.0/search/user/cmoulliard
+curl -k https://localhost:8443/apiman-gateway/Fuse/blog-service/1.0/search/user/cmoulliard
 ----
 +
 NOTE: Remark that we have added at the end of the Api endpoint the path of search/user/${username}` service
@@ -761,7 +764,7 @@ WARNING: We will use the verify=no option of httpie to skip the host's SSL certi
 . Check the response
 +
 ----
-http --verify=no https://localhost:8443/apiman-gateway/fuse/blog-service/1.0/search/user/cmoulliard
+http --verify=no https://localhost:8443/apiman-gateway/Fuse/blog-service/1.0/search/user/cmoulliard
 HTTP/1.1 200 OK
 Accept: */*
 Accept-Encoding: gzip, deflate
@@ -789,7 +792,7 @@ user: cmoulliard
 
 ----
 
-== Use case - Basic Authentication
+=== Use case - Basic Authentication
 
 Based on the previous service created, we will define a new security policy to be able to authenticate the HTTP request using Basic authentication as the previous was too insecure.
 From the service version 1.0 created, we will create a new (= clone the previous and extend the features) service and add a Basic authentication policy. The credentials will be managed
@@ -839,7 +842,7 @@ NOTE: Check the url of the endpoint to be used to access the new service
 +
 [source]
 ----
-http --verify=no https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard WWW-Authenticate:'BASIC realm=blog-basic-auth'
+http --verify=no https://localhost:8443/apiman-gateway/Fuse/blog-service/2.0/search/user/cmoulliard WWW-Authenticate:'BASIC realm=blog-basic-auth'
 HTTP/1.1 401 Unauthorized
 Connection: keep-alive
 Content-Length: 168
@@ -862,7 +865,7 @@ X-Powered-By: Undertow/1
     "type": "Authentication"
 }
 
-curl -k https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard
+curl -k https://localhost:8443/apiman-gateway/Fuse/blog-service/2.0/search/user/cmoulliard
 {"type":"Authentication","failureCode":10004,"responseCode":0,"message":"BASIC authentication failed.","headers":{"WWW-Authenticate":"BASIC realm=\"blog-basic-auth\""}}
 ----
 +
@@ -872,12 +875,12 @@ WARNING: The request fails as we haven't passed the credentials o the user to be
 +
 [source]
 ----
-http --verify=no -a charles:demo https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard
+http --verify=no -a charles:demo https://localhost:8443/apiman-gateway/Fuse/blog-service/2.0/search/user/cmoulliard
 
-curl --user charles:demo -k https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard
+curl --user charles:demo -k https://localhost:8443/apiman-gateway/Fuse/blog-service/2.0/search/user/cmoulliard
 ----
 
-== Use case - Oauth2 with Keycloak
+=== Use case - Oauth2 with Keycloak
 
 The last use case that we will cover Oauth2 & Openid-connect authentication & authorization. Basically, ApiMan will be used as the platform issuing a request against the OAuth2
 authorization server to verify that the token send by an application is authorized to access the REST service. For that purpose, an OpenID JSON Token will be generated by apiman and returned
@@ -1106,7 +1109,7 @@ image::images/apiman-blogservice-newservice-oauth2-5.png[]
 +
 image::images/apiman-blogservice-newservice-oauth2-6.png[]
 
-== Use case - Add roles
+=== Use case - Add roles
 
 To be exhaustive, we will now extend the OAuth2 Fuse Realm to specify 2 roles (writer/reader) to restrict the access to the service according to them. Typically, we will create the writer role to let a
 user to PUT or DELETE a blog article while a reader role will only allow the users to query the REST services.
@@ -1181,7 +1184,7 @@ image::images/jwt1.png[]
 
 Hip hip hourra, you have finished !!!
 
-= Replay
+== Replay
 
 If, for any reason, you would like to restart the demo from the beginning. Then, perform these steps to clean the JBoss Fuse Server
 
@@ -1191,7 +1194,7 @@ If, for any reason, you would like to restart the demo from the beginning. Then,
 NOTE: It will kill the jvm instances and delete the instances and some sub-folders defined under the data folder.
 . Stop the jetty web container started using the command `mvn jetty:run`
 
-= Troubleshooting
+== Troubleshooting
 
 * When the local Camel REST endpoints don't work, you can query directly the elasticsearch database using these HTTPie requests to check if it works.
 +
@@ -1228,7 +1231,7 @@ curl 'http://localhost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
 
     http PUT http://localhost:9200/blog/article/1 < data/elasticsearch/entry.json
 
-= Minimal installation
+== Minimal installation
 
 You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` or the profile `insight-elasticsearch.datastore` has been deployed into JBoss Fuse 6.2.
 
