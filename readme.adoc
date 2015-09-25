@@ -141,8 +141,8 @@ The following is an overview of the installation steps involved with this projec
 . Open a Windows or Unix terminal.
 . Using the `git` utility, clone this project to your local workstation.
 +
-NOTE: For the purposes of these lab instructions, the directory of this cloned project on your local workstation will be referred to as: `$LAB_HOME`.
-. Change directory into: `$LAB_HOME` and build the maven project:
+NOTE: For the purposes of these lab instructions, the directory of this cloned project on your local workstation will be referred to as: `$DEMO_DIRECTORY`.
+. Change directory into: `$DEMO_DIRECTORY` and build the maven project:
 +
 ----
 cd rest-dsl-in-action
@@ -167,6 +167,8 @@ The workstation's `hostname` is used by the following components:
 === Install and Run JBoss Fuse
 
 . Download JBoss Fuse Server and unzip the archive file.
++
+NOTE: For the purposes of this lab, the directory created from having unzipped the `JBoss Fuse` zip archive will be referred to as `$FUSE_HOME`.
 . Edit the `etc/user.properties` file found in the home directory of `jboss-fuse-6.2.0.redhat-xxx`
 +
 Uncomment the line containing the `admin` user and save the file.
@@ -404,7 +406,7 @@ fabric:container-add-profile demo gpe-fuse
 
 == Setup Elasticsearch Data Mapping
 
-In order to collect the data using the ElasticSearch No SQL database, an index a name of `blog` and type `article` needs to be created.
+In order to collect the data using the ElasticSearch No SQL database, an index with a name of `blog` and type `article` needs to be created.
 
 In addition, the properties of the new type `article` need to be defined.
 To do so, the following JSON definition will be used:
@@ -434,16 +436,18 @@ To do so, the following JSON definition will be used:
 }
 ----
 
-. In a terminal window, change directory to `$LAB_HOME`.
-. The steps previously discussed in this section can be executed using the `http` command (from the {httpie} utility) or `curl`:
-.. Using the `http` utility, execute the following 3 commands:
+The tasks in this section of the lab will be executed by invoking the RESTful services of the `Elasticsearch` container managed by Fuse Fabric.
+
+. In a terminal window, change directory to `$DEMO_DIRECTORY`.
+. Execute the following 3 commands  using the either the `http` or `curl` utilities:
+.. `http`:
 +
 ----
 http PUT http://localhost:9200/blog
 http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
 http http://localhost:9200/blog/_mapping/article
 ----
-.. or using {curl} utility, execute the following 3 commands:
+.. or `curl`:
 +
 ----
 curl -X PUT http://localhost:9200/blog
@@ -454,15 +458,17 @@ curl http://localhost:9200/blog/_mapping/article
 NOTE: The first command creates the index and the second command defines the properties of the new type `article`.
 The third command confirms that the mapping between the `article` type and its properties have been created.
 
-= Use Kibana dashboard
+== Kibana dashboard and services
 
 The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
 The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
-This demo provides a jetty maven goal that we will launch in order to start a local HTTP Server that we can access from the browser
-at this address `http://localhost:9090/kibana3/index.html`
 
-. To start locally the HTTP Server, open a Windows or unix terminal and move to the home directory of the project containing the code.
-. Switch to the folder `kibana` and run this maven command `mvn jetty:run`.
+This demo provides a maven goal that launches Kibana embedded in a `Jetty` HTTP Server.
+Kibana can then be accessed from a browser at the following address: `http://localhost:9090/kibana3/index.html`
+
+=== Start Kibana
+. To start Kibana in your local workstation, open a terminal window and change to the `$DEMO_DIRECTORY/kibana` directory.
+. Execute the following maven command: `mvn jetty:run`
 +
 ----
 mvn jetty:run
@@ -483,71 +489,95 @@ mvn jetty:run
 2015-09-21 11:46:48.711:INFO:oejs.Server:main: Started @4174ms
 [INFO] Started Jetty Server
 ----
+
+. Once the server is launched, open your browser and navigate to: `http://localhost:9090/kibana3/index.html`.
 +
-. When the server is launched, open your browser at the address `http://localhost:9090/kibana3/index.html`.
-+
-NOTE: The first time, that you will connect to the Dashboard, the index HTML page will display general content about what is the kibana project and how to setup a dashboard and importing the data from the Elasticsearch Database.
+NOTE: The first time connecting to the Dashboard, the index HTML page will display general content about the kibana project, how to setup a dashboard and how to import data from an Elasticsearch Database.
 +
 image::images/dashboard1.png[]
-+
-For the purpose of this demo, we have prepare a dashboard which is already configured with the panels and the type fields that we would like to display graphically using a histogram and list panels.
-+
-. In order to add the JSON dashboard document definition to the Elasticsearch server within the `kibana-int` index, you will issue a HTTP request at the root of the `fuse-demo` project.
-  This HTTP request calls a REST service of the Elasticsearch server to insert the `fuse-demo` dashboard type using the `dashboard.json` file as input.
+
+=== Load project dashboard
+
+A Kibana dashboard has been created and is provided in this project.
+This dashboard is already configured with `histogram` and `list` panels.
+
+The dashboard included in this project needs to be loaded into the Elasticsearch HTTP server.
+This can be done via the `kibana-int` REST service running in JBoss Fuse.
+
+. In a terminal window, change to the `$LAB_ASSETS` directory.
+. Execute one of the following commands to post the new dashboard to the Elasticsearch HTTP server:
+.. `http` utility:
 +
 ----
 http PUT http://localhost:9200/kibana-int/dashboard/fusedemo < data/elasticsearch/dashboard.json
-
+----
+.. `curl` utility:
++
+----
 curl -X PUT http://localhost:9200/kibana-int/dashboard/fusedemo -d @data/elasticsearch/dashboard.json
 ----
-+
-. Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to load the `fusedemo` dashboard.
+
+. To view the new dashboard, refresh `Kibana` home page within your browser and select the `load` button from the top menu bar:
 +
 image::images/dashboard2.png[]
 +
-The fuse-demo dashboard contain our panels without any data as we haven't yet populated the database with records
+. Select the `fuse-demo` dashboard:
 +
 image::images/dashboard3.png[]
 +
-. To populate data, we will issue some HTTP Requests (or upload a CSV file) as described hereafter:
-.. Open a third Windows or Unix Terminal and issue one of the following HTTP requests using curl or httpie tool within the demo project folder
-.. Add a user using this Httpie or curl request from the terminal
+Currently, the `fuse-demo` dashboard contains panels without any data as we haven't yet populated the database with records.
+
+=== Add and modify blog data
+This section of the lab provides instructions on how to add a new blog and modify data maintained in Elasticsearch and exposed through Kibana.
+The commands in this section of the lab invoke RESTful camel services (exposed via port 9191) running in a Fuse container managed by Fabric.
+
+. In an open terminal window, change directory to `$DEMO_DIRECTORY`.
+. Add a blog
+.. Issue one of the following HTTP requests using either the `http` or `curl` utilities:
 +
 ----
 http PUT http://localhost:9191/blog/article < data/elasticsearch/entry.json
-
+----
++
+----
 curl -X PUT http://localhost:9191/blog/article -d @data/elasticsearch/entry.json
 ----
 +
-NOTE: Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish by editing the file `data/elasticserch/entry.json`
-+
-.. Search the user `cmoulliard`
+NOTE: Before issuing the HTTP GET request, the content of the blog article can be modified by editing the file: `data/elasticserch/entry.json`
+
+. Search the user `cmoulliard`
 +
 ----
 http http://localhost:9191/blog/article/search/user/cmoulliard
-
-curl http://localhost:9191/blog/article/search/user/cmoulliard
 ----
 +
-.. Search the user which has been encoded with the id `0`
+----
+curl http://localhost:9191/blog/article/search/user/cmoulliard
+----
+
+. Search the user which has been encoded with the id `0`
 +
 ----
 http http://localhost:9191/blog/article/search/id/0
-
-curl http://localhost:9191/blog/article/search/id/0
 ----
 +
-.. Delete a user.
+----
+curl http://localhost:9191/blog/article/search/id/0
+----
+
+. Delete a user.
 +
 ----
 http DELETE http://localhost:9191/blog/article/0
-
+----
++
+----
 curl -X DELETE http://localhost:9191/blog/article/0
 ----
 
 == Bulk import
 
-In order to perform a buk import of articles within the ElasticSearch database, we will copy/paste the records.csv file from the `$DEMO_DIRECTORY/camel/src/data` directory to the `articles` directory created under the local instance `demo`.
+In order to perform a buk import of articles within the ElasticSearch database, copy/paste the records.csv file from the `$DEMO_DIRECTORY/camel/src/data` directory to the `articles` directory created under the local instance `demo`.
 
 . Create the `FUSE_HOME` ENV variable to point to the home directory of the installation directory of JBoss Fuse
 
@@ -555,7 +585,7 @@ In order to perform a buk import of articles within the ElasticSearch database, 
 
 . Create the `DEMO_DIRECTORY` ENV variable to point to the folder containing the demo project
 
-    export DEMO_DIRECTORY=/Users/chmoulli/Downloads/rest-dsl-in-action-master
+    export DEMO_DIRECTORY=/Users/chmoulli/Downloads/rest-dsl-in-action
 
 . Copy the file
 +
@@ -568,7 +598,7 @@ cp $DEMO_DIRECTORY/routing/src/data/articles/records.csv $FUSE_HOME/instances/de
 The `articles` directory folder is scanned by the Apache Camel rote `FileToAddServiceRoute`
 ====
 +
-. Within your browser, refresh your dashboard and you will see the data.
+. In your browser, refresh the `kibana` dashboard to see all of the newly imported data.
 
 .Demo dashboard with articles
 image::images/dashboard4.png[]
