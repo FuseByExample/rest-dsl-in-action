@@ -3,6 +3,10 @@
 :toclevels: 2
 :toc-title: Table of Content
 :numbered:
+:httpie: link:https://github.com/jkbrzt/httpie[httpie]
+:curl: link:http://curl.haxx.se/download.html[curl]
+:wildfly: link:http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip[Wildfly]
+:apiman: link:http://downloads.jboss.org/apiman/1.1.7.Final/apiman-distro-wildfly8-1.1.7.Final-overlay.zip[APIMan]
 
 = REST DSL in Action
 
@@ -11,20 +15,24 @@ toc::[]
 == Goals
 
 * Using the new `Rest` DSL and `Elasticsearch` component of Apache Camel, expose CRUD services for a repository of blog articles.
-* Secure RESTful endpoints using `APIMan` and `Keycloak` according to different scenari : basic authentication, Oauth2 and Oauth2 & roles.
+* Secure RESTful endpoints using `APIMan` and `Keycloak` according to different scenario : basic authentication, Oauth2 and Oauth2 & roles.
 * Populate and query an Elasticsearch database using the `Elasticsearch` component of Apache Camel.
 * Analyze the Elasticsearch data using `Kibana`.
 * Document the RESTful endpoints using Swagger API.
 
 == Overview
 
-This JBoss Fuse demo will demonstrate how the new Apache Camel REST DSL syntax can be used to expose REST Services that we will use to add, search or delete
-articles for a blog into a Elasticsearch database. The use case has been enriched to expose also a file endpoint, as you can see within the following picture, which
-is responsible to poll a folder, to consumes csv files and insert all the articles into the database. The Apache Camel Elasticsearch component is called from different routes
-and will communicate with the ElasticSearch Database to perform the CRUD operations. The data can be visualized using a Kibana dashboard while Swagger API will be used to document the RESTFull services. 
-Finally, we will secure the endpoints using Apiman & Keycloak projects using Basic authentication, Oauth2 or Oauth2 with roles.
+This JBoss Fuse demo will demonstrate how the new Apache Camel REST DSL syntax can be used to expose REST services.
+These REST services will use to add, search or delete blog articles in an Elasticsearch database.
+The use case has been enriched to also expose a file endpoint:
 
 image::images/fuse-lab1.png[]
+
+The file endpoint is responsible for polling a folder, consuming csv files in that folder and inserting all the articles into the database.
+The Apache Camel Elasticsearch component is called from different routes and will communicate with the ElasticSearch Database to perform the CRUD operations.
+The data can be visualized using a Kibana dashboard.
+Swagger API will be used to document the RESTFull services.
+Finally, we will secure the endpoints using Apiman & Keycloak projects using Basic authentication, Oauth2 or Oauth2 with roles.
 
 The Elasticsearch database and the Apache Camel projects will be deployed into different Fuse Managed Containers operated by a JBoss Fuse Fabric Server.
 
@@ -32,36 +40,36 @@ A kibana dashboard will be used to analyze the Blog articles published into the 
 
 The CRUD services can be accessed using the new Camel REST component by performing HTTP requests (GET/PUT/DELETE) while the file component will also allow to do a bulk insert of blog articles.
 
-By example, to use the REST Service responsible to insert an article within the Elasticsearch database, a JSON article `{ "user": "cmoulliard" "postDate": "2015-12-12", "body": "Integration is hard.", "title": "On distributed search" }` message is issued against the REST endpoint `/blog/article/id` using a HTTP GET operation. 
-The content of this HTTP request will be processed by an Apache Camel route as showed hereafter and transformed in order to access the elasticsearch component to call the Elasticsearch database. 
+By example, to use the REST Service responsible to insert an article within the Elasticsearch database, a JSON article `{ "user": "cmoulliard" "postDate": "2015-12-12", "body": "Integration is hard.", "title": "On distributed search" }` message is issued against the REST endpoint `/blog/article/id` using a HTTP GET operation.
+The content of this HTTP request will be processed by an Apache Camel route as showed hereafter and transformed in order to access the elasticsearch component to call the Elasticsearch database.
 
 [source,java]
 ----
 rest("/blog/").id("rest-blog-service").produces("application/json").consumes("application/json")
-        
+
         .put("/article/{id}").id("rest-put-article").type(Blog.class)
             .to("direct:add");
-            
+
 JacksonDataFormat jacksondf = new JacksonDataFormat(Blog.class);
 
 from("direct:add").id("add-direct-route")
         .log(LoggingLevel.INFO,"Add new Blog entry service called !")
-        
+
         .setHeader(ElasticsearchConfiguration.PARAM_INDEX_NAME).simple("{{indexname}}")
         .setHeader(ElasticsearchConfiguration.PARAM_INDEX_TYPE).simple("{{indextype}}")
         .setHeader(ElasticsearchConfiguration.PARAM_OPERATION).constant(ElasticsearchConfiguration.OPERATION_INDEX)
 
         // Transform Java Object to JSON
         .marshal(jacksondf)
-        
+
         // Call the add service of the elasticsearchService POJO to generate the IndexRequest object
         .beanRef("elasticSearchService", "add")
 
         // Call the elasticsearch Service to add/insert an entry within the index
         .to("elasticsearch://{{clustername}}?ip={{address}}")
-        
+
         // Response received and returned to the REST endpoint
-        .log("Response received : ${body}");            
+        .log("Response received : ${body}");
 ----
 
 The following table summaries the Routes used, REST Services exposed and the Bean Methods called like the Object type used to call the ElasticSearch database
@@ -86,7 +94,7 @@ from("{{fileUri}}")
     .split(body())
         .setHeader("id").simple("${body.id}")
         .to("direct:add");
-        
+
 JacksonDataFormat jacksondf = new JacksonDataFormat(Blog.class);
 
 from("direct:add").id("add-direct-route")
@@ -107,19 +115,18 @@ from("direct:add").id("add-direct-route")
     .log("Response received : ${body}");
 ----
 
-= Prerequisites
+== Prerequisites
 
 - http://www.jboss.org/download-manager/file/jboss-fuse-6.2.0.GA-full_zip.zip[JBoss Fuse 6.2.GA]
 - http://www.jboss.org/download-manager/file/jboss-devstudio-8.1.0.GA-standalone_jar.jar[JBoss Developer Studio]
-- https://github.com/jkbrzt/httpie[httpie]
-- http://curl.haxx.se/download.html[curl] (optional)
+- {httpie} or {curl}
 - http://www.apiman.io/latest/download.html[Apiman 1.1.8.Final]
 - JDK 1.7
 - Apache Maven 3.x
 
-= Installation
+== Installation
 
-In order to use the demo, we have to realize these tasks which are described hereafter :
+The following is an overview of the installation steps involved with this project :
 
 * https://github.com/FuseByExample/rest-dsl-in-action/archive/master.zip[Download] and compile the project locally
 * Edit the hosts file to add an entry
@@ -131,39 +138,71 @@ In order to use the demo, we have to realize these tasks which are described her
 * Play with the demo
 * Install, configure Apiman & Keycloak servers to secure the REST Services and provide service governance rule
 
-== Compile Project
+=== Compile Project
 
-. Open a Windows or Unix terminal. Unzip the material of the demo and move to that directory `rest-dsl-in-action-master`
-. Build your maven project locally
+. Open a Windows or Unix terminal.
+. Using the `git` utility, clone this project to your local workstation.
++
+NOTE: For the purposes of these lab instructions, the directory of this cloned project on your local workstation will be referred to as: `$DEMO_DIRECTORY`.
+. Change directory into: `$DEMO_DIRECTORY` and build the maven project:
 +
 ----
-cd rest-dsl-in-action-master
+cd rest-dsl-in-action
 mvn clean install
 ----
 
-== Edit Host file
+=== Networking
 
-. Edit the /etc/hosts file and add an entry to map the hostname `localhost` with the loopback IP address - 127.0.0.1.
-+
-NOTE:  The value could be your local loopback address `127.0.0.1` when NOT connected to a network, otherwise, the Ethernet address assigned by the network card used (wifi, local network). The hostname is used by the ElasticSearch server to register the socket server when it is
-started and also by the Apache Camel Elasticsearch component to access the server. Also, the Fuse Fabric Server will use it to assign an IP address to the socket server of the Apache
-Zookeeper server.
+Ensure that your $HOSTNAME environment variable on your workstation maps to either:
 
-== Install JBoss Fuse
+.. Your local loopback address (127.0.01) when NOT connected to a network OR
+.. The ip address of the network your workstation is currently connected to (wifi, ethernet, etc).
+
+On Unix type operating systems, these networking modifications can be made in: `/etc/hosts`.
+
+The workstation's `hostname` is used by the following components:
+
+. The ElasticSearch server uses the `hostname` to bind its socket server upon start up.
+. The Apache Camel Elasticsearch component uses the `hostname` to access the Elasticsearch server.
+. The Fuse Fabric Server uses the `hostname` to assign an IP address to the socket server of the Apache Zookeeper server.
+
+=== Install and Run JBoss Fuse
 
 . Download JBoss Fuse Server and unzip the archive file.
-. Edit the `etc/user.properties` file that you will find under the home directory of `jboss-fuse-6.2.0.redhat-xxx` to uncomment the line containing the `admin` user. Save the file
-. Open a second Windows or Unix terminal.
-. Run this command `./bin/fuse` to launch the JBoss Fuse Server at the root of the JBoss Fuse installation directory
++
+NOTE: For the purposes of this lab, the directory created from having unzipped the `JBoss Fuse` zip archive will be referred to as `$FUSE_HOME`.
+. Edit the `etc/user.properties` file found in the home directory of `jboss-fuse-6.2.0.redhat-xxx`
++
+Uncomment the line containing the `admin` user and save the file.
++
+-----
+admin=admin,admin,manager,viewer,Monitor, Operator, Maintainer, Deployer, Auditor, Administrator, SuperUser
+-----
+. Open a second Windows or Unix terminal and change directory to the root of the JBoss Fuse installation.
+. Execute the following command to make all Fuse shell scripts executable:
++
+-----
+chmod 755 bin/*
+-----
+. Execute the following command to launch the JBoss Fuse Server:
++
+-----
+./bin/fuse
+-----
 
-== Create a Fuse Fabric Server and 2 child containers
+=== Create a Fuse Fabric Server with 2 child containers
 
-. Next, within the Fuse Karaf console, issue this shell command `shell:source mvn:org.jboss.fuse/deployment/1.0/script/install` ro run using the script a series of commands
+. Next, within the Fuse Karaf console, issue the following shell command:
++
+-----
+shell:source mvn:org.jboss.fuse/deployment/1.0/script/install
+-----
 +
 [NOTE]
 ====
-The shell script contains some Fabric subshell commands responsible to setup the Fabric server and two containers (elasticsearch-node and demo). The first child container will be used as Elasticsearch
-database server and the demo Fuse managed container to run the Apache Camel Routes and expose the REST and File endpoints.
+The `install` shell script contains some Fabric subshell commands responsible for setup of a Fabric server and two containers (elasticsearch-node and demo).
+The first child container will be used as the Elasticsearch database server.
+The second Fuse managed container is used to run the Apache Camel Routes and expose the REST and File endpoints.
 ====
 +
 ----
@@ -207,13 +246,16 @@ The following containers have been created successfully:
 	Container: elasticsearch-node.
 Creating new instance on SSH port 8103 and RMI ports 1101/44446 at: /Users/chmoulli/Fuse/Fuse-servers/jboss-fuse-6.2.0.redhat-133/instances/lab
 The following containers have been created successfully:
-	Container: lab.
+	Container: demo.
 ----
 +
-. You can verify/control that the 2 containers are running by issuing the command `fabric:container-list` and inspecting the column `connected` which represents the state of the Fuse
-  OSGI container created. If the status is equal to `yes`, that means that the container has been created successfully. the column `provision status` reports the status about the provisioning of the
-  container. If the status is equal to `success`, that means that the server has been packaged with the required OSGI bundles, Config Properties files, ...
-+  
+. Verify that the 2 containers are running by issuing the command:  `fabric:container-list`.
++
+Inspect the column `connected` which represents the state of the Fuse OSGI containers.
+If the status is equal to `yes`, then the container has been created successfully.
+The `provision status` column reports the status of the provisioning of the container.
+If the status is equal to `success`, that means that the server has been packaged with the required OSGI bundles, Config Properties files, ...
++
 ----
 JBossFuse:karaf@root>fabric:container-list
 [id]                 [version]  [type]  [connected]  [profiles]                       [provision status]
@@ -224,14 +266,40 @@ root*                 1.0        karaf   yes          fabric                    
   demo                1.0        karaf   yes          feature-camel                    success
 ----
 
-== Deploy the Fabric project into the Fabric Server
+=== Deploy the Fabric project into the Fabric Server
 
-. Use the terminal opened previously to compile this demo
-. Move to the routing directory `fuse-lab/routing`
-. Run this command to deploy the configuration of the demo project into the fuse Fabric Server as the `gpe-fuse` profile
+. In a terminal window, change to the `routing` directory of this project: `rest-dsl-in-action/routing`
+. Execute the following command:
 +
 ----
 mvn fabric8:deploy
+----
++
+Doing so will deploy the `demo` project configuration into the `gpe-fuse` profile of the Fabric Server.
+
+.. If Fuse has not been previously run on your workstation, it's likely that the following prompt will appear:
++
+-----
+There is no <server> section in your ~/.m2/settings.xml file for the server id: fabric8.upload.repo
+
+You can enter the username/password now and have the settings.xml updated or you can do this by hand if you prefer.
+
+Would you like to update the settings.xml file now? (y/n): y
+Please let us know the login details for this server: fabric8.upload.repo
+
+Username: admin
+Password:
+Repeat Password:
+
+Copied original: /home/jbride/.m2/settings.xml to: /home/jbride/.m2/settings.xml.backup-1.xml
+Updated settings file: /home/jbride/.m2/settings.xml
+-----
++
+If prompted as per above, respond with a `y` (to allow for a modification to your `~/.m2/settings.xml`) and use username / password credentials of `admin / admin`  (as per the default in `$FUSE_INSTALL/etc/user.properties`).
+.. Once deployment is complete, you should see output similar to the following:
++
+----
+$ mvn fabric8:deploy
 
 [INFO] Uploading file /Users/chmoulli/.m2/repository/com/redhat/gpe/routing/1.0/routing-1.0.jar
 Uploading: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-1.0.jar
@@ -252,7 +320,7 @@ Uploaded: http://127.0.0.1:8181/maven/upload/com/redhat/gpe/routing/1.0/routing-
 [INFO] ------------------------------------------------------------------------
 ----
 +
-. To verify that the profile has been created and published on JBoss Fuse, use this command within the JBoss Fuse Karaf Console 
+. To verify that the profile has been created and published on JBoss Fuse, use the following command within the JBoss Fuse Karaf Console:
 +
 ----
 JBossFuse:karaf@root> fabric:profile-display gpe-fuse
@@ -302,14 +370,19 @@ Resource: Readme.md
 Resource: dependencies/org.jboss.fuse/routing-requirements.json
 Resource: fuse-lab1.png
 ----
- 
-. Now, we will install it into the `demo` Fuse Demo Managed container
-. Assign the profile `gpe-fuse` profile to our `demo` container using this fabric command `fabric:container-add-profile demo gpe-fuse` executed within the JBoss Fuse console
+
+. Afterwards, install the `gpe-fuse` profile into the `demo` Fuse Demo Managed container
+.. Assign the `gpe-fuse` profile to our `demo` container by executing the following fabric command within the JBoss Fuse Console:
 +
-    JBosFuse:karaf@root>fabric:container-add-profile demo gpe-fuse
+-----
+fabric:container-add-profile demo gpe-fuse
+-----
+.. Verify that the container has been successfully provisioned and that the `demo` container contains the `feature-camel` and `gpe-fuse` profiles.
+To do so, execute the following in the Fuse Console:
 +
-. Verify that the container has been successfully provisioned and that the `demo` container contains the profiles `feature-camel` and `gpe-fuse` by using this command
-  `abric:container-list` that you will execute within the console.
+-----
+fabric:container-list
+-----
 +
 ----
 JBossFuse:karaf@root> fabric:container-list
@@ -324,7 +397,7 @@ root*                 1.0        karaf   yes          fabric                    
 +
 [NOTE]
 ====
-If you change the code of this demo, then you can redeploy if after doing a `mvn clean install` followed by the `mvn fabric8:deploy` command.
+If you change the code of this demo, then you can redeploy by executing a `mvn clean install` followed by the `mvn fabric8:deploy` command.
 Next, remove and add again the profile to the Fuse Container using these Fabric commands
 
 ----
@@ -333,11 +406,13 @@ fabric:container-add-profile demo gpe-fuse
 ----
 ====
 
-= Setup Elasticsearch Data Mapping
+== Setup Elasticsearch Data Mapping
 
-In order to collect the data using the ElasticSearch No SQL database, we will first create an Index with the name `Blog` and the type `article`.
-Next, we will define the mapping of the fields and their type of a Blog Article and how ElasticSearch will manage them from JSon documents
-+
+In order to collect the data using the ElasticSearch No SQL database, an index with a name of `blog` and type `article` needs to be created.
+
+In addition, the properties of the new type `article` need to be defined.
+To do so, the following JSON definition will be used:
+
 ----
 {
   "article": {
@@ -362,29 +437,40 @@ Next, we will define the mapping of the fields and their type of a Blog Article 
   }
 }
 ----
+
+The tasks in this section of the lab will be executed by invoking the RESTful services of the `Elasticsearch` container managed by Fuse Fabric.
+
+. In a terminal window, change directory to `$DEMO_DIRECTORY`.
+. Execute the following 3 commands  using the either the `http` or `curl` utilities:
+.. `http`:
 +
-. Run these commands within the terminal of the project in order to access the HTTP Server of Elasticsearch and configure the Index and the type
 ----
 http PUT http://localhost:9200/blog
 http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
 http http://localhost:9200/blog/_mapping/article
-
+----
+.. or `curl`:
++
+----
 curl -X PUT http://localhost:9200/blog
 curl -X PUT http://localhost:9200/blog/_mapping/article -d @data/elasticsearch/mapping.json
 curl http://localhost:9200/blog/_mapping/article
 ----
 +
-NOTE: The first command creates the index, the second creates the mapping and the last collect from ES the mapping created.
+NOTE: The first command creates the index and the second command defines the properties of the new type `article`.
+The third command confirms that the mapping between the `article` type and its properties have been created.
 
-= Use Kibana dashboard
+== Kibana dashboard and services
 
 The data inserted into the Elasticsearch Database can be analyzed using the https://www.elastic.co/downloads/kibana[Kibana] dashboard.
 The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
-This demo provides a jetty maven goal that we will launch in order to start a local HTTP Server that we can access from the browser
-at this address `http://localhost:9090/kibana3/index.html`
 
-. To start locally the HTTP Server, open a Windows or unix terminal and move to the home directory of the project containing the code.
-. Switch to the folder `kibana` and run this maven command `mvn jetty:run`.
+This demo provides a maven goal that launches Kibana embedded in a `Jetty` HTTP Server.
+Kibana can then be accessed from a browser at the following address: `http://localhost:9090/kibana3/index.html`
+
+=== Start Kibana
+. To start Kibana in your local workstation, open a terminal window and change to the `$DEMO_DIRECTORY/kibana` directory.
+. Execute the following maven command: `mvn jetty:run`
 +
 ----
 mvn jetty:run
@@ -405,71 +491,95 @@ mvn jetty:run
 2015-09-21 11:46:48.711:INFO:oejs.Server:main: Started @4174ms
 [INFO] Started Jetty Server
 ----
+
+. Once the server is launched, open your browser and navigate to: `http://localhost:9090/kibana3/index.html`.
 +
-. When the server is launched, open your browser at the address `http://localhost:9090/kibana3/index.html`.
-+
-NOTE: The first time, that you will connect to the Dashboard, the index HTML page will display general content about what is the kibana project and how to setup a dashboard and importing the data from the Elasticsearch Database.
+NOTE: The first time connecting to the Dashboard, the index HTML page will display general content about the kibana project, how to setup a dashboard and how to import data from an Elasticsearch Database.
 +
 image::images/dashboard1.png[]
-+
-For the purpose of this demo, we have prepare a dashboard which is already configured with the panels and the type fields that we would like to display graphically using a histogram and list panels.
-+
-. In order to add the JSON dashboard document definition to the Elasticsearch server within the `kibana-int` index, you will issue a HTTP request at the root of the `fuse-demo` project.
-  This HTTP request calls a REST service of the Elasticsearch server to insert the `fuse-demo` dashboard type using the `dashboard.json` file as input.
+
+=== Load project dashboard
+
+A Kibana dashboard has been created and is provided in this project.
+This dashboard is already configured with `histogram` and `list` panels.
+
+The dashboard included in this project needs to be loaded into the Elasticsearch HTTP server.
+This can be done via the `kibana-int` REST service running in JBoss Fuse.
+
+. In a terminal window, change to the `$LAB_ASSETS` directory.
+. Execute one of the following commands to post the new dashboard to the Elasticsearch HTTP server:
+.. `http` utility:
 +
 ----
 http PUT http://localhost:9200/kibana-int/dashboard/fusedemo < data/elasticsearch/dashboard.json
-
+----
+.. `curl` utility:
++
+----
 curl -X PUT http://localhost:9200/kibana-int/dashboard/fusedemo -d @data/elasticsearch/dashboard.json
 ----
-+
-. Next, you can refresh your index.html page within your browser and select the load button from the top menu bar in order to load the `fusedemo` dashboard.
+
+. To view the new dashboard, refresh `Kibana` home page within your browser and select the `load` button from the top menu bar:
 +
 image::images/dashboard2.png[]
 +
-The fuse-demo dashboard contain our panels without any data as we haven't yet populated the database with records
+. Select the `fuse-demo` dashboard:
 +
 image::images/dashboard3.png[]
 +
-. To populate data, we will issue some HTTP Requests (or upload a CSV file) as described hereafter:
-.. Open a third Windows or Unix Terminal and issue one of the following HTTP requests using curl or httpie tool within the demo project folder
-.. Add a user using this Httpie or curl request from the terminal
+Currently, the `fuse-demo` dashboard contains panels without any data as we haven't yet populated the database with records.
+
+=== Add and modify blog data
+This section of the lab provides instructions on how to add a new blog and modify data maintained in Elasticsearch and exposed through Kibana.
+The commands in this section of the lab invoke RESTful camel services (exposed via port 9191) running in a Fuse container managed by Fabric.
+
+. In an open terminal window, change directory to `$DEMO_DIRECTORY`.
+. Add a blog
+.. Issue one of the following HTTP requests using either the `http` or `curl` utilities:
 +
 ----
 http PUT http://localhost:9191/blog/article < data/elasticsearch/entry.json
-
+----
++
+----
 curl -X PUT http://localhost:9191/blog/article -d @data/elasticsearch/entry.json
 ----
 +
-NOTE: Before to issue the HTTP GET request, you can change the content of the Blog Article that you will publish by editing the file `data/elasticserch/entry.json`
-+
-.. Search the user `cmoulliard`
+NOTE: Before issuing the HTTP GET request, the content of the blog article can be modified by editing the file: `data/elasticserch/entry.json`
+
+. Search the user `cmoulliard`
 +
 ----
 http http://localhost:9191/blog/article/search/user/cmoulliard
-
-curl http://localhost:9191/blog/article/search/user/cmoulliard
 ----
 +
-.. Search the user which has been encoded with the id `0`
+----
+curl http://localhost:9191/blog/article/search/user/cmoulliard
+----
+
+. Search the user which has been encoded with the id `0`
 +
 ----
 http http://localhost:9191/blog/article/search/id/0
-
-curl http://localhost:9191/blog/article/search/id/0
 ----
 +
-.. Delete a user.
+----
+curl http://localhost:9191/blog/article/search/id/0
+----
+
+. Delete a user.
 +
 ----
 http DELETE http://localhost:9191/blog/article/0
-
+----
++
+----
 curl -X DELETE http://localhost:9191/blog/article/0
 ----
-    
+
 == Bulk import
 
-In order to perform a buk import of articles within the ElasticSearch database, we will copy/paste the records.csv file from the `$DEMO_DIRECTORY/camel/src/data` directory to the `articles` directory created under the local instance `demo`.
+In order to perform a buk import of articles within the ElasticSearch database, copy/paste the records.csv file from the `$DEMO_DIRECTORY/camel/src/data` directory to the `articles` directory created under the local instance `demo`.
 
 . Create the `FUSE_HOME` ENV variable to point to the home directory of the installation directory of JBoss Fuse
 
@@ -477,11 +587,11 @@ In order to perform a buk import of articles within the ElasticSearch database, 
 
 . Create the `DEMO_DIRECTORY` ENV variable to point to the folder containing the demo project
 
-    export DEMO_DIRECTORY=/Users/chmoulli/Downloads/rest-dsl-in-action-master
-    
-. Copy the file 
+    export DEMO_DIRECTORY=/Users/chmoulli/Downloads/rest-dsl-in-action
+
+. Copy the file
 +
-----    
+----
 cp $DEMO_DIRECTORY/routing/src/data/articles/records.csv $FUSE_HOME/instances/demo/articles/
 ----
 +
@@ -490,31 +600,31 @@ cp $DEMO_DIRECTORY/routing/src/data/articles/records.csv $FUSE_HOME/instances/de
 The `articles` directory folder is scanned by the Apache Camel rote `FileToAddServiceRoute`
 ====
 +
-. Within your browser, refresh your dashboard and you will see the data.
+. In your browser, refresh the `kibana` dashboard to see all of the newly imported data.
 
 .Demo dashboard with articles
 image::images/dashboard4.png[]
 
-= Swagger documentation (optional)
+== Swagger documentation (optional)
 
-For the purpose of this demo, we have documented the REST Services using the http://swagger.io/[Swagger API]. The documentation is defined within the `swagger/srcmain/resources/services.json` file of the swagger maven module.
-The file has been produced manually as camel-swagger component 2.15 packaged within JBoss Fuse 6.2 doesn't parse yet the REST DSL syntax to generate it. This feature should be available
-for the next release of JBoss Fuse.
+The Camel REST services included in this project have been documented using the http://swagger.io/[Swagger API].
+The documentation is defined within the `swagger/src/main/resources/services.json` file of the swagger maven module.
 
-To access the documentation and run the queries against the service, here are the instruction to follow
+NOTE: This swagger file has been produced manually.
+The camel-swagger component (version 2.15) packaged within JBoss Fuse 6.2 doesn't yet parse the REST DSL syntax to automatically generate the REST documentation.
+This feature should be available in the next release of JBoss Fuse.
 
-. Open a terminal within the `swagger` maven module
+To access the Swagger documentation, execute the following:
 
-    cd swagger
-
+. In a terminal window, change to the `$DEMO_DIRECTORY/swagger` directory.
 . Launch the script +./run_jetty.sh+ to build the project locally and start a jetty instance with Swagger UI
 
     ./run_jetty.sh
-    
+
 . When the jetty instance is started, open your browser at this address
-   
+
    http://localhost:8000/?url=services.json
-   
+
 . You can now add a user by clicking on the service `Add a new Blog Article`.
 . To select the user data, just click on the Model schema and the field (left part of the service `Add a new Blog Article` will be populated.
 . Change the data to be used
@@ -535,29 +645,29 @@ image::images/swagger1.png[]
 . Search for a user using the service `Blog Search Id operation` and fill the parameter with the id `21`
 +
 image::images/swagger2.png[]
-+   
++
 . Review the results using the `Kibana` dashboard and search for the id which is equal to `21`
 +
 image::images/swagger3.png[]
 
-= Security governance with Apiman & Keycloak
+== Security governance with Apiman & Keycloak
 
-During the first part of the demo, we have deployed the Apache Camel Routes exposing the REST services to create, search or delete a user into a JBoss Fuse Karaf container
-and installed also an Elasticsearch server to collect the data from the different REST Services. Now, within the next section of the demo, we will
-use the ApiMan & Keycloak projects to secure our endpoints in order to authenticate the incoming HTTP request using Basic Authentication but also OAuth2 to authorize the access
-to the service based on the role provided.
+=== Install and start APIMan
+During the first part of this demo, Apache Camel Routes exposing the REST services have been deployed.
 
-The instructions required to install the server and to configure them are described hereafter :
+In this section of the lab, ApiMan & Keycloak are used to secure these REST endpoints.
+In particular,  incoming HTTP requests will be authenticated and authorization will be granted based on the role of the authenticated user.
 
-. Download [WildFly](http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip) & [Apiman 1.1.7.Final overlay for WildFly 8.2](http://downloads.jboss.org/apiman/1.1.7.Final/apiman-distro-wildfly8-1.1.7.Final-overlay.zip)
-. Unpack the `WildFly 8.2 zip`
-. Unpack the`apiman 1.1.7.Final WildFly 8 overlay zip` inside the wildfly directory
+An overview of the installation instructions for APIMan are as follows:
+
+. Download {wildfly} and unzip
+. Download {apiman} and unzip inside the wildfly directory
 . Start WildFly 8 using the `standalone-apiman.xml` configuration file
 . Point your browser at the apiman UI and login using `admin` as user and `admin123!` as password
 +
 [NOTE]
 ====
-You can use this list of instructions to download and install Apiman locally
+The following are specific commands that can be used to install APIMan:
 
 ----
 mkdir ~/apiman-1.1.7.Final
@@ -571,38 +681,39 @@ cd wildfly-8.2.0.Final
 ----
 ====
 
-Now that our Apiman server has been launched, we will create an organization to manage the different services that we would like to secure using the following security policies; Basic Authentication, OAuth & Limit rates.
-
-. Open your web browser at this address `http://localhost:8080/apimanui/` and encode `admin` for the username and `admin123!` as password to access the application.
+. In your browser, navigate to the following URL and authenticate in using the credentials: `admin / admin123!`.
 +
 image::images/apiman-login.png[]
-+
-. If the authentication succeeds, then you will be redirected to the `Api Management screen`
+. Once authenticated, your browser will be redirected to the `Api Management screen`:
 +
 image::images/apiman-management.png[]
-+
-. Click on the link Create a New Organization` and encode `Fuse` as organization name within the field `Organization Name` of the new screen displayed.
-. Next, click on the `Create Organisation` button.
+
+=== Create an Organization in APIMan
+Now that the Apiman server has been launched, an `organization` is needed to manage the different Camel REST services that need to be secured.
+
+. In the `Organizations` section of the `APIMan` home page, click on the `Create a New Organization` link.
 +
 image::images/apiman-organization.png[]
+. Enter `Fuse` in the  `Organization Name` text box.
+. Click on the `Create Organisation` button.
 +
-. The Web UI is refreshed and a new organization called `Fuse` is displayed under the `Home` screen
+. The Web UI will refresh and a new organization called `Fuse` will appear in the `Home` screen
 +
 image::images/apiman-fuse-organisation.png[]
 +
-. Click on the `Service` Tab of the `Fuse` organization to register the REST Service that we will manage
+. Click on the `Services` Tab of the `Fuse` organization to register the first REST Service to be secured.
 +
 NOTE: As we will not define different SLA (e.g. quotas, ...) to manage the service, No http://www.apiman.io/latest/user-guide.html=_plans[plan] will be defined for the demo
 +
 image::images/apiman-fuse-organisation-service.png[]
 
-== Use case - Direct forward
+=== Use case - Direct forward
 
-The first use case that we will deal with is very simple and can be compared to a proxy forwarding scenario where the incoming request is matched to a service
-and next forwarded to the real endpoint exposing the REST service. To design it, we will create a service, specify the address of the service and publish the service in order to let APiMan Gateway to
+The first use case that we will deal with is very simple and can be compared to a proxy forwarding scenario: the incoming request is matched to a service
+and then forwarded to the real endpoint exposing the REST service. To design it, we will create a service, specify the address of the service and publish the service in order to let APiMan Gateway to
 accept the HTTP requests.
 
-. Click on the button `New Service` of this screen.
+. In the `Services` screen of the `Fuse` organization, click the button: `New Service`.
 . Within `New Service` screen, add `blog-service` as Service Name and provide a `description` to mention that this service
   is not secured "Insecure service. No authentication will be required to access the service". When done, click on the Create Service` button
 +
@@ -617,13 +728,13 @@ image::images/apiman-blogservice.png[]
 . Click on the `Save` button
 +
 image::images/apiman-blogservice-api.png[]
-+ 
++
 . From the `blog-service` screen, select the `Plans` and click within the checkbox `Make this service public` as we haven't defined any plans.
 . Save the service definition by clicking again on the `save` button.
 +
 image::images/apiman-blogservice-plans.png[]
 +
-. Our service is ready and we will publish it. 
+. Our service is ready and we will publish it.
 +
 NOTE: When a service is published, then the Api endpoint will become available and the Api Gateway will be able to process HTTP requests addressed to this service.
 +
@@ -641,9 +752,9 @@ image::images/apiman-blogservice-unsecure-endpoint.png[]
 +
 [source]
 ----
-http --verify=no https://localhost:8443/apiman-gateway/fuse/blog-service/1.0/search/user/cmoulliard
+http --verify=no https://localhost:8443/apiman-gateway/Fuse/blog-service/1.0/search/user/cmoulliard
 
-curl -k https://localhost:8443/apiman-gateway/fuse/blog-service/1.0/search/user/cmoulliard
+curl -k https://localhost:8443/apiman-gateway/Fuse/blog-service/1.0/search/user/cmoulliard
 ----
 +
 NOTE: Remark that we have added at the end of the Api endpoint the path of search/user/${username}` service
@@ -653,7 +764,7 @@ WARNING: We will use the verify=no option of httpie to skip the host's SSL certi
 . Check the response
 +
 ----
-http --verify=no https://localhost:8443/apiman-gateway/fuse/blog-service/1.0/search/user/cmoulliard
+http --verify=no https://localhost:8443/apiman-gateway/Fuse/blog-service/1.0/search/user/cmoulliard
 HTTP/1.1 200 OK
 Accept: */*
 Accept-Encoding: gzip, deflate
@@ -671,17 +782,17 @@ user: cmoulliard
 
 [
     {
-        "body": "Integration is hard. Integration should be easy.", 
-        "id": "1", 
-        "postDate": "2015-08-10T10:10", 
-        "title": "On distributed search", 
+        "body": "Integration is hard. Integration should be easy.",
+        "id": "1",
+        "postDate": "2015-08-10T10:10",
+        "title": "On distributed search",
         "user": "cmoulliard"
     }
 ]
 
 ----
 
-== Use case - Basic Authentication
+=== Use case - Basic Authentication
 
 Based on the previous service created, we will define a new security policy to be able to authenticate the HTTP request using Basic authentication as the previous was too insecure.
 From the service version 1.0 created, we will create a new (= clone the previous and extend the features) service and add a Basic authentication policy. The credentials will be managed
@@ -721,7 +832,7 @@ image::images/apiman-blogservice-newservice-addpolicy4.png[]
 +
 image::images/apiman-blogservice-newservice-addpolicy5.png[]
 +
-. Click on the `Publish` button to publish it. 
+. Click on the `Publish` button to publish it.
 +
 image::images/apiman-blogservice-newservice-published.png[]
 +
@@ -731,7 +842,7 @@ NOTE: Check the url of the endpoint to be used to access the new service
 +
 [source]
 ----
-http --verify=no https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard WWW-Authenticate:'BASIC realm=blog-basic-auth'
+http --verify=no https://localhost:8443/apiman-gateway/Fuse/blog-service/2.0/search/user/cmoulliard WWW-Authenticate:'BASIC realm=blog-basic-auth'
 HTTP/1.1 401 Unauthorized
 Connection: keep-alive
 Content-Length: 168
@@ -745,16 +856,16 @@ X-Policy-Failure-Type: Authentication
 X-Powered-By: Undertow/1
 
 {
-    "failureCode": 10004, 
+    "failureCode": 10004,
     "headers": {
         "WWW-Authenticate": "BASIC realm=\"blog-basic-auth\""
-    }, 
-    "message": "BASIC authentication failed.", 
-    "responseCode": 0, 
+    },
+    "message": "BASIC authentication failed.",
+    "responseCode": 0,
     "type": "Authentication"
 }
 
-curl -k https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard
+curl -k https://localhost:8443/apiman-gateway/Fuse/blog-service/2.0/search/user/cmoulliard
 {"type":"Authentication","failureCode":10004,"responseCode":0,"message":"BASIC authentication failed.","headers":{"WWW-Authenticate":"BASIC realm=\"blog-basic-auth\""}}
 ----
 +
@@ -764,12 +875,12 @@ WARNING: The request fails as we haven't passed the credentials o the user to be
 +
 [source]
 ----
-http --verify=no -a charles:demo https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard
+http --verify=no -a charles:demo https://localhost:8443/apiman-gateway/Fuse/blog-service/2.0/search/user/cmoulliard
 
-curl --user charles:demo -k https://localhost:8443/apiman-gateway/fuse/blog-service/2.0/search/user/cmoulliard
+curl --user charles:demo -k https://localhost:8443/apiman-gateway/Fuse/blog-service/2.0/search/user/cmoulliard
 ----
 
-== Use case - Oauth2 with Keycloak
+=== Use case - Oauth2 with Keycloak
 
 The last use case that we will cover Oauth2 & Openid-connect authentication & authorization. Basically, ApiMan will be used as the platform issuing a request against the OAuth2
 authorization server to verify that the token send by an application is authorized to access the REST service. For that purpose, an OpenID JSON Token will be generated by apiman and returned
@@ -837,7 +948,7 @@ image::images/keycloak-adduser.png[]
 +
 image::images/keycloak-adduser-password.png[]
 
-We have finished to create the REALM within Keycloak Server as also the client ID auhorized to access the platform and finally we have define a admin user like its password. The next 
+We have finished to create the REALM within Keycloak Server as also the client ID auhorized to access the platform and finally we have define a admin user like its password. The next
 step will consist to create a new version fo the service like we did for the Basic authentication but now using Oauth Policy.
 So, from the home page of the Apiman Management Console, seclect the service version 2.0 of `Blog-service`
 
@@ -998,9 +1109,9 @@ image::images/apiman-blogservice-newservice-oauth2-5.png[]
 +
 image::images/apiman-blogservice-newservice-oauth2-6.png[]
 
-== Use case - Add roles
+=== Use case - Add roles
 
-To be exhaustive, we will now extend the OAuth2 Fuse Realm to specify 2 roles (writer/reader) to restrict the access to the service according to them. Typically, we will create the writer role to let a 
+To be exhaustive, we will now extend the OAuth2 Fuse Realm to specify 2 roles (writer/reader) to restrict the access to the service according to them. Typically, we will create the writer role to let a
 user to PUT or DELETE a blog article while a reader role will only allow the users to query the REST services.
 
 . Open your web browser at this address to open the Oauth2 server `http:/localhost:8080/auth/admin`
@@ -1029,7 +1140,7 @@ image::images/keycloak-addrole-reader-to-user.png[]
 image::images/keycloak-addrole-writerreader-to-admin.png[]
 +
 . We can leaver the OAuth2 server platform and return to Apiman in order to create a new service - version 4.0
-+ 
++
 NOTE: Clone the Service - version 3.0 and specify 4.0 as the vesion name of this service
 +
 . Add a new policy by clicking on the button `Policy`. Within the dropdown list, select the value `Authorization Policy`
@@ -1073,17 +1184,17 @@ image::images/jwt1.png[]
 
 Hip hip hourra, you have finished !!!
 
-= Replay
+== Replay
 
 If, for any reason, you would like to restart the demo from the beginning. Then, perform these steps to clean the JBoss Fuse Server
 
 . Exit from the JBoss Fuse Console using the command `CTRL-D` or `osgi:shutdown` command
-. Run this script `./bin/deletefabric8`. 
+. Run this script `./bin/deletefabric8`.
 +
 NOTE: It will kill the jvm instances and delete the instances and some sub-folders defined under the data folder.
 . Stop the jetty web container started using the command `mvn jetty:run`
 
-= Troubleshooting
+== Troubleshooting
 
 * When the local Camel REST endpoints don't work, you can query directly the elasticsearch database using these HTTPie requests to check if it works.
 +
@@ -1120,7 +1231,7 @@ curl 'http://localhost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
 
     http PUT http://localhost:9200/blog/article/1 < data/elasticsearch/entry.json
 
-= Minimal installation
+== Minimal installation
 
 You can also run the project locally using `mvn camel:run` at the condition that the Karaf feature `insight-elasticsearch` or the profile `insight-elasticsearch.datastore` has been deployed into JBoss Fuse 6.2.
 
@@ -1129,7 +1240,7 @@ You can also run the project locally using `mvn camel:run` at the condition that
 
     mvn camel:run
 
-. Control that Apache Camel has been started 
+. Control that Apache Camel has been started
 
 ----
 [         Blueprint Extender: 3] BlueprintCamelContext          INFO  Apache Camel 2.15.1.redhat-620133 (CamelContext: camel-1) is starting
@@ -1174,7 +1285,7 @@ You can also run the project locally using `mvn camel:run` at the condition that
 [ #0 - file://src/data/articles] add-direct-route               INFO  Add new Blog entry service called !
 [ #0 - file://src/data/articles] add-direct-route               INFO  Response received : 3
 ...
-----    
+----
 
 NOTE : Additional parameters could be defined for the elasticsearch database using the `io.fabric8.elasticsearch-insight.cfg` config file deployed into the `etc` folder of JBoss Fuse.
 That should also work if you deploy locally an Elasticsearch instance on your machine but this use case hasn't been tested.
