@@ -677,6 +677,7 @@ curl http://downloads.jboss.org/apiman/1.1.7.Final/apiman-distro-wildfly8-1.1.7.
 unzip wildfly-8.2.0.Final.zip
 unzip -o apiman-distro-wildfly8-1.1.7.Final-overlay.zip -d wildfly-8.2.0.Final
 cd wildfly-8.2.0.Final
+export JBOSS_HOME=$(pwd)
 ./bin/standalone.sh -c standalone-apiman.xml
 ----
 ====
