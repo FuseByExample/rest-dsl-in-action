@@ -1,0 +1,15 @@
+{
+  "name": "kibana-node",
+  "private": true,
+  "version": "0.1.0",
+  "dependencies": {
+    "express": "4.0.0",
+    "body-parser": "1.14.1",
+    "cors": "2.2.0"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "scripts": {},
+  "license": "Apache-2.0"
+}
