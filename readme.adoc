@@ -120,7 +120,7 @@ from("direct:add").id("add-direct-route")
 - http://www.jboss.org/download-manager/file/jboss-fuse-6.2.0.GA-full_zip.zip[JBoss Fuse 6.2.GA]
 - http://www.jboss.org/download-manager/file/jboss-devstudio-8.1.0.GA-standalone_jar.jar[JBoss Developer Studio]
 - {httpie} or {curl}
-- http://www.apiman.io/latest/download.html[Apiman 1.1.8.Final]
+- http://www.apiman.io/latest/download.html[Apiman 1.1.9.Final]
 - JDK 1.7
 - Apache Maven 3.x
 
@@ -670,13 +670,12 @@ An overview of the installation instructions for APIMan are as follows:
 The following are specific commands that can be used to install APIMan:
 
 ----
-mkdir ~/apiman-1.1.7.Final
-cd ~/apiman-1.1.7.Final
+mkdir ~/apiman-1.1.9.Final
+cd ~/apiman-1.1.9.Final
 curl http://downloads.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip -o wildfly-8.2.0.Final.zip
-curl http://downloads.jboss.org/apiman/1.1.7.Final/apiman-distro-wildfly8-1.1.7.Final-overlay.zip -o apiman-distro-wildfly8-1.1.7.Final-overlay.zip
+curl http://downloads.jboss.org/apiman/1.1.9.Final/apiman-distro-wildfly8-1.1.9.Final-overlay.zip -o apiman-distro-wildfly8-1.1.9.Final-overlay.zip
 unzip wildfly-8.2.0.Final.zip
-unzip -o apiman-distro-wildfly8-1.1.7.Final-overlay.zip -d wildfly-8.2.0.Final
-cd wildfly-8.2.0.Final
+unzip -o apiman-distro-wildfly8-1.1.9.Final-overlay.zip -d wildfly-8.2.0.Final
 export JBOSS_HOME=$(pwd)
 ./bin/standalone.sh -c standalone-apiman.xml
 ----
