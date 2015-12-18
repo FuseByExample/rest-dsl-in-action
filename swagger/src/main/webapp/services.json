@@ -1,0 +1,150 @@
+{
+  "swagger": "2.0",
+  "host": "localhost:9191",
+  "basePath": "/blog/article",
+  "info": {
+    "description": "Blog Article REST Services",
+    "version": "1.0",
+    "title": "Blog Article REST Services"
+  },
+  "paths": {
+    "/search/id/{id}": {
+      "get": {
+        "tags": [
+          "Blog Search Id operation"
+        ],
+        "description":"Search Blog Articles based on User ID",
+        "operationId": "searchBlogByID",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article retrieved",
+            "schema": {
+              "$ref": "#/definitions/Blog"
+            }
+          }
+        }
+      }
+    },
+    "/search/user/{user}": {
+      "get": {
+        "tags": [
+          "Blog Search User operation"
+        ],
+        "description":"Search Blog Articles for a User",
+        "operationId": "searchBlogForUser",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "description": "Identifier of the user to search",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "blog article response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Blog"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "put": {
+        "description":"Add a new Blog Article",
+        "operationId": "addBlog",
+        "tags": [
+          "Add a new Blog Article"
+        ],
+        "parameters": [
+          {
+            "name": "blog",
+            "in": "body",
+            "description": "Blog Article to add to the ES DB",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Blog"
+            }
+          }
+        ]
+      }
+    },
+    "/{id}": {
+      "delete": {
+        "description": "deletes a blog article based on the ID supplied",
+        "operationId": "deleteBlog",
+        "tags": [
+          "Delete a Blog Article"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Blog to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "blog article deleted"
+          }
+        }
+      }
+      
+    }
+  },
+  "definitions": {
+    "Blog": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "1"
+        },
+        "user": {
+          "type": "string",
+          "example": "cmoulliard"
+        },
+        "body": {
+          "type": "string",
+          "example": "This is a blog article"
+        },
+        "title": {
+          "type": "string",
+          "example": "Title of the blog article"
+        },
+        "postDate": {
+          "type": "date-time",
+          "example": "2015-08-10T10:10"
+        }
+      }
+    }
+  }
+}
