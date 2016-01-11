@@ -20,7 +20,9 @@
     <service interface="javax.servlet.http.HttpServlet">
         <service-properties>
             <entry key="alias" value="/rest/api-docs/*"/>
+            <entry key="init-prefix" value="init."/>
             <entry key="init.cors" value="true"/>
+            <entry key="init.base.path" value="http://localhost:9191"/>
             <!--
             <entry key="init-prefix" value="init."/>
             <entry key="init.base.path" value="//localhost:8088/"/>

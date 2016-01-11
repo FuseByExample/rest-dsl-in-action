@@ -15,7 +15,8 @@
     <properties>
         <camel.version>2.15.1.redhat-621084</camel.version>
         <fabric8-bom.version>6.2.1.redhat-084</fabric8-bom.version>
-        <fabric8-maven-plugin>1.2.1.redhat-084</fabric8-maven-plugin>
+        <fabric8-maven-plugin>1.2.0.redhat-621084</fabric8-maven-plugin>
+        <felix-maven.plugin>2.3.7</felix-maven.plugin>
     </properties>
 
     <dependencyManagement>
@@ -42,7 +43,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.apache.camel</groupId>
@@ -99,7 +100,29 @@
             <artifactId>org.osgi.core</artifactId>
         </dependency>
     </dependencies>
-    
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>fabric8-maven-plugin</artifactId>
+                    <version>${fabric8-maven-plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.camel</groupId>
+                    <artifactId>camel-maven-plugin</artifactId>
+                    <version>${camel.version}</version>
+                </plugin>
+                <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>${felix-maven.plugin}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
     <modules>
         <module>routing</module>
         <module>kibana</module>
@@ -128,5 +151,5 @@
             <url>https://repository.jboss.org/nexus/content/groups/fs-public/</url>
         </pluginRepository>
     </pluginRepositories>
-    
+
 </project>
