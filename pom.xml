@@ -105,22 +105,29 @@
     <repositories>
         <repository>
             <id>Fuse - EA</id>
-            <url>https://repository.jboss.org/nexus/content/groups/ea/</url>
+            <url>http://repository.jboss.org/nexus/content/groups/ea/</url>
         </repository>
         <repository>
             <id>Fuse - Public</id>
-            <url>https://repository.jboss.org/nexus/content/groups/fs-public/</url>
+            <url>http://repository.jboss.org/nexus/content/groups/fs-public/</url>
+        </repository>
+        <repository>
+            <id>RedHat - Tech</id>
+            <url>http://maven.repository.redhat.com/techpreview/all</url>
         </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>Fuse</id>
-            <url>https://repository.jboss.org/nexus/content/groups/ea/</url>
+            <url>http://repository.jboss.org/nexus/content/groups/ea/</url>
         </pluginRepository>
         <pluginRepository>
             <id>Fuse - Public</id>
-            <url>https://repository.jboss.org/nexus/content/groups/fs-public/</url>
+            <url>http://repository.jboss.org/nexus/content/groups/fs-public/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>RedHat - Tech</id>
+            <url>http://maven.repository.redhat.com/techpreview/all</url>
         </pluginRepository>
     </pluginRepositories>
-    
 </project>
