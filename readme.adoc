@@ -5,8 +5,6 @@
 :numbered:
 :httpie: link:https://github.com/jkbrzt/httpie[httpie]
 :curl: link:http://curl.haxx.se/download.html[curl]
-:wildfly: link:http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip[Wildfly]
-:apiman: link:http://downloads.jboss.org/apiman/1.1.7.Final/apiman-distro-wildfly8-1.1.7.Final-overlay.zip[APIMan]
 
 = REST DSL in Action
 
@@ -168,7 +166,7 @@ The workstation's `hostname` is used by the following components:
 . Download JBoss Fuse Server and unzip the archive file.
 +
 NOTE: For the purposes of this lab, the directory created from having unzipped the `JBoss Fuse` zip archive will be referred to as `$FUSE_HOME`.
-. Edit the `etc/user.properties` file found in the home directory of `jboss-fuse-6.2.0.redhat-xxx`
+. Edit the `etc/user.properties` file found in the home directory of `jboss-fuse-6.2.1.redhat-xxx`
 +
 Uncomment the line containing the `admin` user and save the file.
 +
@@ -215,7 +213,7 @@ Please wait while JBoss Fuse is loading...
 | |__| | |_) | (_) \__ \__ \ | |  | |_| \__ \  __/
  \____/|____/ \___/|___/___/ |_|   \__,_|___/\___|
 
-  JBoss Fuse (6.2.0.redhat-133)
+  JBoss Fuse (6.2.1.redhat-084)
   http://www.redhat.com/products/jbossenterprisemiddleware/fuse/
 
 Hit '<tab>' for a list of available commands
@@ -288,8 +286,8 @@ Username: admin
 Password:
 Repeat Password:
 
-Copied original: /home/jbride/.m2/settings.xml to: /home/jbride/.m2/settings.xml.backup-1.xml
-Updated settings file: /home/jbride/.m2/settings.xml
+Copied original: /home/$USER/.m2/settings.xml to: /home/$USER/.m2/settings.xml.backup-1.xml
+Updated settings file: /home/$USER/.m2/settings.xml
 -----
 +
 If prompted as per above, respond with a `y` (to allow for a modification to your `~/.m2/settings.xml`) and use username / password credentials of `admin / admin`  (as per the default in `$FUSE_INSTALL/etc/user.properties`).
@@ -324,25 +322,29 @@ JBossFuse:karaf@root> fabric:profile-display gpe-fuse
 Profile id: gpe-fuse
 Version   : 1.0
 Attributes:
-	abstract: false
-	parents: feature-camel
+        abstract: false
+        parents: feature-camel
 Containers:
 
 Container settings
 ----------------------------
 Features :
-	camel-jetty
-	camel-http4
-	camel-jackson
-	camel-elasticsearch
-	camel-bindy
+        camel-bindy
+        camel-jackson
+        fabric-hawtio-swagger
+        camel-jetty
+        camel-http4
+        swagger
+        camel-elasticsearch
+        camel-swagger
 
 Bundles :
-	mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json/20140107_1
-	mvn:org.jboss.fuse/routing/1.0
+        mvn:org.mvel/mvel2/2.2.6.Final
+        mvn:org.jboss.fuse/routing/1.0
+        mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json/20140107_1
 
 Agent Properties :
-	  lastRefresh.gpe-fuse = 1442824458002
+          lastRefresh.gpe-fuse = 1457616678028
 
 
 Configuration details
@@ -352,20 +354,20 @@ PID: io.fabric8.web.contextPath
 
 
 PID: org.jboss.fuse.demo
-  port 9200
   indextype post
   address localhost
-  clustername insight
-  fileUri file://articles?noop=true
   indexname blog
+  clustername insight
+  port 9200
+  fileUri file://articles?noop=true
 
 
 
 Other resources
 ----------------------------
 Resource: Readme.md
-Resource: dependencies/org.jboss.fuse/routing-requirements.json
 Resource: fuse-lab1.png
+
 ----
 
 . Afterwards, install the `gpe-fuse` profile into the `demo` Fuse Demo Managed container
@@ -580,7 +582,7 @@ In order to perform a buk import of articles within the ElasticSearch database, 
 
 . Create the `FUSE_HOME` ENV variable to point to the home directory of the installation directory of JBoss Fuse
 
-    export FUSE_HOME=/Users/chmoulli/Fuse/Fuse-servers/jboss-fuse-6.2.0.redhat-133
+    export FUSE_HOME=/Users/chmoulli/Fuse/Fuse-servers/jboss-fuse-6.2.1.redhat-084
 
 . Create the `DEMO_DIRECTORY` ENV variable to point to the folder containing the demo project
 
