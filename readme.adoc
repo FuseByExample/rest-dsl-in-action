@@ -32,7 +32,6 @@ The file endpoint is responsible for polling a folder, consuming csv files in th
 The Apache Camel Elasticsearch component is called from different routes and will communicate with the ElasticSearch Database to perform the CRUD operations.
 The data can be visualized using a Kibana dashboard.
 Swagger API will be used to document the RESTFull services.
-Finally, we will secure the endpoints using Apiman & Keycloak projects using Basic authentication, Oauth2 or Oauth2 with roles.
 
 The Elasticsearch database and the Apache Camel projects will be deployed into different Fuse Managed Containers operated by a JBoss Fuse Fabric Server.
 
