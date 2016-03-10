@@ -126,9 +126,6 @@
                                 </resource>
                                 <resource>
                                     <directory>${project.build.directory}/classes</directory>
-<!--                                    <includes>
-                                        <include>**/*.json</include>
-                                    </includes>-->
                                 </resource>
                             </resources>
                         </configuration>
