@@ -124,7 +124,7 @@ from("direct:add").id("add-direct-route")
 
 The following is an overview of the installation steps involved with this project :
 
-* https://github.com/FuseByExample/rest-dsl-in-action/archive/master.zip[Download] and compile the project locally
+* https://github.com/FuseByExample/rest-dsl-in-action/archive/jboss-fuse-6.2.1.zip[Download] and compile the project locally
 * Edit the hosts file to add an entry
 * Download and install the JBoss Fuse Server
 * Edit the etc/users.properties file of the server to define an admin user
