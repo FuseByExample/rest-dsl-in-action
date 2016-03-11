@@ -1,0 +1,33 @@
+# JBoss Fuse
+shell:source mvn:org.jboss.fuse/deployment/1.0/script/install
+fabric:container-list
+fabric:container-remove-profile demo gpe-fuse
+fabric:container-add-profile demo gpe-fuse
+
+# Deploy profile
+cd routing
+mvn fabric8:deploy
+
+# Create ES index and Data Model
+http PUT http://localhost:9200/blog
+http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
+http http://localhost:9200/blog/_mapping/article
+
+# Create Kibana Dashboard
+http PUT http://localhost:9200/kibana-int/dashboard/fusedemo < data/elasticsearch/dashboard.json
+cd kibana
+mvn exec:java
+
+# Queries
+http DELETE http://localhost:8183/camel-rest/blog/article/0
+http PUT http://localhost:8183/camel-rest/blog/article < data/elasticsearch/entry.json
+
+http http://localhost:8183/camel-rest/blog/article/search/id/0
+
+http http://localhost:8183/camel-rest/blog/article/search/user/cmoulliard
+http http://localhost:8183/camel-rest/blog/article/search/user/cmoullia
+
+http DELETE http://localhost:8183/camel-rest/blog/article/0
+http http://localhost:8183/camel-rest/blog/article/search/id/0
+
+

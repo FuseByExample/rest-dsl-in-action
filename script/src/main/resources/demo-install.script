@@ -1,11 +1,6 @@
+fabric:create --clean -m 127.0.0.1 -r manualip --wait-for-provisioning
 
+fabric:profile-edit --pid io.fabric8.elasticsearch-insight/network.host=127.0.0.1 insight-elasticsearch.datastore
 
-# Create ES index and Data Model
-http PUT http://localhost:9200/blog
-http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
-http http://localhost:9200/blog/_mapping/article
-
-# Create Kibana Dashboard
-http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
-
-
+fabric:container-create-child --profile insight-elasticsearch.datastore root elasticsearch-node
+fabric:container-create-child --profile feature-camel root demo
