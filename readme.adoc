@@ -533,6 +533,7 @@ The commands in this section of the lab invoke RESTful camel services (exposed v
 . Add a blog
 .. Issue one of the following HTTP requests using either the `http` or `curl` utilities:
 +
+[source,subs="attributes+"]
 ----
 http PUT {endpointURL}/blog/article < data/elasticsearch/entry.json
 ----
