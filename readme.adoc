@@ -5,7 +5,7 @@
 :numbered:
 :httpie: link:https://github.com/jkbrzt/httpie[httpie]
 :curl: link:http://curl.haxx.se/download.html[curl]
-:endpointURL: http://localhost:8183/camel-rest
+:endpointURL: "http://localhost:8183/camel-rest"
 
 = REST DSL in Action
 
