@@ -5,6 +5,7 @@
 :numbered:
 :httpie: link:https://github.com/jkbrzt/httpie[httpie]
 :curl: link:http://curl.haxx.se/download.html[curl]
+:endpointURL: http://localhost:8183/camel-rest
 
 = REST DSL in Action
 
@@ -537,11 +538,11 @@ The commands in this section of the lab invoke RESTful camel services (exposed v
 .. Issue one of the following HTTP requests using either the `http` or `curl` utilities:
 +
 ----
-http PUT http://localhost:9191/blog/article < data/elasticsearch/entry.json
+http PUT {endpointURL}/blog/article < data/elasticsearch/entry.json
 ----
 +
 ----
-curl -X PUT http://localhost:9191/blog/article -d @data/elasticsearch/entry.json
+curl -X PUT {endpointURL}/blog/article -d @data/elasticsearch/entry.json
 ----
 +
 NOTE: Before issuing the HTTP GET request, the content of the blog article can be modified by editing the file: `data/elasticserch/entry.json`
@@ -549,31 +550,31 @@ NOTE: Before issuing the HTTP GET request, the content of the blog article can b
 . Search the user `cmoulliard`
 +
 ----
-http http://localhost:9191/blog/article/search/user/cmoulliard
+http {endpointURL}/blog/article/search/user/cmoulliard
 ----
 +
 ----
-curl http://localhost:9191/blog/article/search/user/cmoulliard
+curl {endpointURL}/blog/article/search/user/cmoulliard
 ----
 
 . Search the user which has been encoded with the id `0`
 +
 ----
-http http://localhost:9191/blog/article/search/id/0
+http {endpointURL}/blog/article/search/id/0
 ----
 +
 ----
-curl http://localhost:9191/blog/article/search/id/0
+curl {endpointURL}/blog/article/search/id/0
 ----
 
 . Delete a user.
 +
 ----
-http DELETE http://localhost:9191/blog/article/0
+http DELETE {endpointURL}/blog/article/0
 ----
 +
 ----
-curl -X DELETE http://localhost:9191/blog/article/0
+curl -X DELETE {endpointURL}/blog/article/0
 ----
 
 == Bulk import
@@ -586,7 +587,7 @@ In order to perform a buk import of articles within the ElasticSearch database, 
 
 . Create the `DEMO_DIRECTORY` ENV variable to point to the folder containing the demo project
 
-    export DEMO_DIRECTORY=/Users/chmoulli/Downloads/rest-dsl-in-action
+    export DEMO_DIRECTORY=`pwd`
 
 . Copy the file
 +
@@ -604,27 +605,41 @@ The `articles` directory folder is scanned by the Apache Camel rote `FileToAddSe
 .Demo dashboard with articles
 image::images/dashboard4.png[]
 
-== Swagger documentation (optional)
+== Swagger documentation
 
-The Camel REST services included in this project have been documented using the http://swagger.io/[Swagger API].
-The documentation is defined within the `swagger/src/main/resources/services.json` file of the swagger maven module.
+The Camel REST endpoints included in this project are discovered by the `DefaultCamelSwaggerServlet` which is registered as OSGI HTTP Service by Blueprint when the context is initiated.
 
-NOTE: This swagger file has been produced manually.
-The camel-swagger component (version 2.15) packaged within JBoss Fuse 6.2 doesn't yet parse the REST DSL syntax to automatically generate the REST documentation.
-This feature should be available in the next release of JBoss Fuse.
+[source,xml]
+----
+    <service interface="javax.servlet.http.HttpServlet">
+        <service-properties>
+            <entry key="alias" value="/rest/api-docs/*"/>
+            <entry key="init-prefix" value="init."/>
+            <entry key="init.cors" value="true"/>
+            <entry key="init.base.path" value="${swaggerBasePath}"/>
+        </service-properties>
+        <bean class="org.apache.camel.component.swagger.DefaultCamelSwaggerServlet"/>
+    </service>
+----
 
-To access the Swagger documentation, execute the following:
+This servlet is responsible to parse the REST DSL syntax of Apache Camel and to generate the json file used by the
+http://swagger.io/[Swagger API] to display the information within the Swagger Web Doc page.
 
-. In a terminal window, change to the `$DEMO_DIRECTORY/swagger` directory.
-. Launch the script +./run_jetty.sh+ to build the project locally and start a jetty instance with Swagger UI
+image::images/swagger1a.png[]
 
-    ./run_jetty.sh
+To access the Camel Ednpoints documented by the Swagger Api, open your browser at the following address `http://localhost:8183/hawtio-swagger/index.html`
 
-. When the jetty instance is started, open your browser at this address
+WARN: The port number could change depending how many Fuse containers are running within yiour Fabrtic ensemble. If you have followed the instructions of this demo, then the port number is `8183`
 
-   http://localhost:8000/?url=services.json
+. Change the address of the project to scan and add within the field address of the Camel Swagger Api Doc
 
-. You can now add a user by clicking on the service `Add a new Blog Article`.
+   http://localhost:8183/rest/api-docs
+
+. Click on `List Operations` link to display all the operations
+
+image::images/swagger1b.png[]
+
+. You can now add a user by clicking on the service `Put /blog/article`.
 . To select the user data, just click on the Model schema and the field (left part of the service `Add a new Blog Article` will be populated.
 . Change the data to be used
 +
@@ -639,16 +654,15 @@ To access the Swagger documentation, execute the following:
 ----
 . Click on `try it out!` button
 +
-image::images/swagger1.png[]
+image::images/swagger2.png[]
 +
 . Search for a user using the service `Blog Search Id operation` and fill the parameter with the id `21`
 +
-image::images/swagger2.png[]
+image::images/swagger3.png[]
 +
 . Review the results using the `Kibana` dashboard and search for the id which is equal to `21`
 +
-image::images/swagger3.png[]
-
+image::images/swagger4.png[]
 
 Hip hip hourra, you have finished !!!
 
@@ -669,7 +683,7 @@ NOTE: It will kill the jvm instances and delete the instances and some sub-folde
 WARNING : The hostname must be changed depending if you run locally or remotely the JBoss Fuse Server
 +
 ----
-http http://localhost:9191/blog/post/1 pretty==true
+http {endpointURL}blog/post/1 pretty==true
 http http://localhost:9200/blog/post/_search q=="user:cmoulliard" pretty==true
 
 curl 'http://localhost:9200/blog/post/_search?q=user:cmoulliard&pretty=true'
@@ -770,13 +784,13 @@ http PUT http://localhost:9200/blog
 http PUT http://localhost:9200/blog/_mapping/article < data/elasticsearch/mapping.json
 http http://localhost:9200/blog/_mapping/article
 
-http PUT http://localhost:9191/blog/article < data/elasticsearch/entry.json
+http PUT {endpointURL}/blog/article < data/elasticsearch/entry.json
 
-http http://localhost:9191/blog/article/search/id/0
+http {endpointURL}/blog/article/search/id/0
 
-http http://localhost:9191/blog/article/search/user/cmoulliard
-http http://localhost:9191/blog/article/search/user/cmoullia
+http {endpointURL}/blog/article/search/user/cmoulliard
+http {endpointURL}/blog/article/search/user/cmoullia
 
-http DELETE http://localhost:9191/blog/article/1
-http http://localhost:9191/blog/article/search/id/1
+http DELETE {endpointURL}/blog/article/1
+http {endpointURL}/blog/article/search/id/1
 ----

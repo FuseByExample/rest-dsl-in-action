@@ -12,25 +12,23 @@ public class RestToServicesRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        restConfiguration().component("jetty").host("0.0.0.0").port("9191")
+        restConfiguration().component("servlet")
            .enableCORS(true)
            .bindingMode(RestBindingMode.json)
            .dataFormatProperty("prettyPrint", "true");
-        
-        // TO BE CHECKED --> .endpointProperty("matchOnUriPrefix", "true")
 
-        rest("/blog/article/").id("rest-blog-service").produces("application/json").consumes("application/json")
+        rest("/blog/article/").id("rest-blog-service").description("Blog Article REST Endpoint").produces("application/json").consumes("application/json")
 
-           .get("search/id/{id}").id("rest-searchbyid")
+           .get("search/id/{id}").description("Search for a blog article / id").id("rest-searchbyid")
                .to("direct:searchById")
 
-           .get("search/user/{user}").id("rest-searchbyuser").outTypeList(Blog.class)
+           .get("search/user/{user}").description("Search for a blog article / user").id("rest-searchbyuser").outTypeList(Blog.class)
                 .to("direct:searchByUser")
 
-           .put().id("rest-put-article").type(Blog.class)
+           .put().id("rest-put-article").description("Put a blog article").type(Blog.class)
                 .to("direct:add")
 
-           .delete("{id}").id("rest-deletearticle").type(Blog.class)
+           .delete("{id}").id("rest-deletearticle").description("Delete a blog article").type(Blog.class)
                .to("direct:remove");
 
            /*

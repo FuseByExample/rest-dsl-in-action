@@ -22,7 +22,7 @@
         <fabric8.parentProfiles>feature-camel</fabric8.parentProfiles>
         <fabric8.bundles>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json/20140107_1
         </fabric8.bundles>
-        <fabric8.features>fabric-hawtio-swagger camel-swagger camel-elasticsearch camel-jetty camel-jackson camel-bindy camel-http4</fabric8.features>
+        <fabric8.features>fabric-hawtio-swagger camel-swagger camel-elasticsearch camel-jetty camel-jackson camel-servlet camel-bindy camel-http4</fabric8.features>
     </properties>
 
     <dependencies>

@@ -127,7 +127,9 @@
         <module>routing</module>
         <module>kibana</module>
         <module>script</module>
-        <module>swagger</module>
+        <!-- We will not use it anymore as we deploy the Camel Swagger featuer on Fuse 6.2.1
+             <module>swagger
+        </module> -->
     </modules>
 
     <repositories>
