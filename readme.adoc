@@ -466,33 +466,29 @@ The data inserted into the Elasticsearch Database can be analyzed using the http
 The dashboard is designed around modern HTML5 Web technologies and can be run locally with a Web Container.
 
 This demo provides a maven goal that launches Kibana embedded in a `Jetty` HTTP Server.
-Kibana can then be accessed from a browser at the following address: `http://localhost:9090/kibana3/index.html`
+Kibana can then be accessed from a browser at the following address: `http://localhost:9090/index.html`
 
 === Start Kibana
 . To start Kibana in your local workstation, open a terminal window and change to the `$DEMO_DIRECTORY/kibana` directory.
-. Execute the following maven command: `mvn jetty:run`
+. Execute the following maven command: `mvn exec:run`
 +
 ----
-mvn jetty:run
+mvn exec:run
 ...
-[INFO] Configuring Jetty for project: FuseByExample :: REST DSL Demo :: Kibana 3
-[INFO] Webapp source directory = /Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/src/main/webapp
-[INFO] Reload Mechanic: automatic
-[INFO] Classes directory /Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/target/classes does not exist
-[INFO] Context path = /kibana3
-[INFO] Tmp directory = /Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/target/tmp
-[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
-[INFO] Web overrides =  none
-[INFO] web.xml file = file:///Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/src/main/webapp/WEB-INF/web.xml
-[INFO] Webapp directory = /Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/src/main/webapp
-2015-09-21 11:46:46.627:INFO:oejs.Server:main: jetty-9.3.0.M1
-2015-09-21 11:46:48.507:INFO:oejsh.ContextHandler:main: Started o.e.j.m.p.JettyWebAppContext@70325d20{/kibana3,file:///Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/src/main/webapp/,AVAILABLE}{file:///Users/chmoulli/Downloads/rest-dsl-in-action-master/kibana/src/main/webapp/}
-2015-09-21 11:46:48.710:INFO:oejs.ServerConnector:main: Started ServerConnector@53afb8df{HTTP/1.1,[http/1.1]}{localhost:9090}
-2015-09-21 11:46:48.711:INFO:oejs.Server:main: Started @4174ms
-[INFO] Started Jetty Server
+[INFO] Compiling 1 source file to /Users/chmoulli/MyProjects/fuse-in-action/camel-restdsl-in-action/kibana/target/classes
+[INFO]
+[INFO] --- exec-maven-plugin:1.4.0:java (default-cli) @ kibana ---
+[jboss.fuse.SimpleServer.main()] SimpleServer                   INFO  [Port : 9090]
+[jboss.fuse.SimpleServer.main()] log                            INFO  Logging initialized @2660ms
+[jboss.fuse.SimpleServer.main()] SimpleServer                   INFO  [index.html page registered as welcome page]
+[jboss.fuse.SimpleServer.main()] SimpleServer                   INFO  [Resource Base point to the resources directory]
+[jboss.fuse.SimpleServer.main()] SimpleServer                   INFO  [HTTP Simple Server started at the address : http://localhost:9090]
+[jboss.fuse.SimpleServer.main()] Server                         INFO  jetty-9.3.0.M1
+[jboss.fuse.SimpleServer.main()] ServerConnector                INFO  Started ServerConnector@2d8c784a{HTTP/1.1,[http/1.1]}{0.0.0.0:9090}
+[jboss.fuse.SimpleServer.main()] Server                         INFO  Started @2744ms
 ----
 
-. Once the server is launched, open your browser and navigate to: `http://localhost:9090/kibana3/index.html`.
+. Once the server is launched, open your browser and navigate to: `http://localhost:9090/index.html`.
 +
 NOTE: The first time connecting to the Dashboard, the index HTML page will display general content about the kibana project, how to setup a dashboard and how to import data from an Elasticsearch Database.
 +
