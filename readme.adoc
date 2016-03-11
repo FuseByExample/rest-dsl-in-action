@@ -5,7 +5,7 @@
 :numbered:
 :httpie: link:https://github.com/jkbrzt/httpie[httpie]
 :curl: link:http://curl.haxx.se/download.html[curl]
-:endpointURL: "http://localhost:8183/camel-rest"
+:endpointURL: http://localhost:8183/camel-rest
 
 = REST DSL in Action
 
@@ -538,6 +538,7 @@ The commands in this section of the lab invoke RESTful camel services (exposed v
 http PUT {endpointURL}/blog/article < data/elasticsearch/entry.json
 ----
 +
+[source,subs="attributes+"]
 ----
 curl -X PUT {endpointURL}/blog/article -d @data/elasticsearch/entry.json
 ----
@@ -546,30 +547,36 @@ NOTE: Before issuing the HTTP GET request, the content of the blog article can b
 
 . Search the user `cmoulliard`
 +
+[source,subs="attributes+"]
 ----
 http {endpointURL}/blog/article/search/user/cmoulliard
 ----
 +
+[source,subs="attributes+"]
 ----
 curl {endpointURL}/blog/article/search/user/cmoulliard
 ----
 
 . Search the user which has been encoded with the id `0`
 +
+[source,subs="attributes+"]
 ----
 http {endpointURL}/blog/article/search/id/0
 ----
 +
+[source,subs="attributes+"]
 ----
 curl {endpointURL}/blog/article/search/id/0
 ----
 
 . Delete a user.
 +
+[source,subs="attributes+"]
 ----
 http DELETE {endpointURL}/blog/article/0
 ----
 +
+[source,subs="attributes+"]
 ----
 curl -X DELETE {endpointURL}/blog/article/0
 ----
@@ -679,6 +686,7 @@ NOTE: It will kill the jvm instances and delete the instances and some sub-folde
 +
 WARNING : The hostname must be changed depending if you run locally or remotely the JBoss Fuse Server
 +
+[source,subs="attributes+"]
 ----
 http {endpointURL}blog/post/1 pretty==true
 http http://localhost:9200/blog/post/_search q=="user:cmoulliard" pretty==true
@@ -775,6 +783,7 @@ When you would like test your project and if the Elasticsearch server is running
 It will delete the blog index, create a new index, insert articles, search using a user name or id and will delete
 a user.
 
+[source,subs="attributes+"]
 ----
 http DELETE http://localhost:9200/blog
 http PUT http://localhost:9200/blog
