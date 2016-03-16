@@ -470,10 +470,10 @@ Kibana can then be accessed from a browser at the following address: `http://loc
 
 === Start Kibana
 . To start Kibana in your local workstation, open a terminal window and change to the `$DEMO_DIRECTORY/kibana` directory.
-. Execute the following maven command: `mvn exec:run`
+. Execute the following maven command: `mvn exec:java`
 +
 ----
-mvn exec:run
+mvn exec:java
 ...
 [INFO] Compiling 1 source file to /Users/chmoulli/MyProjects/fuse-in-action/camel-restdsl-in-action/kibana/target/classes
 [INFO]
